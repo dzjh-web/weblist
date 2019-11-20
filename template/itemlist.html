@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="JDreamHeart[个人网站]">
+		<meta name="author" content="JDreamHeart">
+		<title>{{ TITLE }}</title>
+		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <link rel="stylesheet" href= {% static "css/release.css" %} />
+	</head>
+	<body>
+        <header id = "header">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="web-navbar">
+                    <a class="navbar-brand" href="http://jimdreamheart.club" title="DzjH">DzjH</a>
+                </div>
+                <div class="container">
+                    <div class="container-fluid navbar-header">
+                        <a class="navbar-brand" href="{{ TITLE_URL }}" title="{{ TITLE }}">{{ TITLE }}</a>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#searchNavCollapse">
+                            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="searchNavCollapse" class="navbar-collapse collapse">
+                        <form action="{{ SEARCH_URL }}" class="navbar-form navbar-right" method="POST">
+                            <input name="searchText" type="text" placeholder="{{ searchText }}" class="form-control">
+                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {% if carouselList %}
+		<div id="mainCarousel" class="carousel slide">
+			<ul class="carousel-inner">
+                {% for info in carouselList %}
+				<li class="item">
+                    <a class="block" href="{{ info.url }}" target="_blank" title="{{ info.title }}">
+                        <img src="{{ info.img }}" alt="{{ info.alt }}" width="100%" />
+                        <div class="carousel-caption">
+                            <p>{{ info.name }}</p>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+			</ul>
+			<ol class="carousel-indicators">
+                {% for info in carouselList %}
+                <li data-target="#mainCarousel" data-slide-to="{{ forloop.counter|add:-1 }}"></li>
+                {% endfor %}
+			</ol>
+			<a class="carousel-control left" href="#mainCarousel" data-slide="prev" title="上一页"><span class="glyphicon glyphicon-chevron-left"></span></a>
+			<a class="carousel-control right" href="#mainCarousel" data-slide="next" title="下一页"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+        {% endif %}
+        <div class="container">
+            <div class="content">
+                <div class="row">
+                    {% for info in infoList %}
+                    <a class="btn-block col-md-12 item-info">
+                        <div class="item-info-text col-md-8">
+                            <div class="tool-info-tittle">
+                                <h2>{{ info.title }}</h2>
+                                {% if info.subTitle %}
+                                <span>&nbsp;[{{ info.subTitle }}]</span>
+                                {% endif %}
+                            </div>
+                            <blockquote class="item-info-desc">{{ info.description }}</blockquote>
+                        </div>
+                        <div class="item-info-img col-md-4">
+                            <img class="img-responsive center-block" src="{{ info.thumbnail }}" />
+                        </div>
+                        <div class="item-info-ex col-md-12">
+                            {% if info.time %}
+                            <span>更新时间：{{ info.time|date:"Y-m-d H:i:s" }}</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% endif %}
+                            {% for exInfo in exinfoList %}
+                            <span>{{ exInfo.key }}：{{ exInfo.value }}</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% endfor %}
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+		<div class="fixdRight">
+			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+		</div>
+        <footer>
+            <div class="container">
+                <span>Copyright&nbsp;&copy;&nbsp;2019&nbsp;</span>
+                <a href="https://github.com/JDreamHeart" title="关于JDreamHeart">梦心DH</a>
+            </div>
+        </footer>
+        <script src="http://jimdreamheart.club/resource/jquery/jquery-3.4.0.min.js"></script>
+        <script src="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src={% static "js/main.js" %}></script>
+        <script language="JavaScript">
+            $(function(){
+                $("#mainCarousel ul").find("li").first().addClass("active");
+                $("#mainCarousel ol").find("li").first().addClass("active");
+            });
+        </script>
+    </body>
+</html>

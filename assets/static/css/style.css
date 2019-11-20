@@ -1,0 +1,263 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+header {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+body {
+	color: #E1E1E1;
+	background-color: #232323;
+}
+ul,li{
+	list-style-type: none;
+}
+a {
+	color: #FFFFFF;
+}
+a:link{
+	text-decoration: none;
+}
+a:visited{
+	color: #E1E1E1;
+	text-decoration: none;
+}
+a:hover{
+	color: #CDCDCD;
+	text-decoration: none;
+}
+a:active{
+	text-decoration: none;
+}
+footer{
+	clear: both;
+	width: 100%;
+	color: #A0A0A0;
+	text-align: center;
+	margin-top: 60px;
+	margin-bottom: 10px;
+}
+/* footer span{
+	font-size: 14px;
+} */
+footer a{
+	font-size: 8px;
+}
+.fixdRight{
+	font-family: "宋体";
+	color: #FFFFFF;
+	z-index: 1;
+	position: fixed;
+	right: 2%;
+	bottom: 4%;
+	opacity: 0.5;
+	background-color: #000000;
+}
+.fixdRight a{
+	display: block;
+	width: 36px;
+	height: 36px;
+	font-size: 12px;
+	padding-top: 9px;
+	padding-left: 6px;
+	border: 1px #FFFFFF solid;
+	border-radius: 2px;
+}
+.fixdRight a:hover{
+	color: #000000;
+	background-color: #E1E1E1;
+	border: 1px #E1E1E1 solid;
+	opacity: 0.9;
+}
+#searchResult{
+	margin-top: 40px;
+	padding-top: 20px;
+	border-top: 2px #BCBCBC solid;
+}
+.jumbotron-content{
+	padding: 24px 0px;
+}
+.jumbotron-content>p{
+	margin: 10px;
+	padding: 0px;
+}
+.jumbotron-btn-group>li{
+	display: inline-block;
+	margin: 10px 40px;
+}
+.jumbotron-btn-group>li>a{
+	padding-left: 30px;
+	padding-right: 30px;
+}
+/* carousel style */
+#mainCarousel{
+	margin-bottom: 50px;
+}
+.carousel-caption{
+	padding-top: 10px;
+}
+.carousel-indicators li{
+	background-color: #686868;
+	border: 1px #FFFFFF solid;
+}
+.carousel-indicators li.active{
+	background-color: #686868;
+	border: 1px #FFFFFF solid;
+}
+/* itemInfo style */
+.item-info{
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 1px #E1E1E1 solid;
+	border-radius: 4px;
+}
+.item-info:hover{
+	background-color: #686868;
+}
+.item-info-tittle{
+	display: block;
+}
+.item-info-tittle>h2{
+	display: inline-block;
+}
+.item-info-tittle>h3{
+	display: inline-block;
+}
+.item-info-img {
+	margin-top: 10px;
+}
+.item-info-img img {
+	border: 1px #E1E1E1 solid;
+	border-radius: 4px;
+}
+.item-info-desc{
+	font-size: 14px
+}
+.item-info-ex{
+	color: #A0A0A0;
+	margin-bottom: 2px;
+}
+/* dialog style */
+#dialogPage{
+	display: flex;
+	align-items:center;
+	position: absolute;
+	top:0px;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+	background-color: #000000BC;
+}
+.dialog-background{
+	padding: 0px;
+	margin-top: 100px;
+}
+#closeDialogPage{
+	float: right;
+	right: 0px;
+	font-size: 13px;
+	padding: 2px;
+	color: #000000;
+	background-color: #BCBCBC;
+}
+#closeDialogPage:hover{
+	color: red;
+}
+.dialog-content{
+	padding: 40px;
+	background-color: #FFFFFF;
+}
+.dialog-content h2{
+	text-align: center;
+	padding-bottom: 10px;
+	margin-top: 0px;
+	margin-bottom: 20px;
+	border-bottom: 1px #DCDCDC solid;
+}
+.dialog-content p{
+	font-size:16px;
+	color:#232323;
+}
+.dialog-content p>span{
+	color:#646464;
+}
+.dialog-content .dialog-interval{
+	margin-top:40px;
+	font-size:12px;
+}
+.dialog-content .dialog-interval #timeCountDown{
+	color:red;
+}
+#logoutButton:hover{
+	color: #FFFFFF;
+	background-color: red;
+}
+/* login-form style */
+.login-form>.form-control, .login-form>.input-group{
+	height: auto;
+	padding: 10px;
+	font-size: 16px;
+	margin-top: 10px;
+}
+.login-form>.input-group{
+	padding: 0px;
+	margin-bottom: 10px;
+}
+.login-form>.form-control:focus{
+	z-index: 2;
+}
+.login-form>label{
+	font-weight: normal;
+	padding: 10px 0px;
+}
+.login-form>.login-link{
+	display: block;
+	margin-top: 10px;
+	padding: 10px;
+}
+/* validation */
+.error {
+    border: 1px solid red;
+}
+label.error {
+    color: red;
+    border: none;
+}
+
+.web-navbar > a {
+	font-size: 14px;
+	color: #FFFFFF;
+}
+
+.userinfoContent .tab-content .tab-pane-sub{
+	padding: 4px;
+	margin-top: 20px;
+	border: 1px #DCDCDC solid;
+	background-color: #F1F1F1;
+}
+
+.userinfoContent .tab-content .tab-pane-sub h5{
+	margin: 0px;
+	padding: 10px;
+	border-bottom: 1px #E1E1E1 solid;
+}
+
+.userinfoContent .tab-content .tab-pane-sub p>span{
+	font-size: 14px;
+}
+
+.userinfoContent .tab-content .tab-pane-sub .input-group, .userinfoContent .tab-content .tab-pane-sub form > button{
+	margin-top: 10px;
+}
+
+.modal-content{
+	padding-top:20px;
+}
+.modal-content .modal-body .form-control{
+	margin-top: 10px;
+}
+
+#showUserInfo p{
+	margin-top: 10px;
+}

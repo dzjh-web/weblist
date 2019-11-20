@@ -1,0 +1,95 @@
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 content">
+	<div id="alertList">
+	</div>
+	<div id="contentList">
+		{% ifequal mkey "ptip_examination" %}
+			{% include "release/ptip_examination.html" %}
+		{% endifequal %}
+		{% ifequal mkey "ptip_script" %}
+			{% include "release/ptip.html" %}
+		{% endifequal %}
+		{% ifequal mkey "ptip_installer" %}
+			{% include "release/ptip_installer.html" %}
+		{% endifequal %}
+		{% ifequal mkey "ptip_exe" %}
+			{% include "release/ptip_exe.html" %}
+		{% endifequal %}
+		{% ifequal mkey "update_exe" %}
+			{% include "release/ptip_exe.html" %}
+		{% endifequal %}
+		{% ifequal mkey "depend_lib" %}
+			{% include "release/ptip_depend.html" %}
+		{% endifequal %}
+		{% ifequal mkey "pt_ol_examination" %}
+			{% include "release/tool_examination.html" %}
+		{% endifequal %}
+
+		{% ifequal mkey "pt_examination" %}
+			{% include "release/tool_examination.html" %}
+		{% endifequal %}
+		{% ifequal mkey "pt_new_script" %}
+			{% include "release/new_tool.html" %}
+		{% endifequal %}
+		{% ifequal mkey "pt_ol_script" %}
+			{% include "release/ol_tool.html" %}
+		{% endifequal %}
+		
+		{% ifequal mkey "article_examination" %}
+			{% include "release/article/examination.html" %}
+		{% endifequal %}
+		{% ifequal mkey "article" %}
+			{% include "release/article/article_form.html" %}
+		{% endifequal %}
+		{% ifequal mkey "ol_article" %}
+			{% include "release/article/ol_article.html" %}
+		{% endifequal %}
+	</div>
+</div>
+<script language="JavaScript">
+	$(function(){
+		var showAlert = function(type, text) {
+			$("#alertList").append("<div class='alert alert-"+ type +"' role='alert'>\
+					<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+					<span class='alertContent'>"+ text +"</span>\
+				</div>");
+		}
+		var tips = "{{requestFailedTips}}";
+		if (tips != "") {
+			showAlert("danger", tips);
+		} else {
+			tips = "{{requestTips}}";
+			if (tips != "") {
+				showAlert("success", tips);
+			}
+		}
+		// 更新用户名
+		$("#userName").text("{{userInfo.name}}");
+		// 显示头部信息
+		if ($("#userNavCollapse ul").hasClass("hidden")) {
+			$("#userNavCollapse ul").removeClass("hidden");
+		}
+		// 显示左边导航栏
+		if ($("#sidebar").hasClass("hidden")) {
+			$("#sidebar").removeClass("hidden");
+		}
+		// 更新当前项
+		var mkey = "{{mkey}}";
+		var $activeItem = $("#sidebar li.active>._slideItem_");
+		if ($activeItem.length == 0) {
+			$("#sidebar ._slideItem_[data-target="+mkey+"]").parent().toggleClass("active");
+		}else if (mkey != $activeItem.attr("data-target")) {
+			$activeItem.parent().toggleClass("active");
+			$("#sidebar ._slideItem_[data-target="+mkey+"]").parent().toggleClass("active");
+		}
+		// 是否显示平台选项
+		if ("{{isManager}}" == "True") {
+			if ($(".manager-options").hasClass("hidden")) {
+				$(".manager-options").removeClass("hidden");
+			}
+		} else {
+			if (!$(".manager-options").hasClass("hidden")) {
+				$(".manager-options").addClass("hidden");
+			}
+		}
+	})
+</script>

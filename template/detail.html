@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="PyToolsIP[Python工具集成平台]">
+		<meta name="author" content="JimDreamHeart">
+		<title>工具详情-{{baseInfo.name}}</title>
+		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />	
+		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-star-rating/css/star-rating.min.css" />
+		<link rel="stylesheet" href= {% static "css/style.css" %} />
+	</head>
+	<body>
+		<header id = "header">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="ptip-navbar">
+					<a class="navbar-brand" href="http://jimdreamheart.club" title="DzjH">DzjH</a>
+					<a class="navbar-brand pull-right" href="{{ HOME_URL }}/release" target="_blank" title="发布后台">发布后台</a>
+				</div>
+				<div class="container">
+					<div class="container-fluid navbar-header">
+						<a class="navbar-brand" href="{{ HOME_URL }}" title="首页">PyToolsIP</a>
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#searchNavCollapse">
+							<span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+						</button>
+					</div>
+					<div id="searchNavCollapse" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav">
+							<li><a href="{{ HOME_URL }}/toollist" title="工具列表">工具列表</a></li>
+							<li><a href="{{ HOME_URL }}/articlelist" title="文章列表">文章列表</a></li>
+						</ul>
+						<form action="{{ HOME_URL }}/toollist?k=all" class="navbar-form navbar-right" method="POST">
+							<input name="searchText" type="text" placeholder="搜索工具名称" class="form-control">
+							<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+						</form>
+					</div>
+				</div>
+			</nav>
+		</header>
+		
+		<div id="mainContainer" class="container">
+			{% if hasTool %}
+			<div class="row">
+				<div class="col-md-8">
+					<div class="tool-info-tittle"><h2>{{ baseInfo.name }}</h2><span>&nbsp;[{{ baseInfo.category }}]</span></div>
+					<h4>
+						ID:&nbsp;&nbsp;
+						<span id="IDText" style="color: green;">{{ baseInfo.tkey }}</span>
+						<button id="copyID" class="btn btn-xs btn-default" data-clipboard-target="#IDText">复制</button>
+					</h4>
+					<p style="color: #A0A0A0;">
+						<span>上传者：{{ baseInfo.author }}</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span>评分：{{ baseInfo.score }}</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span>总下载量：{{ baseInfo.downloadCount }}</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<span>最近上传时间：{{ baseInfo.time|date:"Y-m-d H:i:s" }}</span>
+					</p>
+					<div style="background-color: #F1F1F1;">
+						{{ baseInfo.content | safe }}
+					</div>
+				</div>
+				<div class="col-md-4" style="padding-top: 40px;">
+					<a id="collectTool" class="btn btn-lg btn-primary hidden" href="javascript:void(0);" title="点击收藏">
+						&nbsp;<span class="glyphicon glyphicon-star"></span>&nbsp;<span class="collect-text">点击收藏</span>&nbsp;&nbsp;
+					</a>
+					<a id="cancelCollectTool" class="btn btn-lg btn-warning hidden" href="javascript:void(0);" title="取消收藏">
+						&nbsp;<span class="glyphicon glyphicon-star-empty"></span>&nbsp;<span class="collect-text">取消收藏</span>&nbsp;&nbsp;
+					</a>
+				</div>
+				<div class="col-md-12">
+					<blockquote style="margin-top: 30px;margin-bottom: 40px;">
+						<p>{{ baseInfo.description }}</p>
+					</blockquote>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>版本号</th>
+									<th>平台基础版本</th>
+									<th>更新日志</th>
+									<th>上传时间</th>
+									<th>下载</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for toolInfo in toolInfoList %}
+								<tr>
+									<td>{{ toolInfo.version }}</td>
+									<td>{{ toolInfo.IPBaseVersion }}</td>
+									<td>{{ toolInfo.changelog }}</td>
+									<td>{{ toolInfo.uploadTime|date:"Y-m-d H:i:s" }}</td>
+									<td><a href="{{ toolInfo.url }}" target="_blank" title=""><span class="glyphicon glyphicon-download-alt"></span>下载</a></td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div style="border-top: 1px #BCBCBC solid;padding-top: 40px;margin-top: 40px;">
+						<form id="commentToolForm" role="form" enctype="multipart/form-data" method="POST">
+							<textarea name="content" class="form-control" rows="3" placeholder="评论内容"></textarea>
+							<input name="score" type="number" class="rating" />
+							<input class="btn btn-primary" type="submit" value="提交评论" />
+						</form>
+						<ul class="row" style="margin-top: 60px;border-bottom: 1px #BCBCBC dashed;">
+							{% for commentInfo in commentInfoList %}
+							<li class="col-md-12" style="border-top: 1px #BCBCBC dashed;padding-top: 20px;padding-bottom: 20px;">
+								<div class="col-md-3 text-center">
+									<p>{{ commentInfo.user }}</p>
+									<p style="color: #A0A0A0;">{{ commentInfo.time|date:"Y-m-d H:i:s" }}</p>
+								</div>
+								<div class="col-md-9">
+									<p>评分：<span style="color: darkgoldenrod;">{{ commentInfo.score }}</span></p>
+									<p>评论内容：<span style="color: #A0A0A0;">{{ commentInfo.content }}</span></p>
+								</div>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+			{% else %}
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<h1>没找到相应工具信息</h1>
+				</div>
+			</div>
+			{% endif %}
+		</div>
+		<div class="fixdRight">
+			<div id="user"><a class="btn btn-default text-center" href="javascript:void(0);" title="个人中心"><span class="glyphicon glyphicon-user"></span></a></div>
+			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+		</div>
+		<footer>
+			<div class="container">
+				<span>Copyright&nbsp;&copy;&nbsp;2019&nbsp;</span>
+				<a href="https://github.com/JimDreamHeart" title="关于JimDreamHeart">梦心DH</a>
+			</div>
+		</footer>
+		<script src="http://jimdreamheart.club/resource/jquery/jquery-3.4.0.min.js"></script>
+		<script src="http://jimdreamheart.club/resource/jquery/jquery.cookie.js"></script>
+		<script src="http://jimdreamheart.club/resource/jquery/jquerysession.js"></script>
+		<script src="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+		<script src="http://jimdreamheart.club/resource/bootstrap-star-rating/js/star-rating.min.js"></script>
+		<script src="http://jimdreamheart.club/resource/clipboard/dist/clipboard.min.js"></script>
+        <script src="http://jimdreamheart.club/resource/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+        <script src="http://jimdreamheart.club/resource/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+		<script src="http://jimdreamheart.club/resource/jsencrypt/jsencrypt.min.js"></script>
+		<script src={% static "js/main.js" %}></script>
+		<script language="JavaScript">
+			$(function(){
+				// 显示评论结果信息
+				var showAlert = function(type, text) {
+					$("#mainContainer").prepend("<div class='alert alert-"+ type +"' role='alert'>\
+							<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+							<span class='alertContent'>"+ text +"</span>\
+						</div>");
+				}
+				var tips = "{{requestFailedTips}}";
+				if (tips != "") {
+					showAlert("danger", tips);
+				} else {
+					tips = "{{requestTips}}";
+					if (tips != "") {
+						showAlert("success", tips);
+					}
+				}
+				// 显示评分组件
+				$("#commentToolForm input[name='score']").rating({
+					min: 0,
+					max: 5,
+					step: 0.5,
+					showClear: false,
+					hoverOnClear: false,
+					clearCaption: "0分",
+					starCaptions: function(val){
+						return val+"分";
+					},
+					starCaptionClasses:function(val){
+						return "label label-info";
+					},
+				});
+				var idClipboard = new ClipboardJS("#copyID");
+				idClipboard.on('success', function(e) {
+					e.clearSelection();
+				})
+				// 提交评论内容
+				$("#commentToolForm").validate({
+					rules: {
+						content: {
+							required: true,
+						},
+					},
+					messages: {
+						content: "评论内容不能为空",
+					},
+					submitHandler: function(form) {
+						var content = $("#commentToolForm textarea[name='content']").val();
+						var score = $("#commentToolForm input[name='score']").val();
+						requestToolDetailForm($("#commentToolForm"), [
+							{"key":"submit", "val":"comment", "type":"text"}
+						], function(data){
+							if (data.isSuccess) {
+								window.location.href = window.location.href
+							}else{
+								alert("评论失败，请重新评论！");
+							}
+						});
+					}
+				});
+				// 显示点击/取消收藏按钮函数
+				var showCollectTool = function(isCollect){
+					if (isCollect) {
+						$("#cancelCollectTool").removeClass("hidden");
+                		$("#collectTool").addClass("hidden");
+					} else {
+						$("#collectTool").removeClass("hidden");
+                		$("#cancelCollectTool").addClass("hidden");
+					}
+				}
+				showCollectTool("{{isCollect}}" == "True");
+				// 点击/取消收藏按钮回调
+				var reqCollectTool = function(isCollect, text){
+					requestCollectTool({
+						"submit" : "collect",
+						"isCollect" : isCollect,
+					}, function(data, status){
+						if (status == "success" && data.isSuccess) {
+							showCollectTool(isCollect);
+						}else{
+							alert(text+"失败，请重新"+text+"！");
+						}
+					});
+				}
+				$("#collectTool").on("click", function(){
+					reqCollectTool(true, "收藏工具");
+				});
+				$("#cancelCollectTool").on("click", function(){
+					reqCollectTool(false, "取消收藏");
+				});
+			})
+		</script>
+	</body>
+</html>

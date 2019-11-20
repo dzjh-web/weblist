@@ -1,0 +1,79 @@
+.sidebar {
+    position: fixed;
+    top: 51px;
+    bottom: 0;
+    z-index: 1000;
+    display: block;
+    padding: 20px;
+    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+    background-color: #F5F5F5;
+    border-right: 1px solid #EEEEEE;
+}
+.nav-sidebar {
+    margin-right: -20px;
+    margin-left: -20px;
+    padding: 10px 0px;
+    border-top: 1px #E1E1E1 solid;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    font-size: 18px;
+    color: #FFFFFF;
+    background-color: #428BCA;
+}
+#contentList > h2, .item-content > h2{
+    padding-top: 10px;
+    color: #2069A8;
+    border-bottom: 1px #DCDCDC solid;
+}
+.form-group > h3 {
+    color: #008000;
+    padding: 10px;
+    margin: 20px 0px;
+    border-bottom: 1px #E1E1E1 solid;
+}
+.form-group > .input-group {
+    margin: 20px 0px;
+}
+#searchForm > .input-group {
+    margin:  0px;
+    margin-top: 40px;
+}
+.dependE{
+    padding: 10px;
+    padding-bottom: 0px;
+    border: 1px #CDCDCD solid;
+}
+.dependE > div {
+    color: #428BCA;
+    margin-left: 20px;
+}
+.dependE > div > strong {
+    display: inline-block;
+    margin: 4px;
+    padding: 2px;
+    border: 1px #D0D0D0 solid;
+}
+.dependE > div > strong > select {
+    color: #008000;
+    font-weight: normal;
+}
+.examination {
+    font-size: 4px;
+}
+/* validation */
+.error {
+    border: 1px solid red;
+}
+label.error {
+    color: red;
+    border: none;
+}
+/* releaseForm */
+#releaseForm a {
+    color: #428BCA;
+}
+#releaseForm a:hover {
+    color: rgb(11, 72, 126);
+}
