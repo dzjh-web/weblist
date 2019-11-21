@@ -10,6 +10,8 @@ sys.path.append(CURRENT_PATH);
 try:
     from home import req as home;
     from game import req as game;
+    from giturl import req as giturl;
+    from game import detail as gameDetail;
     
 except Exception as e:
 	raise e;

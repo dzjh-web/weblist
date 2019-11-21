@@ -11,6 +11,7 @@
 		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
 		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <link rel="stylesheet" href= {% static "css/release.css" %} />
 	</head>
 	<body>
         <header id = "header">
@@ -58,34 +59,30 @@
         </div>
         {% endif %}
         <div class="container">
-            <div class="row" style="margin-bottom: 40px;">
+            <ul class="row card-wrapper">
                 {% for info in infoList %}
-                <a class="btn-block col-md-12 item-info" href="{{ info.url }}" target="_blank">
-                    <div class="item-info-text col-md-8">
-                        <div class="item-info-tittle">
-                            <h2>{{ info.title }}</h2>
-                            {% if info.subTitle %}
-                            <p>&nbsp;[{{ info.subTitle }}]</p>
-                            {% endif %}
-                        </div>
-                        <blockquote class="item-info-desc">{{ info.description }}</blockquote>
+                <li class="col-md-6">
+                    <div class="card-item">
+                        <a class="btn-block card-info" href="{{ info.url }}" target="_blank">
+                            <div class="thumbnail card-show">
+                                <img class="card-img" src="{{ info.thumbnail }}" />
+                                <div class="caption">
+                                    <h3 class="text-center">{{ info.title }}</h3>
+                                    {% if info.subTitle %}
+                                    <p class="text-center">[{{ info.subTitle }}]</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-hide">
+                                <article>
+                                    {{ info.description | safe }}
+                                </article>
+                            </div>
+                        </a>
                     </div>
-                    <div class="item-info-img col-md-4">
-                        <img class="img-responsive center-block" src="{{ info.thumbnail }}" />
-                    </div>
-                    <div class="item-info-ex col-md-12">
-                        {% if info.time %}
-                        <span>更新时间：{{ info.time|date:"Y-m-d H:i:s" }}</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {% endif %}
-                        {% for exInfo in exinfoList %}
-                        <span>{{ exInfo.key }}：{{ exInfo.value }}</span>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        {% endfor %}
-                    </div>
-                </a>
+                </li>
                 {% endfor %}
-            </div>
+            </ul>
         </div>
 		<div class="fixdRight">
 			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
@@ -102,6 +99,9 @@
             $(function(){
                 $("#mainCarousel ul").find("li").first().addClass("active");
                 $("#mainCarousel ol").find("li").first().addClass("active");
+                // 新建卡牌
+                var card = new FlipCardIndex($(".card-wrapper .card-item"));
+                card.setDefaultClassName("card-item");
             });
         </script>
     </body>

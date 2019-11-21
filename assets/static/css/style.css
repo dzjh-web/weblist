@@ -17,6 +17,7 @@ a {
 	color: #FFFFFF;
 }
 a:link{
+	color: #FFFFFF;
 	text-decoration: none;
 }
 a:visited{
@@ -36,7 +37,7 @@ footer{
 	color: #A0A0A0;
 	text-align: center;
 	margin-top: 60px;
-	margin-bottom: 10px;
+	background-color: #282828;
 }
 /* footer span{
 	font-size: 14px;
@@ -109,6 +110,7 @@ footer a{
 .item-info{
 	margin-bottom: 20px;
 	padding: 10px;
+	background-color: #363636;
 	border: 1px #E1E1E1 solid;
 	border-radius: 4px;
 }
@@ -118,12 +120,6 @@ footer a{
 .item-info-tittle{
 	display: block;
 }
-.item-info-tittle>h2{
-	display: inline-block;
-}
-.item-info-tittle>h3{
-	display: inline-block;
-}
 .item-info-img {
 	margin-top: 10px;
 }
@@ -132,7 +128,7 @@ footer a{
 	border-radius: 4px;
 }
 .item-info-desc{
-	font-size: 14px
+	font-size: 14px;
 }
 .item-info-ex{
 	color: #A0A0A0;
@@ -258,6 +254,139 @@ label.error {
 	margin-top: 10px;
 }
 
-#showUserInfo p{
+#card-showUserInfo p{
 	margin-top: 10px;
+}
+
+/* cardInfo style */
+.card-wrapper {
+	min-width: 400px;
+	margin-bottom: 40px;
+	padding: 20px 0px;
+	border: 2px #363636 solid;
+	border-radius: 6px;
+}
+.card-wrapper li {
+	padding: 20px;
+}
+.card-wrapper .card-item {
+	position: relative;
+	perspective: 300px;
+}
+.card-info {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: #686868;
+	transform-style: preserve-3d;
+	/* transform-origin: 50% 50% -180px; */
+	animation: 200ms ease-out 0ms 1 normal forwards;
+}
+.card-info .thumbnail {
+	height: 100%;
+	background-color: #686868;
+}
+.card-info .thumbnail img {
+	height: 80%;
+	border-radius: 4px;
+}
+.card-info .thumbnail .caption {
+	color: #FFFFFF;
+}
+.card-hide {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	color:#FFFFFF;
+	background-color:#686868;
+	text-align:center;
+	/* line-height:360px; */
+	transform: translate3d(0,0,-1px);
+	border: 1px #FFFFFF solid;
+	border-radius: 4px;
+}
+.in-top .card-hide, .out-top .card-hide {
+    transform-origin: 0% 100%;
+    transform: translate3d(0, -100%, 0) rotate3d(1,0,0,90deg);
+}
+.in-top .card-info {
+    animation-name: in-top;
+    animation-play-state: running;
+}
+.out-top .card-info {
+    animation-name: out-top;
+    animation-play-state: running;
+}
+@keyframes in-top {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(-1,0,0,90deg)}
+} 
+
+@keyframes out-top {
+    from {transform: rotate3d(-1,0,0,90deg)}
+    to   {transform: rotate3d(0,0,0,0deg)}
+}
+.in-right .card-hide, .out-right .card-hide {
+	transform-origin: 0% 0%;
+	transform: translate3d(100%, 0, 0) rotate3d(0,1,0,90deg);
+}
+.in-right .card-info {
+    animation-name: in-right;
+    animation-play-state: running;
+}
+.out-right .card-info {
+    animation-name: out-right;
+    animation-play-state: running;
+}
+@keyframes in-right {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(0,-1,0,90deg)}
+}
+@keyframes out-right {
+    from  {transform: rotate3d(0,-1,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+.in-bottom .card-hide, .out-bottom .card-hide {
+	transform-origin: 0% 0%;
+	transform: translate3d(0, 100%, 0) rotate3d(-1,0,0,90deg);
+}
+.in-bottom .card-info {
+    animation-name: in-bottom;
+    animation-play-state: running;
+}
+.out-bottom .card-info {
+    animation-name: out-bottom;
+    animation-play-state: running;
+}
+@keyframes in-bottom {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(1,0,0,90deg)}
+}
+@keyframes out-bottom {
+    from  {transform: rotate3d(1,0,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+.in-left .card-hide, .out-left .card-hide {
+          transform-origin: 100% 0;
+          transform: translate3d(-100%,0,0) rotate3d(0,-1,0,90deg);
+}
+@keyframes in-left {
+    from  {transform: rotate3d(0,0,0,0deg)}
+    to    {transform: rotate3d(0,1,0,90deg)}
+}
+@keyframes out-left {
+    from  {transform: rotate3d(0,1,0,90deg)}
+    to    {transform: rotate3d(0,0,0,0deg)}
+}
+.in-left .card-info {
+	animation-name: in-left;
+	animation-play-state: running;
+}
+.out-left .card-info {
+	animation-name: out-left;
+	animation-play-state: running;
 }

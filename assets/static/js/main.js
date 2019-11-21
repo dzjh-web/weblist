@@ -8,13 +8,16 @@ $(function(){
 		}
 	};
 	// 监听窗口尺寸大小变化
+	var resizeCallbackList = [updateFooterPosition];
 	(function(){
 		var windowOnresizeFunc = window.onresize; // 响应窗口尺寸大小变化函数
 		window.onresize = function(){
 			if (windowOnresizeFunc != null) {
 				windowOnresizeFunc();
 			}
-			updateFooterPosition();
+			resizeCallbackList.forEach(function(callback) {
+				callback();
+			})
 		}
 		updateFooterPosition();
 	})();
@@ -27,7 +30,7 @@ $(function(){
 	// var HOME_URL = "http://jimdreamheart.club";
 	var HOME_URL = "http://localhost:8000";
 	// 登陆链接
-	var loginUrl = userInfoUrl + "?k=login";
+	var loginUrl = HOME_URL + "?k=login";
 	// 公钥
 	var PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdTpBdi0thGHpkG1E5F/Imm9FoTtTiSLE1kq+jFuEd0c2K3zpBqrcCOdyQJCy9xc2aMhDUZf0QzGxcMzzcTfGjHv7hXsu5HiKg2Vcm8d35Vq3dZEgJwtkunr0pJtXB64+UniFqepj5zi2elEUwGC5SLeqTjk+ML0YBNBgQEhaSRwIDAQAB-----END PUBLIC KEY-----";
 	// 编码字符串
@@ -181,7 +184,84 @@ $(function(){
                 addInputToForm(item, ipt.key, ipt.val, ipt.type);
             }
         }
-    }
+	}
+	// 翻转卡片构造函数
+	FlipCardIndex = function(node) {
+		this.node = node;
+		this.defaultClassName = "";
+		this.init();
+	};
+	FlipCardIndex.prototype.init = function () {
+		var self = this;
+		Array.prototype.slice.call(self.node, 0).forEach(function (item, _) {
+			self.updateItem(item);
+			self.bindEvents(item);
+			resizeCallbackList.push(function(){
+				if (self.node.length > 0) {
+					self.updateItem(item);
+				}
+			});
+		});
+	};
+	FlipCardIndex.prototype.updateItem = function (item) {
+		let w = this.rect(item).w;
+		$(item).height(w);
+		$(item).find(".card-info").css("transform-origin", "50% 50% -" + w/2 + "px");
+		$(item).find(".card-hide").css("line-height", w + "px");
+	};
+	FlipCardIndex.prototype.rect = function (item) {
+		var offset = $(item).offset();
+		return {
+			w: $(item).width(),
+			h: $(item).height(),
+			l: offset.left,
+			t: offset.top,
+		}
+	};
+	FlipCardIndex.prototype.bindEvents = function (item) {
+		var self = this;
+		$(item).on("mouseenter", function (e) {
+			self.addClass(e, item, "in");
+			return false;
+			
+		})
+		$(item).on("mouseleave", function (e) {
+			self.addClass(e, item, "out");
+			return false;
+		})
+	};
+	FlipCardIndex.prototype.setDefaultClassName = function (className) {
+		this.defaultClassName = className;
+	};
+	FlipCardIndex.prototype.addClass = function (e, item, state) {
+		var direction = this.getDirection(e, item);
+		var class_suffix = "";
+		switch (direction) {
+			case 0:
+				class_suffix = "-top"; 
+				break;
+			case 1:
+				class_suffix = "-right"; 
+				break;
+			case 2:
+				class_suffix = "-bottom";
+				break;
+			case 3:
+				class_suffix = "-left"; 
+				break;
+		}
+		item.className = this.defaultClassName;
+		item.classList.add(state + class_suffix);
+	};
+	FlipCardIndex.prototype.getDirection = function (e, item) {
+		var self = this;
+		var curNodeRect = self.rect(item);
+		var w = curNodeRect.w,
+			h = curNodeRect.h,
+			x = e.pageX - curNodeRect.l - w / 2,
+			y = e.pageY - curNodeRect.t - h / 2;
+		return (Math.round(((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90)+3) % 4;
+	};
 	
 //	// 定时弹窗
 //	if ($('.jumbotron').length > 0) {

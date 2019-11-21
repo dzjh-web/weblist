@@ -26,6 +26,8 @@ from DBModel import views
 urlpatterns = [
     url(r'^$', views.home),
     url(r'^games$', views.game),
+    url(r'^giturls$', views.giturl),
+    url(r'^gamedetail$', views.gameDetail),
     url(r'^media/(?P<path>.*)', serve, {"document_root":settings.MEDIA_ROOT}),
     url(r'^ckeditor/upload/', views.checkToken(ckeditorView.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', never_cache(views.checkToken(ckeditorView.browse)), name='ckeditor_browse'),

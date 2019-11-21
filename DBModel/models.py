@@ -58,27 +58,3 @@ class GameLog(models.Model):
     class Meta:
         managed = False
         db_table = 'game_log'
-
-
-class UrlItem(models.Model):
-    name = models.CharField(max_length=255, verbose_name="名称")
-    thumbnail = models.ImageField(upload_to=game_pic_path, blank=True, null=True, verbose_name="缩略图")
-    description = models.TextField(verbose_name="描述")
-    url = models.CharField(max_length=255, verbose_name="链接")
-    time = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'url_item'
-
-
-class UrlLog(models.Model):
-    uid = models.ForeignKey('UrlItem', models.DO_NOTHING, db_column='uid')
-    title = models.CharField(max_length=255, verbose_name="标题")
-    sub_title = models.CharField(max_length=255, verbose_name="子标题")
-    content = models.TextField(verbose_name="内容")
-    time = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'url_log'
