@@ -62,8 +62,6 @@
 				showAlert("success", tips);
 			}
 		}
-		// 更新用户名
-		$("#userName").text("{{userInfo.name}}");
 		// 显示头部信息
 		if ($("#userNavCollapse ul").hasClass("hidden")) {
 			$("#userNavCollapse ul").removeClass("hidden");
@@ -80,16 +78,6 @@
 		}else if (mkey != $activeItem.attr("data-target")) {
 			$activeItem.parent().toggleClass("active");
 			$("#sidebar ._slideItem_[data-target="+mkey+"]").parent().toggleClass("active");
-		}
-		// 是否显示平台选项
-		if ("{{isManager}}" == "True") {
-			if ($(".manager-options").hasClass("hidden")) {
-				$(".manager-options").removeClass("hidden");
-			}
-		} else {
-			if (!$(".manager-options").hasClass("hidden")) {
-				$(".manager-options").addClass("hidden");
-			}
 		}
 	})
 </script>

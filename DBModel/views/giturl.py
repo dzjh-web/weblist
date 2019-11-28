@@ -2,9 +2,12 @@ import django.utils.timezone as timezone;
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+from weblist.settings import HOME_URL
+
 # url列表
 def req(request):
     return render(request, "cardlist.html", {
+        "HOME_URL": HOME_URL,
         "TITLE" : "Urls",
         "TITLE_URL" : "http://localhost:8008/games",
         "SEARCH_URL" : "http://localhost:8008/search?k=github",

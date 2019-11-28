@@ -157,3 +157,7 @@ CKEDITOR_CONFIGS = {
         "width" : "100%",
     },
 }
+
+# home url
+HOME_URL = "http://jimdreamheart.club"
+HOME_URL = "http://localhost:8008"

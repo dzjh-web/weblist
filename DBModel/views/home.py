@@ -1,8 +1,11 @@
 from django.shortcuts import render
 
+from weblist.settings import HOME_URL
+
 # 首页
 def req(request):
     return render(request, "home.html", {
+        "HOME_URL": HOME_URL,
         "TITLE": "JDreamHeart",
         "navList" : getNavList(),
         "webList" : getWebList(),
@@ -15,6 +18,11 @@ def getNavList():
             "url" : "http://jimdreamheart.club/pytoolsip",
             "title" : "python工具集成平台",
             "name" : "PYToolsIP",
+        },
+        {
+            "url" : "http://localhost:8008/games",
+            "title" : "自制游戏",
+            "name" : "JGames",
         },
         {
             "url" : "http://jimdreamheart.club/gitbook",
@@ -37,6 +45,13 @@ def getWebList():
             "name" : "PYToolsIP",
             "wtype" : "DzjH",
             "description" : "<p>基于<b>wxPython</b>框架开发，以提供用户可视化界面来使用<b>Python工具</b>的平台网站。</p>",
+        },
+        {
+            "url" : "http://localhost:8008/games",
+            "img" : "/media/home/img/pytoolsip.png",
+            "name" : "JGames",
+            "wtype" : "DzjH",
+            "description" : "<p>独立制作的相关游戏列表。</p>",
         },
         {
             "url" : "http://jimdreamheart.club/gitbook",
