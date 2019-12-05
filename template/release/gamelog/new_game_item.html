@@ -1,0 +1,55 @@
+{% if isEdit %}
+    <div style="padding: 0px 20px;">
+        <a id="goback" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
+    </div>
+    {% include "release/gameitem/game_item_form.html" %}
+{% else %}
+<form id="searchForm" class="col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 form-group" role="form" enctype="multipart/form-data">
+    <h3 class="text-center">
+        -&nbsp;搜索已发布的&nbsp;游戏网页&nbsp;-
+    </h3>
+    <div class="input-group">
+        <input id="searchText" name="searchText" type="text" placeholder="搜索游戏名称" class="form-control">
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
+    </div>
+</form>
+<div id="searchResult" class="col-sm-12 col-md-offset-1 col-md-10">
+    {% if isSearchNone %}
+        <p class="text-center">{{searchNoneTips}}</p>
+    {% endif %}
+    {% for gameInfo in onlineInfoList %}
+        <div class="col-md-4 tool-info-item">
+            <h3 class="tool-info-tittle">{{ gameInfo.name }}</h3>
+            {% if gameInfo.category %}
+            <p class="tool-info-id">[{{ gameInfo.category }}]</p>
+            {% endif %}
+            <p>{{ gameInfo.description }}</p>
+            <p class="tool-info-detail"><a class="btn btn-primary add-game-log-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">新增游戏日志</a></p>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+<script language="JavaScript">
+	$(function(){
+        // 搜索表单
+        $("#searchForm").validate({
+            submitHandler: function() {
+                uploadManageForm($("#searchForm"), [
+                    {"key":"mk", "val":"{{mkey}}", "type":"text"}
+                ]);
+            }
+        });
+        // 搜索值
+        $("#searchText").val("{{ searchText }}");
+        // 点击新增游戏日志按钮
+        $(".add-game-log-btn").on("click",function(){
+			requestManage({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "add"});
+		});
+        // 返回上一级
+        $("#goback").on("click",function(){
+			requestManage({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
+		});
+	})
+</script>

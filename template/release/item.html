@@ -2,46 +2,36 @@
 	<div id="alertList">
 	</div>
 	<div id="contentList">
-		{% ifequal mkey "ptip_examination" %}
-			{% include "release/ptip_examination.html" %}
+		{% ifequal mkey "add_home_url" %}
+			{% include "release/webitem/web_item_form.html" %}
 		{% endifequal %}
-		{% ifequal mkey "ptip_script" %}
-			{% include "release/ptip.html" %}
+		{% ifequal mkey "operate_home_url" %}
+			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
-		{% ifequal mkey "ptip_installer" %}
-			{% include "release/ptip_installer.html" %}
+		{% ifequal mkey "add_wiki" %}
+			{% include "release/webitem/web_item_form.html" %}
 		{% endifequal %}
-		{% ifequal mkey "ptip_exe" %}
-			{% include "release/ptip_exe.html" %}
+		{% ifequal mkey "operate_wiki" %}
+			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
-		{% ifequal mkey "update_exe" %}
-			{% include "release/ptip_exe.html" %}
+		{% ifequal mkey "add_github" %}
+			{% include "release/webitem/web_item_form.html" %}
 		{% endifequal %}
-		{% ifequal mkey "depend_lib" %}
-			{% include "release/ptip_depend.html" %}
-		{% endifequal %}
-		{% ifequal mkey "pt_ol_examination" %}
-			{% include "release/tool_examination.html" %}
-		{% endifequal %}
-
-		{% ifequal mkey "pt_examination" %}
-			{% include "release/tool_examination.html" %}
-		{% endifequal %}
-		{% ifequal mkey "pt_new_script" %}
-			{% include "release/new_tool.html" %}
-		{% endifequal %}
-		{% ifequal mkey "pt_ol_script" %}
-			{% include "release/ol_tool.html" %}
+		{% ifequal mkey "operate_github" %}
+			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
 		
-		{% ifequal mkey "article_examination" %}
-			{% include "release/article/examination.html" %}
+		{% ifequal mkey "add_game" %}
+			{% include "release/gameitem/game_item_form.html" %}
 		{% endifequal %}
-		{% ifequal mkey "article" %}
-			{% include "release/article/article_form.html" %}
+		{% ifequal mkey "operate_game" %}
+			{% include "release/gameitem/ol_game_item.html" %}
 		{% endifequal %}
-		{% ifequal mkey "ol_article" %}
-			{% include "release/article/ol_article.html" %}
+		{% ifequal mkey "add_game_log" %}
+			{% include "release/gamelog/game_log_form.html" %}
+		{% endifequal %}
+		{% ifequal mkey "operate_game_log" %}
+			{% include "release/gamelog/ol_game_log.html" %}
 		{% endifequal %}
 	</div>
 </div>

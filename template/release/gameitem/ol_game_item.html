@@ -1,0 +1,83 @@
+{% if isEdit %}
+    <div style="padding: 0px 20px;">
+        <a id="goback" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
+    </div>
+    {% include "release/gameitem/game_item_form.html" %}
+{% else %}
+<form id="searchForm" class="col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 form-group" role="form" enctype="multipart/form-data">
+    <h3 class="text-center">
+        -&nbsp;搜索已发布的&nbsp;游戏网页&nbsp;-
+    </h3>
+    <div class="input-group">
+        <input id="searchText" name="searchText" type="text" placeholder="搜索游戏名称" class="form-control">
+        <div class="input-group-btn">
+            <button type="submit" class="btn btn-success">Search</button>
+        </div>
+    </div>
+</form>
+<div id="searchResult" class="col-sm-12 col-md-offset-1 col-md-10">
+    {% if isSearchNone %}
+        <p class="text-center">{{searchNoneTips}}</p>
+    {% endif %}
+    {% for gameInfo in onlineInfoList %}
+        <div class="col-md-4 tool-info-item">
+            <h3 class="tool-info-tittle">{{ gameInfo.name }}</h3>
+            {% if gameInfo.category %}
+            <p class="tool-info-id">[{{ gameInfo.category }}]</p>
+            {% endif %}
+            <img class="img-responsive center-block" src="{{gameInfo.thumbnail}}" style="width: 100%;"/>
+            <p>{{ gameInfo.description }}</p>
+            <p class="tool-info-detail"><a class="btn btn-info update-ol-item-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">更新网页信息</a></p>
+            <p class="tool-info-detail"><a class="btn btn-danger delete-ol-item-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">删除网页信息</a></p>
+            <p class="tool-info-ex-info">
+                &nbsp;
+                <span>类型：{{ gameInfo.type }}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>上传时间：{{ gameInfo.time|date:"Y-m-d H:i" }}</span>
+            </p>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+<script language="JavaScript">
+	$(function(){
+        // 搜索表单
+        $("#searchForm").validate({
+            submitHandler: function() {
+                uploadManageForm($("#searchForm"), [
+                    {"key":"mk", "val":"{{mkey}}", "type":"text"}
+                ]);
+            }
+        });
+        // 搜索值
+        $("#searchText").val("{{ searchText }}");
+        // 点击删除按钮
+        $(".delete-ol-item-btn").on("click",function(){
+            var gid = $(this).attr("data-target");
+            // 创建弹窗
+            createDialogPage("<form class='login-form' role='form' enctype='multipart/form-data'>\
+                            <h2>是否确认删除？</h2>\
+                            <blockquote style='color: red;'>注意：删除后无法还原，请谨慎操作！</blockquote>\
+                            <div class='clearfix'>\
+                                <button id='cancelOperation' class='btn btn-lg btn-default pull-left'>取消</button>\
+                                <button id='submitOperation' class='btn btn-lg btn-info pull-right'>确定</button>\
+                            </div>\
+                        </form>");
+            $("#cancelOperation").on("click",function(){
+                closeDialogPage(); // 关闭弹窗
+            });
+            $("#submitOperation").on("click",function(){
+                requestManage({"mk" : "{{mkey}}", "gid" : gid, "opType" : "delete"});
+                closeDialogPage(); // 关闭弹窗
+            });
+		});
+        // 点击更新按钮
+        $(".update-ol-item-btn").on("click",function(){
+			requestManage({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "update"});
+		});
+        // 返回上一级
+        $("#goback").on("click",function(){
+			requestManage({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
+		});
+	})
+</script>

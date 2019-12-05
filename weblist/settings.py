@@ -133,6 +133,13 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'assets/media')
 )
 
+# Email
+EMAIL_HOST = "smtp.163.com"
+EMAIL_PORT = 994
+EMAIL_HOST_USER = "jdreamheart@163.com"
+EMAIL_HOST_PASSWORD = "xxxxx"
+EMAIL_USE_SSL = True
+
 # Ckeditor
 CKEDITOR_RESTRICT_BY_USER = True
 CKEDITOR_UPLOAD_PATH = "upload"

@@ -26,10 +26,17 @@ $(function(){
                 return false;
             }
             var valList = value.split(".");
-            if (valList[valList.length-1] != param) {
-                return false;
+            var val = valList[valList.length-1];
+            if (param instanceof Array) {
+                for (var i = 0; i < param.length; i++) {
+                    if (param[i] == val) {
+                        return true;
+                    }
+                }
+            } else {
+                return param == val;
             }
-            return true;
+            return false;
         },
         $.validator.format("请选择{0}格式的文件")
     );

@@ -12,7 +12,7 @@ try:
     from game import req as game;
     from giturl import req as giturl;
     from game import detail as gameDetail;
-    from release import req as release;
+    from release import release;
     
 except Exception as e:
 	raise e;
