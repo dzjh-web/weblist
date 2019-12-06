@@ -207,7 +207,7 @@ $(function(){
 		let w = this.rect(item).w;
 		$(item).height(w);
 		$(item).find(".card-info").css("transform-origin", "50% 50% -" + w/2 + "px");
-		$(item).find(".card-hide").css("line-height", w + "px");
+		$(item).find(".card-hide").css("height", w + "px");
 	};
 	FlipCardIndex.prototype.rect = function (item) {
 		var offset = $(item).offset();
@@ -262,7 +262,7 @@ $(function(){
 			y = e.pageY - curNodeRect.t - h / 2;
 		return (Math.round(((Math.atan2(y, x) * (180 / Math.PI)) + 180) / 90)+3) % 4;
 	};
-	
+
 //	// 定时弹窗
 //	if ($('.jumbotron').length > 0) {
 //		createIntervalDialog("<h2>定时弹窗</h2><p>测试...</p>", 5);

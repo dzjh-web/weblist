@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="JDreamHeart[个人网站]">
+		<meta name="author" content="JDreamHeart">
+		<title>{{ TITLE }}</title>
+		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <link rel="stylesheet" href= {% static "css/release.css" %} />
+        <style>
+            body {
+                background-color: #363636;
+            }
+            .card-hover-wrapper {
+                min-width: 400px;
+                margin-bottom: 40px;
+            }
+            .card-hover-wrapper li {
+                padding: 0px 10px;
+            }
+            .card-hover-item {
+                position: relative;
+            }
+            .card-hover-item .card-hover-face {
+                padding: 10px;
+                transition: 0.5s;
+            }
+            .card-hover-item .card-hover-face1{
+                position: relative;
+                background: #000000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1;
+                transform: translateY(50px);
+                border-radius: 4px;
+            }
+            .card-hover-item:hover .card-hover-face1{
+                background: #ff0057;
+                transform: translateY(0);
+                border-radius: 4px 4px 0px 0px;
+                border: none;
+            }
+            .card-hover-item .card-hover-face1 .card-hover-content{
+                opacity: 0.4;
+                transition: 0.5s;
+            }
+            .card-hover-item:hover .card-hover-face1 .card-hover-content{
+                opacity: 1;
+            }
+            .card-hover-item .card-hover-content img {
+                border-radius: 6px;
+            }
+            .card-hover-item .card-hover-content h3 {
+                margin: 20px 0 0;
+                padding: 0;
+                text-align: center;
+                font-size: 30px;
+                font-weight: bolder;
+            }
+            .card-hover-item .card-hover-content article {
+                color: #545454;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 3;
+                overflow: hidden;
+            }
+            .card-hover-item .card-hover-face2{
+                position: relative;
+                background: #F1F1F1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+                box-sizing: border-box;
+                box-shadow: 0 50px 50px rgba(0, 0, 0, 0.8);
+                transform: translateY(-50px);
+                height: 100px;
+                border-radius: 6px;
+            }
+            .card-hover-item:hover .card-hover-face2{
+                transform: translateY(0);
+                border-radius: 0px 0px 4px 4px;
+            }
+        </style>
+	</head>
+	<body>
+        <header id = "header">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="web-navbar">
+                    <a class="navbar-brand" href="http://jimdreamheart.club" title="DzjH">DzjH</a>
+                </div>
+                <div class="container">
+                    <div class="container-fluid navbar-header">
+                        <a class="navbar-brand" href="{{ TITLE_URL }}" title="{{ TITLE }}">{{ TITLE }}</a>
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#searchNavCollapse">
+                            <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div id="searchNavCollapse" class="navbar-collapse collapse">
+                        <form action="{{ SEARCH_URL }}" class="navbar-form navbar-right" method="POST">
+                            <input name="searchText" type="text" placeholder="{{ searchText }}" class="form-control">
+                            <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        {% if carouselList %}
+		<div id="mainCarousel" class="carousel slide">
+			<ul class="carousel-inner">
+                {% for info in carouselList %}
+				<li class="item">
+                    <a class="block" href="{{ info.url }}" target="_blank" title="{{ info.title }}">
+                        <img src="{{ info.img }}" alt="{{ info.alt }}" width="100%" />
+                        <div class="carousel-caption">
+                            <p>{{ info.name }}</p>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+			</ul>
+			<ol class="carousel-indicators">
+                {% for info in carouselList %}
+                <li data-target="#mainCarousel" data-slide-to="{{ forloop.counter|add:-1 }}"></li>
+                {% endfor %}
+			</ol>
+			<a class="carousel-control left" href="#mainCarousel" data-slide="prev" title="上一页"><span class="glyphicon glyphicon-chevron-left"></span></a>
+			<a class="carousel-control right" href="#mainCarousel" data-slide="next" title="下一页"><span class="glyphicon glyphicon-chevron-right"></span></a>
+        </div>
+        {% endif %}
+        <div class="container">
+            <ul class="row card-hover-wrapper">
+                {% for info in infoList %}
+                <li class="col-md-6">
+                    <a class="btn-block card-hover-item" href="{{ info.url }}" target="_blank">
+                        <div class="card-hover-face card-hover-face1">
+                            <div class="card-hover-content">
+                                <img class="img-responsive" src="{{ info.thumbnail }}">
+                                <h3 class="text-center">{{ info.title }}</h3>
+                                {% if info.subTitle %}
+                                <p class="text-center">[{{ info.subTitle }}]</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="card-hover-face card-hover-face2">
+                            <div class="card-hover-content">
+                                <article>
+                                    {{ info.description | safe }}
+                                </article>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+		<div class="fixdRight">
+			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+		</div>
+        <footer>
+            <div class="container">
+                <p>Copyright&nbsp;&copy;&nbsp;2019&nbsp;by&nbsp;&nbsp;<a id="aboutDzjH" href="javascript:void(0);" title="关于梦心DH">D·zj·H</a>.</p>
+            </div>
+        </footer>
+        <script src="http://jimdreamheart.club/resource/jquery/jquery-3.4.0.min.js"></script>
+        <script src="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src={% static "js/main.js" %}></script>
+        <script language="JavaScript">
+            $(function(){
+                $("#mainCarousel ul").find("li").first().addClass("active");
+                $("#mainCarousel ol").find("li").first().addClass("active");
+            });
+        </script>
+    </body>
+</html>

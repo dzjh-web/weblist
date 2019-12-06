@@ -93,6 +93,7 @@ footer a{
 }
 /* carousel style */
 #mainCarousel{
+	margin-top: -20px;
 	margin-bottom: 50px;
 }
 .carousel-caption{
@@ -294,6 +295,10 @@ label.error {
 }
 .card-info .thumbnail .caption {
 	color: #FFFFFF;
+}
+.card-info .thumbnail .caption h3 {
+	margin: 10px 0 0;
+	padding: 0;
 }
 .card-hide {
 	position: absolute;
