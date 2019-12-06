@@ -6,7 +6,7 @@ from weblist.settings import HOME_URL
 
 # url列表
 def req(request):
-    return render(request, "cardlist.html", {
+    return render(request, "cardlist_hover.html", {
         "HOME_URL": HOME_URL,
         "TITLE" : "Urls",
         "TITLE_URL" : "http://localhost:8008/games",
@@ -23,7 +23,7 @@ def getUrlList():
             "title" : "test",
             "subTitle" : "sub_title",
             "thumbnail" : "/media/home/img/pytoolsip.png",
-            "description" : "只是测试用的。。。",
+            "description" : "只是测试用的。可交互发顺丰水电费放声大哭发送到发回来的发送劳动手段发送到看风景哈萨克登录房间发大水口局回放数据大部分是多少件不对称的仅发生的恢复垃圾和第三方东风浩荡是发了时代峻峰哈拉水电费哈。。只是测试用的。可交互发顺丰水电费放声大哭发送到发回来的发送劳动手段发送到看风景哈萨克登录房间发大水口局回放数据大部分是多少件不对称的仅发生的恢复垃圾和第三方东风浩荡是发了时代峻峰哈拉水电费哈。。只是测试用的。可交互发顺丰水电费放声大哭发送到发回来的发送劳动手段发送到看风景哈萨克登录房间发大水口局回放数据大部分是多少件不对称的仅发生的恢复垃圾和第三方东风浩荡是发了时代峻峰哈拉水电费哈。。",
             "url" : "http://localhost:8008/games",
         },
         {

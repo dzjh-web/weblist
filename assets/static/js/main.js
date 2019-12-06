@@ -207,7 +207,7 @@ $(function(){
 		let w = this.rect(item).w;
 		$(item).height(w);
 		$(item).find(".card-info").css("transform-origin", "50% 50% -" + w/2 + "px");
-		$(item).find(".card-hide").css("height", w + "px");
+		$(item).find(".card-content").css("height", w + "px");
 	};
 	FlipCardIndex.prototype.rect = function (item) {
 		var offset = $(item).offset();

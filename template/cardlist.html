@@ -61,7 +61,7 @@
         <div class="container">
             <ul class="row card-wrapper">
                 {% for info in infoList %}
-                <li class="col-md-6">
+                <li class="col-md-4">
                     <div class="card-item">
                         <a class="btn-block card-info" href="{{ info.url }}" target="_blank">
                             <div class="thumbnail card-show">
@@ -74,9 +74,11 @@
                                 </div>
                             </div>
                             <div class="card-hide">
-                                <article>
-                                    {{ info.description | safe }}
-                                </article>
+                                <div class="card-content">
+                                    <article>
+                                        {{ info.description | safe }}
+                                    </article>
+                                </div>
                             </div>
                         </a>
                     </div>
