@@ -1,6 +1,10 @@
+from django.http import JsonResponse;
 from DBModel import models;
 
-from _Global import _GG;
+# 加载全局变量
+import _load as Loader;
+Loader.loadGlobalInfo();
+
 
 import os,sys;
 
@@ -21,6 +25,8 @@ finally:
 	sys.path.remove(CURRENT_PATH);
 
 
+from _Global import _GG;
+
 # 检测Token
 def checkToken(func):
     # 获取登陆的用户信息
@@ -28,11 +34,8 @@ def checkToken(func):
         _GG("Log").d("checkToken cookie:", request.COOKIES);
         request.user = None;
         # 根据token信息获取用户信息
-        token = _GG("DecodeStr")(request.COOKIES.get("weblist_token", ""));
-        if token:
-            try:
-                request.user = models.ReleaseAuthority.objects.get(token = token);
-            except Exception as e:
-                _GG("Log").w(e);
-        return func(request, *args, **kwargs);
+        token = _GG("DecodeStr")(request.COOKIES.get("jdreamheart_token", ""));
+        if token == _GG("GetReleaseToken")():
+            return func(request, *args, **kwargs);
+        return JsonResponse({"redult" : "Token异常，请刷新后重试！"});
     return wrapper;

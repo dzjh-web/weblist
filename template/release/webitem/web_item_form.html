@@ -1,6 +1,6 @@
 
 <form id="releaseForm" class="form-group col-md-offset-1 col-md-10" role="form" enctype="multipart/form-data">
-    <h2 class="text-center" style="padding: 20px; color:forestgreen; border: 1px #BCBCBC solid; background-color: #F1F1F1;">
+    <h2 class="text-center">
         发布{{ title }}
     </h2>
     <div id="releaseContent">
@@ -89,7 +89,7 @@
                     CKEDITOR.instances[instance].updateElement();
                 }
                 // 发布内容
-                uploadManageForm($("#releaseForm"), [
+                uploadReleaseForm($("#releaseForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"},
                     {"key":"isRelease", "val":"true", "type":"text"},
                     {"key":"wid", "val":"{{ wid }}", "type":"text"},

@@ -34,6 +34,8 @@
                 <span>类型：{{ gameInfo.type }}</span>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span>上传时间：{{ gameInfo.time|date:"Y-m-d H:i" }}</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span>进度：{{ gameInfo.schedule }}</span>
             </p>
         </div>
     {% endfor %}
@@ -44,7 +46,7 @@
         // 搜索表单
         $("#searchForm").validate({
             submitHandler: function() {
-                uploadManageForm($("#searchForm"), [
+                uploadReleaseForm($("#searchForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"}
                 ]);
             }
@@ -67,17 +69,17 @@
                 closeDialogPage(); // 关闭弹窗
             });
             $("#submitOperation").on("click",function(){
-                requestManage({"mk" : "{{mkey}}", "gid" : gid, "opType" : "delete"});
+                requestRelease({"mk" : "{{mkey}}", "gid" : gid, "opType" : "delete"});
                 closeDialogPage(); // 关闭弹窗
             });
 		});
         // 点击更新按钮
         $(".update-ol-item-btn").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "update"});
+			requestRelease({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "update"});
 		});
         // 返回上一级
         $("#goback").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
+			requestRelease({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
 		});
 	})
 </script>

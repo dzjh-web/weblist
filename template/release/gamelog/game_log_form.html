@@ -1,6 +1,6 @@
 
 <form id="releaseForm" class="form-group col-md-offset-1 col-md-10" role="form" enctype="multipart/form-data">
-    <h2 class="text-center" style="padding: 20px; color:forestgreen; border: 1px #BCBCBC solid; background-color: #F1F1F1;">
+    <h2 class="text-center">
         发布游戏日志
     </h2>
     <div id="releaseContent">
@@ -78,7 +78,7 @@
                 // 获取纯文本内容
                 let text = CKEDITOR.instances.id_content.document.getBody().getText();
                 // 发布内容
-                uploadManageForm($("#releaseForm"), [
+                uploadReleaseForm($("#releaseForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"},
                     {"key":"isRelease", "val":"true", "type":"text"},
                     {"key":"gid", "val":"{{ gid }}", "type":"text"},

@@ -64,7 +64,7 @@ def getOlTokenList():
         if info.expires > 0:
             targetTime = info.active_at + datetime.timedelta(days = info.expires);
             delta = targetTime - datetime.datetime.now();
-            leftDays = datetime.days() + datetime.seconds() / 86400;
+            leftDays = datetime.days + datetime.seconds / 86400;
             if leftDays > 0:
                 olInfo["state"] = f"剩余{leftDays}天";
                 olInfo["isNotActive"] = False;

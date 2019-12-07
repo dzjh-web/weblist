@@ -1,11 +1,10 @@
-{% load static %}
 <div class='container'>
 	<div class='row'>
 		<div id="alertList">
 		</div>
 		<div class='dialog-background col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4'>
 			<form id='loginForm' class='login-form' role='form' enctype='multipart/form-data'>
-				<h2>登陆JDreamHeart发布后台</h2>
+				<h2 class="text-center">登陆JDreamHeart发布后台</h2>
 				<input name='token' class='form-control' type='text' placeholder='Token' required autofocus />
 				<button class='btn btn-lg btn-success btn-block form-control' type='submit'><span class='glyphicon glyphicon-log-in'></span>&nbsp;登陆</button>
 			</form>
@@ -23,7 +22,7 @@
 		}
 		var tips = "{{requestFailedTips}}";
 		if (tips != "") {
-			logoutManage(); // 登出发布后台
+			logoutRelease(); // 登出发布后台
 			showAlert("danger", tips);
 		} else {
 			tips = "{{requestTips}}";
@@ -53,7 +52,7 @@
 			},
 			submitHandler: function() {
 				loginIP("loginForm", function(){
-					requestManage({});
+					requestRelease({});
 				});
 			}
 		});

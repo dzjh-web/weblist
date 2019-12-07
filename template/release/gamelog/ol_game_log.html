@@ -44,7 +44,7 @@
         // 搜索表单
         $("#searchForm").validate({
             submitHandler: function() {
-                uploadManageForm($("#searchForm"), [
+                uploadReleaseForm($("#searchForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"}
                 ]);
             }
@@ -67,17 +67,17 @@
                 closeDialogPage(); // 关闭弹窗
             });
             $("#submitOperation").on("click",function(){
-                requestManage({"mk" : "{{mkey}}", "glid" : glid, "opType" : "delete"});
+                requestRelease({"mk" : "{{mkey}}", "glid" : glid, "opType" : "delete"});
                 closeDialogPage(); // 关闭弹窗
             });
 		});
         // 点击更新按钮
         $(".update-ol-item-btn").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "glid" : $(this).attr("data-target"), "opType" : "update"});
+			requestRelease({"mk" : "{{mkey}}", "glid" : $(this).attr("data-target"), "opType" : "update"});
 		});
         // 返回上一级
         $("#goback").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
+			requestRelease({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
 		});
 	})
 </script>

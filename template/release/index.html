@@ -35,7 +35,7 @@
                 <div id="sidebar" class="col-sm-3 col-md-2 sidebar hidden">
                     <ul class="nav nav-sidebar">
                         <li class="active"><a class="_slideItem_" href="javascript:void(0);" data-target="add_home_url">新增首页网页</a></li>
-                        <li class="active"><a class="_slideItem_" href="javascript:void(0);" data-target="operate_home_url">操作首页网页</a></li>
+                        <li><a class="_slideItem_" href="javascript:void(0);" data-target="operate_home_url">操作首页网页</a></li>
                     </ul>
                     <ul class="nav nav-sidebar">
                         <li><a class="_slideItem_" href="javascript:void(0);" data-target="add_game">新增游戏信息</a></li>
@@ -83,7 +83,7 @@
                             $activeItem.parent().toggleClass("active");
                             $(this).parent().toggleClass("active");
                             // 请求信息
-                            requestManage({
+                            requestRelease({
                                 "isSwitchTab" : true,
                                 "mk" : $(this).attr("data-target"),
                             });
@@ -91,7 +91,7 @@
                     }
                 });
                 // 请求发布后台
-                requestManage({});
+                requestRelease({});
             })
         </script>
     </body>

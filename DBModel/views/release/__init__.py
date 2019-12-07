@@ -44,7 +44,7 @@ def release(request):
     # 获取请求键值
     mkey = request.POST.get("mk", "");
     # 判断是否重定向
-    if mkey not in keyList or mkey not in gameList:
+    if mkey not in keyList and mkey not in gameList:
         # 重置mkey
         mkey = keyList[0];
         isSwitchTab = True;
@@ -63,29 +63,33 @@ def verify(request):
 
 # 登陆
 def loginRelease(request):
+    resp = None;
     result = {"isSuccess" : False};
     if base_util.getPostAsBool(request, "isLogin"):
         tokenMd5, expires = "", 0;
         if _GG("DecodeStr")(request.POST.get("token", "")) == _GG("GetReleaseToken")():
             randCode = random_util.randomMulti(32); # 32位随机码
-            tokenMd5 = hashlib.md5("|".join([datetime.datetime.now(), randCode]).encode("utf-8")).hexdigest();
+            tokenMd5 = hashlib.md5("|".join([datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z"), randCode]).encode("utf-8")).hexdigest();
             expires = 12*60*60; # 默认12小时
             cache.set(tokenMd5, _GG("GetReleaseToken")(), expires);
             result["isSuccess"] = True;
         else:
             result["tips"] = "输入Token有误或已过期！";
         resp = JsonResponse(result);
-        if result["isSuccess"] = True:
+        if result["isSuccess"] == True:
             resp.set_cookie("jdreamheart_token", _GG("EncodeStr")(tokenMd5), expires);
     elif base_util.getPostAsBool(request, "isLogout"):
         result["isSuccess"] = True;
         resp = JsonResponse(result);
         resp.set_cookie("jdreamheart_token", None);
-    return None;
+    return resp;
 
 # 检测token
 def checkReleaseToken(request):
     token = _GG("DecodeStr")(request.COOKIES.get("jdreamheart_token", ""));
+    # 从缓存中读取token
+    if cache.has_key(token):
+        token = cache.get(token);
     return token == _GG("GetReleaseToken")();
 
 # 获取管理页返回结果

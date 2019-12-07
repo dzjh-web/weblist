@@ -86,20 +86,25 @@ def _loadRsaDecode_():
 # 加载发布Token
 def _loadReleaseToken_():
 	# 设置获取发布Token的全局方法
+	global lastReleaseTokenTime;
 	global releaseToken;
-	def getToken():
-		global releaseToken;
-		return releaseToken;
-	_G.setGlobalVarTo_Global("GetReleaseToken", getToken);
 	# 更新Token
 	def updateToken():
+		# 更新时间
+		global lastReleaseTokenTime;
+		lastReleaseTokenTime = datetime.datetime.now();
 		# 生成Token
 		global releaseToken;
 		randCode = random_util.randomMulti(32); # 32位随机码
-		releaseToken = hashlib.md5("|".join([datetime.datetime.now(), randCode]).encode("utf-8")).hexdigest();
-		_G._GG("Log").i("======== new release token ========", releaseToken);
-		# 新建定时器
-		global updateTokenTimer;
-		updateTokenTimer = threading.Timer(10 * 24 * 60 * 60, updateToken);
-		updateTokenTimer.start();
+		releaseToken = hashlib.md5("|".join([datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z"), randCode]).encode("utf-8")).hexdigest();
+		_G._GG("Log").i("======== New Release Token ========", releaseToken);
 	updateToken();
+	# 设置获取Token的全局变量
+	def getToken():
+		global lastReleaseTokenTime;
+		delta = datetime.datetime.now() - lastReleaseTokenTime;
+		if delta.days >= 10:
+			updateToken(); # 距离上次请求超过10天，更新Token
+		global releaseToken;
+		return releaseToken;
+	_G.setGlobalVarTo_Global("GetReleaseToken", getToken);

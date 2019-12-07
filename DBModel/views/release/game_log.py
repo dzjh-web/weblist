@@ -25,7 +25,7 @@ class GameLogForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(empty_values = content);
+        self.fields["content"] = RichTextUploadingFormField(help_text = content);
         self.files["sketch"] = HiddenInput();
 
 # 上传游戏日志信息

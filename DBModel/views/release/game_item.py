@@ -24,7 +24,7 @@ class GameItemForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(empty_values = content);
+        self.fields["content"] = RichTextUploadingFormField(help_text = content);
 
 # 上传游戏网页信息
 def upload(request, result, isSwitchTab):

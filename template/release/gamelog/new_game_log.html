@@ -2,7 +2,7 @@
     <div style="padding: 0px 20px;">
         <a id="goback" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
     </div>
-    {% include "release/gameitem/game_item_form.html" %}
+    {% include "release/gameitem/game_log_form.html" %}
 {% else %}
 <form id="searchForm" class="col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 form-group" role="form" enctype="multipart/form-data">
     <h3 class="text-center">
@@ -36,7 +36,7 @@
         // 搜索表单
         $("#searchForm").validate({
             submitHandler: function() {
-                uploadManageForm($("#searchForm"), [
+                uploadReleaseForm($("#searchForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"}
                 ]);
             }
@@ -45,11 +45,11 @@
         $("#searchText").val("{{ searchText }}");
         // 点击新增游戏日志按钮
         $(".add-game-log-btn").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "add"});
+			requestRelease({"mk" : "{{mkey}}", "gid" : $(this).attr("data-target"), "opType" : "add"});
 		});
         // 返回上一级
         $("#goback").on("click",function(){
-			requestManage({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
+			requestRelease({"mk" : "{{mkey}}", "isSwitchTab" : "true"});
 		});
 	})
 </script>

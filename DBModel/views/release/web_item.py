@@ -30,7 +30,7 @@ class WebItemForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(empty_values = content);
+        self.fields["content"] = RichTextUploadingFormField(help_text = content);
 
 # 上传首页的网页信息
 def upload(request, result, isSwitchTab, wtype = 0):
@@ -133,6 +133,7 @@ def update(request, result, isSwitchTab, wtype = 0):
         "description" : webInfo.description,
         "url" : webInfo.url,
         "time" : webInfo.time,
+        "state" : webInfo.state == Status.Open.value and "开启" or "关闭",
         "type" : "首页网页",
     } for webInfo in infoList];
     pass;
