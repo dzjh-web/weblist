@@ -30,7 +30,7 @@ $(function(){
 	// var HOME_URL = "http://jimdreamheart.club";
 	var HOME_URL = "http://localhost:8000";
 	// 登陆链接
-	var loginUrl = HOME_URL + "?k=login";
+	var loginUrl = HOME_URL + "/release";
 	// 公钥
 	var PUBLIC_KEY = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdTpBdi0thGHpkG1E5F/Imm9FoTtTiSLE1kq+jFuEd0c2K3zpBqrcCOdyQJCy9xc2aMhDUZf0QzGxcMzzcTfGjHv7hXsu5HiKg2Vcm8d35Vq3dZEgJwtkunr0pJtXB64+UniFqepj5zi2elEUwGC5SLeqTjk+ML0YBNBgQEhaSRwIDAQAB-----END PUBLIC KEY-----";
 	// 编码字符串

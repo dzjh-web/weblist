@@ -27,7 +27,7 @@ class GameItemForm(ModelForm):
         self.fields["content"] = RichTextUploadingFormField(empty_values = content);
 
 # 上传游戏网页信息
-def upload(request, userAuth, result, isSwitchTab):
+def upload(request, result, isSwitchTab):
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
         if isRelease:
@@ -57,7 +57,7 @@ def upload(request, userAuth, result, isSwitchTab):
 
 
 # 更新游戏网页信息
-def update(request, userAuth, result, isSwitchTab):
+def update(request, result, isSwitchTab):
     if not isSwitchTab:
         gid = request.POST.get("gid", None);
         if gid:

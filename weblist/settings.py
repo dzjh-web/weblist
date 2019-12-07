@@ -78,8 +78,15 @@ WSGI_APPLICATION = 'weblist.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jdreamheart',
+        'USER': 'root',
+        'PASSWORD': 'pwdis123456',
+        'HOST':'localhost',
+        'PORT':'3306',
+        'OPTIONS':{
+            'init_command' : 'SET foreign_key_checks = 0;',
+        },
     }
 }
 
@@ -132,6 +139,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'assets/media')
 )
+
+# Redis Cache
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
 
 # Email
 EMAIL_HOST = "smtp.163.com"

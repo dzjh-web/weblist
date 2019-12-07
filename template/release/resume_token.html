@@ -1,0 +1,113 @@
+<h2>创建简历Token</h2>
+<form id="createForm" class="col-sm-3 col-sm-offset-3 col-md-4 col-sm-offset-3 form-group" role="form" enctype="multipart/form-data">
+    {{ form.media }}
+    {{ form.as_p }}
+    <input class="form-control btn btn-success" type="submit" value="创建Token" />
+</form>
+<h2>已创建Token</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Token</th>
+            <th>备注</th>
+            <th>有效期</th>
+            <th>创建时间</th>
+            <th>激活时间</th>
+            <th>当前状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for olInfo in onlineInfoList %}
+        <tr>
+            <th>{{ olInfo.token }}</th>
+            <th>{{ olInfo.remarks }}</th>
+            <th>
+                <span style="margin-right: 4px;">{{ olInfo.expires }}</span>
+                <a class="operate" name="change_expires" data-target="{{ olInfo.id }}" data-value="{{ olInfo.expires }}">修改</a>
+            </th>
+            <th>{{ olInfo.create_at|date:"Y-m-d H:i:s" }}</th>
+            <th>{{ olInfo.active_at|date:"Y-m-d H:i:s" }}</th>
+            <th>{{ olInfo.state }}</th>
+            <th>
+                {% if olInfo.isNotActive %}
+                    <a class="btn btn-primary operate" name="active" data-target="{{ olInfo.id }}">激活</a>
+                {% endif %}
+                <a class="btn btn-danger operate" name="delete" data-target="{{ olInfo.id }}">删除</a>
+            </th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script language="JavaScript">
+	$(function(){
+        $("#createForm").validate({
+            rules: {
+                expires: {
+                    required: true,
+                },
+            },
+            messages: {
+                expires: "有效期不能为空",
+            },
+            submitHandler: function() {
+                uploadManageForm($("#createForm"), [
+                    {"key":"mk", "val":"{{mkey}}", "type":"text"},
+                    {"key":"isRelease", "val":"true", "type":"text"},
+                ]);
+            }
+        });
+        
+        $(".operate").on("click",function(){
+            var opType = $(this).attr("name");
+            var tid = $(this).attr("data-target");
+            switch(opType) {
+                case "change_expires":
+                    // 创建弹窗
+                    createDialogPage("<form id='expiresForm' class='login-form' role='form' enctype='multipart/form-data'>\
+                                    <h2>修改有效期</h2>\
+                                    <div class='input-group'>\
+                                        <label class='input-group-addon' for='description'>有效期（天）</label>\
+                                        <input name='expires' class='form-control' type='number' value="+ $(this).attr("data-value") +" required autofocus />\
+                                    </div>\
+                                    <button class='btn btn-lg btn-success form-control' type='submit'><span class='glyphicon glyphicon-log-in'></span>&nbsp;确认修改</button>\
+                                </form>");
+                    $("#expiresForm").validate({
+                        rules: {
+                            expires: {
+                                required: true,
+                            },
+                        },
+                        messages: {
+                            expires: "有效期不能为空",
+                        },
+                        submitHandler: function() {
+                            requestCallback({
+                                "mk" : "{{mkey}}",
+                                "opType" : opType,
+                                "tid" : tid,
+                                "expires" : $("#expiresForm input[name='expires']").val(),
+                            }, function(){
+                                closeDialogPage(); // 请求后关闭弹窗
+                            });
+                        }
+                    });
+                    break;
+                case "active":
+                    requestCallback({
+                        "mk" : "{{mkey}}",
+                        "opType" : opType,
+                        "tid": tid,
+                    }, function(){});
+                    break;
+                case "delete":
+                    requestCallback({
+                        "mk" : "{{mkey}}",
+                        "opType" : opType,
+                        "tid": tid,
+                    }, function(){});
+                    break;
+            }
+        });
+	})
+</script>

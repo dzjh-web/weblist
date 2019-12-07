@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^games$', views.game),
     url(r'^giturls$', views.giturl),
     url(r'^gamedetail$', views.gameDetail),
+    url(r'^resume$', views.resume),
+    url(r'^release$', views.release),
     url(r'^media/(?P<path>.*)', serve, {"document_root":settings.MEDIA_ROOT}),
     url(r'^ckeditor/upload/', views.checkToken(ckeditorView.upload), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', never_cache(views.checkToken(ckeditorView.browse)), name='ckeditor_browse'),

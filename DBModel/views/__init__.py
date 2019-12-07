@@ -13,6 +13,7 @@ try:
     from giturl import req as giturl;
     from game import detail as gameDetail;
     from release import release;
+    from resume import req as resume;
     
 except Exception as e:
 	raise e;

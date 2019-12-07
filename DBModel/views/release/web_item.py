@@ -33,7 +33,7 @@ class WebItemForm(ModelForm):
         self.fields["content"] = RichTextUploadingFormField(empty_values = content);
 
 # 上传首页的网页信息
-def upload(request, userAuth, result, isSwitchTab, wtype = 0):
+def upload(request, result, isSwitchTab, wtype = 0):
     result["title"] = webTypeTitleMap.get(wtype, "网页");
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
@@ -66,7 +66,7 @@ def upload(request, userAuth, result, isSwitchTab, wtype = 0):
 
 
 # 更新首页的网页信息
-def update(request, userAuth, result, isSwitchTab, wtype = 0):
+def update(request, result, isSwitchTab, wtype = 0):
     result["title"] = webTypeTitleMap.get(wtype, "网页");
     if not isSwitchTab:
         wid = request.POST.get("wid", None);

@@ -4,6 +4,10 @@
 # @Last Modified by:   JinZhang
 # @Last Modified time: 2019-03-28 18:34:16
 import re,os,sys,time;
+import hashlib;
+import datetime;
+import threading;
+from utils import random_util;
 
 logLevel = "debug";
 
@@ -38,6 +42,7 @@ def loadGlobalInfo():
 def _loadGlobal_():
 	_loadLogger_(); # 加载日志类变量
 	_loadRsaDecode_(); # 加载rsa密钥解码方法
+	_loadReleaseToken_(); # 加载发布token
 
 # 加载全局日志类
 def _loadLogger_():
@@ -78,3 +83,23 @@ def _loadRsaDecode_():
 	with open(mainJSFile, "w", encoding = "utf-8") as f:
 		f.write(content);
 
+# 加载发布Token
+def _loadReleaseToken_():
+	# 设置获取发布Token的全局方法
+	global releaseToken;
+	def getToken():
+		global releaseToken;
+		return releaseToken;
+	_G.setGlobalVarTo_Global("GetReleaseToken", getToken);
+	# 更新Token
+	def updateToken():
+		# 生成Token
+		global releaseToken;
+		randCode = random_util.randomMulti(32); # 32位随机码
+		releaseToken = hashlib.md5("|".join([datetime.datetime.now(), randCode]).encode("utf-8")).hexdigest();
+		_G._GG("Log").i("======== new release token ========", releaseToken);
+		# 新建定时器
+		global updateTokenTimer;
+		updateTokenTimer = threading.Timer(10 * 24 * 60 * 60, updateToken);
+		updateTokenTimer.start();
+	updateToken();

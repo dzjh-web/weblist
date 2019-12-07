@@ -33,6 +33,10 @@
 		{% ifequal mkey "operate_game_log" %}
 			{% include "release/gamelog/ol_game_log.html" %}
 		{% endifequal %}
+		
+		{% ifequal mkey "resume_token" %}
+			{% include "release/resume_token.html" %}
+		{% endifequal %}
 	</div>
 </div>
 <script language="JavaScript">

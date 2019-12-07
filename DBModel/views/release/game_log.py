@@ -29,7 +29,7 @@ class GameLogForm(ModelForm):
         self.files["sketch"] = HiddenInput();
 
 # 上传游戏日志信息
-def upload(request, userAuth, result, isSwitchTab):
+def upload(request, result, isSwitchTab):
     if not isSwitchTab:
         gid = request.POST.get("gid", None);
         if gid:
@@ -82,7 +82,7 @@ def upload(request, userAuth, result, isSwitchTab):
 
 
 # 更新游戏日志信息
-def update(request, userAuth, result, isSwitchTab):
+def update(request, result, isSwitchTab):
     if not isSwitchTab:
         glid = request.POST.get("glid", None);
         if glid:

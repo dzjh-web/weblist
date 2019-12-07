@@ -7,14 +7,6 @@ import os
 
 # Create your models here.
 
-class ReleaseAuthority(models.Model):
-    token = models.CharField(max_length=255)
-
-    class Meta:
-        managed = False
-        db_table = 'release_authority'
-
-
 def web_pic_path(instance, filename):
     ext = os.path.splitext(filename)[1];
     return os.path.join("release", "web", "img", f"{instance.name}{ext}");
@@ -91,3 +83,11 @@ class WebContent(models.Model):
     class Meta:
         managed = False
         db_table = 'web_content'
+    
+
+class ResumeToken(models.Model):
+    token = models.CharField(max_length=255)
+    remarks = models.CharField(max_length=255, verbose_name="备注")
+    expires = models.IntegerField(max_length=255, verbose_name="有效期（天）")
+    create_at = models.DateTimeField()
+    active_at = models.DateTimeField()
