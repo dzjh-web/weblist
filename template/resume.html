@@ -18,33 +18,47 @@
                 <!-- 个人信息 -->
                 <li class="col-md-12">
                     <div class="col-md-8">
-                        <p class="col-md-4">{{ userInfo.name }}</p>
-                        <p class="col-md-4"><a href="{{ userInfo.url }}" target="_blank" title="个人主页">{{ userInfo.url }}</a></p>
-                        <p class="col-md-4">{{ userInfo.phone }}</p>
-                        <p class="col-md-4">{{ userInfo.email }}</p>
+                        <p class="col-md-6">{{ userInfo.name }}</p>
+                        <p class="col-md-6"><a href="{{ userInfo.url }}" target="_blank" title="个人主页">{{ userInfo.url }}</a></p>
+                        <p class="col-md-6">{{ userInfo.phone }}</p>
+                        <p class="col-md-6">{{ userInfo.email }}</p>
                     </div>
                     <div class="col-md-4">
-                        <img src="{{ userInfo.img }}" />
+                        <img class="img-responsive" src="{{ userInfo.img }}" style="width: 40%;" />
                     </div>
                 </li>
                 <!-- 毕业院校 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">{{ userInfo.graduatedTime }}</p>
-                    <p class="col-md-4">{{ userInfo.college }}</p>
-                    <p class="col-md-4">{{ userInfo.profession }}</p>
+                    <p class="col-md-4">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
+                    <p class="col-md-4">{{ schoolInfo.college }}</p>
+                    <p class="col-md-4">{{ schoolInfo.profession }}</p>
                 </li>
                 <!-- 工作经历 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">{{ userInfo.graduatedTime }}</p>
-                    <p class="col-md-4">{{ userInfo.college }}</p>
-                    <p class="col-md-4">{{ userInfo.profession }}</p>
+                    <p class="col-md-4">
+                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;
+                        {% if workInfo.endTime %}
+                        {{ workInfo.endTime|date:"Y-m-d" }}
+                        {% else %}
+                        至今
+                        {% endif %}
+                    </p>
+                    <p class="col-md-4">{{ workInfo.company }}</p>
+                    <p class="col-md-4">{{ workInfo.position }}</p>
                 </li>
                 <!-- 项目经历 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">{{ userInfo.title }}</p>
-                    <p class="col-md-4">{{ userInfo.subTitle }}</p>
-                    <p class="col-md-4">{{ userInfo.description }}</p>
-                    <p class="col-md-4">{{ userInfo.startTime }} - {{ userInfo.endTime }}</p>
+                    <p class="col-md-4">
+                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;
+                        {% if workInfo.endTime %}
+                        {{ workInfo.endTime|date:"Y-m-d" }}
+                        {% else %}
+                        至今
+                        {% endif %}
+                    </p>
+                    <p class="col-md-4">{{ projectInfo.title }}</p>
+                    <p class="col-md-4">{{ projectInfo.subTitle }}</p>
+                    <p class="col-md-12">{{ projectInfo.description|safe }}</p>
                 </li>
             </ul>
         </div>
