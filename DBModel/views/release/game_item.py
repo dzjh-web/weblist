@@ -5,7 +5,7 @@ from ckeditor_uploader.fields import RichTextUploadingFormField;
 
 from DBModel import models;
 from utils import base_util;
-from release.base import Schedule, sendMsgToAllMgrs;
+from release.base import Schedule;
 
 import json;
 
@@ -31,7 +31,7 @@ def upload(request, result, isSwitchTab):
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
         if isRelease:
-            wf = GameItemForm(request.POST);
+            wf = GameItemForm(request.POST, request.FILES);
             if wf.is_valid():
                 wc =  models.WebContent(content = wf.cleaned_data["content"]);
                 wc.save();
@@ -48,7 +48,7 @@ def upload(request, result, isSwitchTab):
                 result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】上传成功。";
                 # 发送邮件通知
                 try:
-                    sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
         pass;
@@ -68,7 +68,7 @@ def update(request, result, isSwitchTab):
                     gi.schedule = request.POST["schedule"];
                     gi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
-                    wf = GameItemForm(request.POST);
+                    wf = GameItemForm(request.POST, request.FILES);
                     if wf.is_valid():
                         gi.cid.content = wf.cleaned_data["content"];
                         gi.cid.save();
@@ -83,7 +83,7 @@ def update(request, result, isSwitchTab):
                         result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】更新成功。";
                         # 发送邮件通知
                         try:
-                            sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
+                            base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                 opType = request.POST.get("opType", None);
@@ -102,7 +102,7 @@ def update(request, result, isSwitchTab):
                         result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】成功删除。";
                         # 发送邮件通知
                         try:
-                            sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                            base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             except Exception as e:

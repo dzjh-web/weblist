@@ -7,6 +7,23 @@ import os
 
 # Create your models here.
 
+def carouse_img_path(instance, filename):
+    ext = os.path.splitext(filename)[1];
+    return os.path.join("release", "carouse", "img", f"{instance.name}{ext}");
+class Carouse(models.Model):
+    name = models.CharField(max_length=255, verbose_name="名称")
+    title = models.CharField(max_length=255, blank=True, null=True, verbose_name="标题")
+    url = models.CharField(max_length=255, verbose_name="链接")
+    img = models.ImageField(upload_to=carouse_img_path, blank=True, null=True, verbose_name="图片")
+    alt = models.CharField(max_length=255, blank=True, null=True, verbose_name="图片描述")
+    wtype = models.IntegerField()
+    time = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'carouse'
+
+
 def game_pic_path(instance, filename):
     ext = os.path.splitext(filename)[1];
     return os.path.join("release", "game", "img", f"{instance.name}{ext}");
@@ -22,7 +39,6 @@ class GameItem(models.Model):
     schedule = models.IntegerField(verbose_name="进度")
     file_path = models.FileField(upload_to = game_file_path, blank=True, null=True, verbose_name="游戏文件")
     time = models.DateTimeField()
-    is_carouse = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -86,7 +102,6 @@ class WebItem(models.Model):
     wtype = models.IntegerField()
     state = models.IntegerField()
     time = models.DateTimeField()
-    is_carouse = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

@@ -5,7 +5,7 @@ from ckeditor_uploader.fields import RichTextUploadingFormField;
 
 from DBModel import models;
 from utils import base_util;
-from release.base import WebType, Status, sendMsgToAllMgrs;
+from release.base import WebType, Status;
 
 import json;
 
@@ -38,7 +38,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
         if isRelease:
-            wf = WebItemForm(request.POST);
+            wf = WebItemForm(request.POST, request.FILES);
             if wf.is_valid():
                 wc =  models.WebContent(content = wf.cleaned_data["content"]);
                 wc.save();
@@ -57,7 +57,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                 result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于关闭状态，需手动进行启用。";
                 # 发送邮件通知
                 try:
-                    sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
         pass;
@@ -80,7 +80,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         wi.state = Status.Open.value;
                     wi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
-                    wf = WebItemForm(request.POST);
+                    wf = WebItemForm(request.POST, request.FILES);
                     if wf.is_valid():
                         wi.cid.content = wf.cleaned_data["content"];
                         wi.cid.save();
@@ -96,7 +96,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】更新成功。";
                         # 发送邮件通知
                         try:
-                            sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
+                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                 opType = request.POST.get("opType", None);
@@ -111,7 +111,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】成功删除。";
                         # 发送邮件通知
                         try:
-                            sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             except Exception as e:

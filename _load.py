@@ -6,7 +6,7 @@
 import re,os,sys,time;
 import hashlib;
 import datetime;
-import threading;
+import json;
 from utils import random_util;
 
 logLevel = "debug";
@@ -23,6 +23,7 @@ if os.path.join(CURRENT_PATH, "core") not in sys.path:
 import _Global as _G;
 from logCore.Logger import Logger;
 from rsaCore import encodeStr, decodeStr, getPublicKey;
+from utils import base_util;
 
 # 初始化全局变量
 def _initGlobal_G_():
@@ -85,9 +86,11 @@ def _loadRsaDecode_():
 
 # 加载发布Token
 def _loadReleaseToken_():
+	tokenFilePath = os.path.join(CURRENT_PATH, "release_token.json");
 	# 设置获取发布Token的全局方法
 	global lastReleaseTokenTime;
 	global releaseToken;
+	releaseToken = ""; # 初始化
 	# 更新Token
 	def updateToken():
 		# 更新时间
@@ -98,8 +101,14 @@ def _loadReleaseToken_():
 		randCode = random_util.randomMulti(32); # 32位随机码
 		releaseToken = hashlib.md5("|".join([datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z"), randCode]).encode("utf-8")).hexdigest();
 		_G._GG("Log").i("======== New Release Token ========", releaseToken);
-	updateToken();
-	# 设置获取Token的全局变量
+		base_util.sendMsgToAllMgrs(f"JDreamHeart New Release Token : /n {releaseToken}.");
+		# 保存到文件中
+		with open(tokenFilePath, "w") as f:
+			f.write(json.dumps({
+				"token" : releaseToken,
+				"timestamp" : lastReleaseTokenTime.timestamp(),
+			}));
+	# 获取Token
 	def getToken():
 		global lastReleaseTokenTime;
 		delta = datetime.datetime.now() - lastReleaseTokenTime;
@@ -107,4 +116,16 @@ def _loadReleaseToken_():
 			updateToken(); # 距离上次请求超过10天，更新Token
 		global releaseToken;
 		return releaseToken;
+	# 设置获取Token的全局变量
 	_G.setGlobalVarTo_Global("GetReleaseToken", getToken);
+	# 检测更新当前Token
+	if os.path.exists(tokenFilePath):
+		with open(tokenFilePath, "r") as f:
+			info = json.loads(f.read());
+			if "token" in info and "timestamp" in info:
+				releaseToken = info["token"];
+				lastReleaseTokenTime = datetime.datetime.fromtimestamp(info["timestamp"]);
+		pass;
+	# 判断是否更新Token
+	if not releaseToken:
+		updateToken();

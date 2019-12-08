@@ -1,7 +1,7 @@
 <div class="row">
-    <form id="createForm" class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" role="form" enctype="multipart/form-data">
+    <form id="releaseForm" class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" role="form" enctype="multipart/form-data">
         <h2 class="text-center" style="color:forestgreen;">
-                创建简历Token
+            创建简历Token
         </h2>
         <div id="releaseContent">
             {{ form.media }}
@@ -13,7 +13,7 @@
         </div>
     </form>
 </div>
-<h2 style="color:forestgreen;margin-top:40px;padding:10px;">已有Token</h2>
+<h2 style="color:forestgreen;margin-top:40px;padding:10px;">已有简历Token</h2>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -62,7 +62,7 @@
             })
         }
         // 提交发布表单
-        $("#createForm").validate({
+        $("#releaseForm").validate({
             rules: {
                 expires: {
                     required: true,
@@ -72,7 +72,7 @@
                 expires: "有效期不能为空",
             },
             submitHandler: function() {
-                uploadReleaseForm($("#createForm"), [
+                uploadReleaseForm($("#releaseForm"), [
                     {"key":"mk", "val":"{{mkey}}", "type":"text"},
                     {"key":"isRelease", "val":"true", "type":"text"},
                 ]);

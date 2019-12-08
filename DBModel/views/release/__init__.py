@@ -15,11 +15,16 @@ import os,sys;
 from _Global import _GG;
 
 from release.base import WebType;
-from release import web_item, game_item, game_log, resume_token;
+from release import web_item, game_item, game_log, resume_token, carouse;
 
 # 键值列表
-keyList = ["add_home_url", "operate_home_url", "add_wiki", "operate_wiki", "add_github", "operate_github", "resume_token"];
-gameList = ["add_game", "operate_game", "add_game_log", "operate_game_log"];
+keyList = [
+    "add_home_url", "operate_home_url", "home_carouse",
+    "add_wiki", "operate_wiki", "wiki_carouse",
+    "add_github", "operate_github", "github_carouse",
+    "resume_token",
+];
+gameList = ["game_carouse", "add_game", "operate_game", "add_game_log", "operate_game_log"];
 
 # 后台管理页请求
 @csrf_exempt
@@ -28,6 +33,9 @@ def release(request):
     # 判断是否校验
     if "isVerify" in request.POST:
         return verify(request);
+    # 操作carouse信息
+    if "isOpCarouse" in request.POST:
+        return opCarouse(request);
     # 判断是否已登陆
     if request.method == 'GET':
         return render(request, "release/index.html", {"HOME_URL": HOME_URL});
@@ -125,4 +133,26 @@ def getReleaseResult(request, mkey, isSwitchTab):
         game_log.update(request, result, isSwitchTab);
     elif mkey == "resume_token": # 操作简历token
         resume_token.upload(request, result, isSwitchTab);
+    # 以下为Carouse
+    elif mkey == "home_carouse": # 首页
+        carouse.upload(request, result, isSwitchTab, WebType.Home.value);
+    elif mkey == "wiki_carouse": # 文档
+        carouse.upload(request, result, isSwitchTab, WebType.Wiki.value);
+    elif mkey == "github_carouse": # Github
+        carouse.upload(request, result, isSwitchTab, WebType.Github.value);
+    elif mkey == "game_carouse": # 游戏
+        carouse.upload(request, result, isSwitchTab, WebType.Game.value);
     return result;
+
+# 操作Carouse信息
+def opCarouse(request):
+    result = {"isSuccess" : False};
+    if mkey == "home_carouse": # 首页
+        carouse.update(request, result, WebType.Home.value);
+    elif mkey == "wiki_carouse": # 文档
+        carouse.update(request, result, WebType.Wiki.value);
+    elif mkey == "github_carouse": # Github
+        carouse.update(request, result, WebType.Github.value);
+    elif mkey == "game_carouse": # 游戏
+        carouse.update(request, result, WebType.Game.value);
+    return HttpResponse(result);

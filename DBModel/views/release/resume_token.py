@@ -3,7 +3,7 @@ from django.forms import ModelForm;
 
 from DBModel import models;
 from utils import base_util, random_util;
-from release.base import Schedule, sendMsgToAllMgrs;
+from release.base import Schedule;
 
 import hashlib;
 import datetime;
@@ -21,7 +21,7 @@ def upload(request, result, isSwitchTab):
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
         if isRelease:
-            rtf = ResumeTokenForm(request.POST);
+            rtf = ResumeTokenForm(request.POST, request.FILES);
             if rtf.is_valid():
                 rt = models.ResumeToken(**{
                     "token" : createToken(),
@@ -34,7 +34,7 @@ def upload(request, result, isSwitchTab):
                 result["requestTips"] = f"简历Token【{rt.name}，{rt.category}】创建成功。";
                 # 发送邮件通知
                 try:
-                    sendMsgToAllMgrs(f"简历Token【{rt.name}，{rt.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"简历Token【{rt.name}，{rt.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
         pass;

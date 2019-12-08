@@ -8,19 +8,33 @@
 		{% ifequal mkey "operate_home_url" %}
 			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
+		{% ifequal mkey "home_carouse" %}
+			{% include "release/carouse.html" %}
+		{% endifequal %}
+		
 		{% ifequal mkey "add_wiki" %}
 			{% include "release/webitem/web_item_form.html" %}
 		{% endifequal %}
 		{% ifequal mkey "operate_wiki" %}
 			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
+		{% ifequal mkey "wiki_carouse" %}
+			{% include "release/carouse.html" %}
+		{% endifequal %}
+
 		{% ifequal mkey "add_github" %}
 			{% include "release/webitem/web_item_form.html" %}
 		{% endifequal %}
 		{% ifequal mkey "operate_github" %}
 			{% include "release/webitem/ol_web_item.html" %}
 		{% endifequal %}
+		{% ifequal mkey "github_carouse" %}
+			{% include "release/carouse.html" %}
+		{% endifequal %}
 		
+		{% ifequal mkey "game_carouse" %}
+			{% include "release/carouse.html" %}
+		{% endifequal %}
 		{% ifequal mkey "add_game" %}
 			{% include "release/gameitem/game_item_form.html" %}
 		{% endifequal %}

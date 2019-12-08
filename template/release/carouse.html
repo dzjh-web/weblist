@@ -1,0 +1,132 @@
+<div class="row">
+    <div id="alertList">
+    </div>
+    <form id="releaseForm" class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4" role="form" enctype="multipart/form-data">
+        <h2 class="text-center" style="color:forestgreen;">
+            上传{{ title }}
+        </h2>
+        <div id="releaseContent">
+            {{ form.media }}
+            {{ form.as_p }}
+            <div style="margin-top: 30px">
+                <input class="form-control btn btn-success" type="submit" value="确认上传" />
+                <p style="margin-top: 10px; color: #BCBCBC;">*上传后需手动进行启用。</p>
+            </div>
+        </div>
+    </form>
+</div>
+<h2 style="color:forestgreen;margin-top:40px;padding:10px;">已上传的{{ title }}</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>名称</th>
+            <th>标题</th>
+            <th>链接</th>
+            <th>图片</th>
+            <th>图片描述</th>
+            <th>创建时间</th>
+            <th>是否启用</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for olInfo in onlineInfoList %}
+        <tr>
+            <th>{{ olInfo.name }}</th>
+            <th>{{ olInfo.title }}</th>
+            <th><a href="{{ olInfo.url }}" target="_blank">{{ olInfo.url }}</a></th>
+            <th>
+                {% if olInfo.img %}
+                <img class="img-responsive" src="{{ olInfo.img }}" style="width: 40px;">
+                <a class="operate" name="show_big_img" data-target="{{ olInfo.img }}">查看大图</a>
+                {% endif %}
+            </th>
+            <th>{{ olInfo.alt }}</th>
+            <th>{{ olInfo.time|date:"Y-m-d H:i:s" }}</th>
+            <th>
+                <input class="operate" name="enable" data-target="{{ olInfo.id }}" type="checkbox" checked />
+            </th>
+            <th>
+                <a class="operate" name="delete" data-target="{{ olInfo.id }}">删除</a>
+            </th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script language="JavaScript">
+	$(function(){
+		// 显示弹出信息
+		var showAlert = function(type, text) {
+			$("#alertList").append("<div class='alert alert-"+ type +"' role='alert'>\
+					<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+					<span class='alertContent'>"+ text +"</span>\
+				</div>");
+		}
+        // 更新releaseContent
+        if ($("#releaseContent").length > 0) {
+            $("#releaseContent").children("p").each(function(idx, elem){
+                var $label = $(elem).find("label");
+                if ($label.length > 0) {
+                    $(elem).addClass("input-group").css("margin-top", "30px");
+                }
+                $label.addClass("input-group-addon");
+                $label.next().addClass("form-control");
+            })
+        }
+        // 提交发布表单
+        $("#releaseForm").validate({
+            rules: {
+                name: {
+                    required: true,
+                },
+                url: {
+                    required: true,
+                },
+            },
+            messages: {
+                name: "名称不能为空",
+                url: "链接不能为空",
+            },
+            submitHandler: function() {
+                uploadReleaseForm($("#releaseForm"), [
+                    {"key":"mk", "val":"{{mkey}}", "type":"text"},
+                    {"key":"isRelease", "val":"true", "type":"text"},
+                ]);
+            }
+        });
+        // 点击操作
+        $(".operate").on("click",function(){
+            var $operate = $(this);
+            var opType = $(this).attr("name");
+            var tg = $(this).attr("data-target");
+            switch(opType) {
+                case "show_big_img":
+                    // 创建弹窗
+                    createDialogPage("<img class='img-responsive' src='"+ tg +"' style='width: 100%;'>");
+                    break;
+                case "enable":
+                    $.post(window.location.href, {
+                        "isOpCarouse" : true,
+                        "mk" : "{{mkey}}",
+                        "opType" : opType,
+                        "cid": tg,
+                        "isEnable" : $(this).is(":checked"),
+                    }, function(data, status){
+                        if (status != "success") {
+                            showAlert("success", "更新成功。");
+                        } else{
+                            showAlert("danger", "更新失败，请重试！");
+                        }
+                    });
+                    break;
+                case "delete":
+                    requestCallback({
+                        "mk" : "{{mkey}}",
+                        "opType" : opType,
+                        "cid": tg,
+                    }, function(){});
+                    break;
+            }
+        });
+	})
+</script>
