@@ -18,15 +18,18 @@ def req(request):
             "phone" : "15602291936",
             "email" : "15602291936@163.com",
             "img" : "/static/img/dzjh-icon.png",
+            "gitUrl" : "https://github.com/JDreamHeart",
         },
         "schoolInfo" : {
             "startTime" : datetime.date(2013, 9, 1),
             "endTime" : datetime.date(2017, 7, 1),
+            "degree" : "本科",
             "college" : "SCNU",
             "profession" : "GD",
         },
         "workInfo" : {
             "startTime" : datetime.date(2017, 7, 7),
+            "companyIcon" : "/static/img/dzjh-icon.png",
             "company" : "BY",
             "position" : "--",
         },

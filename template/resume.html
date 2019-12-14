@@ -11,54 +11,137 @@
 		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
 		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <style>
+            .resume_content {
+                margin-top: 20px;
+                padding: 20px;
+                background-color: #989898;
+                border-radius: 6px;
+            }
+            .resume_content ul {
+                padding: 20px;
+                border: 1px #868686 solid;
+            }
+            .resume_content ul > li {
+                margin: 10px 0px;
+                border-bottom: 1px #868686 solid;
+            }
+            .resume_content ul > li:last-child {
+                margin: 10px 0px;
+                border-bottom: none;
+            }
+            .user-info-name {
+                font-size: 28px;
+                padding-bottom: 10px;
+            }
+            .user-info-img {
+                position: relative;
+            }
+            .user-info-img img {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 100px;
+                border: 2px #BCBCBC solid;
+            }
+            .timeline {
+                padding: 0;
+            }
+            .timeline-icon {
+                position: relative;
+                border-bottom: 3px solid #CDCDCD;
+            }
+            .timeline-icon:before {
+                content: "";
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                bottom: -10px;
+                border-radius: 50%;
+                background-color: #CDCDCD;
+            }
+            .timeline-description {
+                padding: 10px 20px;
+            }
+            .projec_description {
+                margin-top: 10px;
+            }
+        </style>
 	</head>
 	<body>
-        <div class="container">
+        <div class="container resume_content">
             <ul class="row">
                 <!-- 个人信息 -->
-                <li class="col-md-12">
+                <li class="col-md-12 resume_item">
                     <div class="col-md-8">
-                        <p class="col-md-6">{{ userInfo.name }}</p>
-                        <p class="col-md-6"><a href="{{ userInfo.url }}" target="_blank" title="个人主页">{{ userInfo.url }}</a></p>
-                        <p class="col-md-6">{{ userInfo.phone }}</p>
-                        <p class="col-md-6">{{ userInfo.email }}</p>
+                        <p class="text-center user-info-name">{{ userInfo.name }}</p>
+                        <div class="col-md-6">
+                            <p class="text-center">{{ userInfo.phone }}</p>
+                            <p class="text-center">{{ userInfo.email }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-center">个人网站:&nbsp;<a href="{{ userInfo.url }}" target="_blank" title="个人网站">{{ userInfo.url }}</a></p>
+                            <p class="text-center">GitHub:&nbsp;<a href="{{ userInfo.gitUrl }}" target="_blank" title="GitHub地址">{{ userInfo.gitUrl }}</a></p>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <img class="img-responsive" src="{{ userInfo.img }}" style="width: 40%;" />
+                    <div class="col-md-4 user-info-img">
+                        <img class="img-responsive" src="{{ userInfo.img }}" />
                     </div>
                 </li>
                 <!-- 毕业院校 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
-                    <p class="col-md-4">{{ schoolInfo.college }}</p>
-                    <p class="col-md-4">{{ schoolInfo.profession }}</p>
+                    <p class="col-md-3">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
+                    <p class="col-md-3">{{ schoolInfo.college }}</p>
+                    <p class="col-md-3">{{ schoolInfo.degree }}</p>
+                    <p class="col-md-3">{{ schoolInfo.profession }}</p>
                 </li>
                 <!-- 工作经历 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">
-                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;
+                    <p class="col-md-3">
+                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
                         {% if workInfo.endTime %}
                         {{ workInfo.endTime|date:"Y-m-d" }}
                         {% else %}
                         至今
                         {% endif %}
                     </p>
-                    <p class="col-md-4">{{ workInfo.company }}</p>
-                    <p class="col-md-4">{{ workInfo.position }}</p>
+                    <p class="col-md-3"><img class="img-responsive" src="{{ workInfo.companyIcon }}" style="width: 20px;" /></p>
+                    <p class="col-md-3">{{ workInfo.company }}</p>
+                    <p class="col-md-3">{{ workInfo.position }}</p>
+                    <div class="col-md-12 work-timeline">
+                        <div class="col-md-4 timeline">
+                            <p class="text-center">2017-07-07</p>
+                            <div class="timeline-icon"></div>
+                            <p class="timeline-description">描述</p>
+                        </div>
+                        <div class="col-md-4 timeline">
+                            <p class="text-center">2017-07-07</p class="text-center">
+                            <div class="timeline-icon"></div>
+                            <p class="timeline-description">描述</p>
+                        </div>
+                        <div class="col-md-4 timeline">
+                            <p class="text-center">2017-07-07</p class="text-center">
+                            <div class="timeline-icon"></div>
+                            <p class="timeline-description">描述</p>
+                        </div>
+                    </div>
                 </li>
                 <!-- 项目经历 -->
                 <li class="col-md-12">
                     <p class="col-md-4">
-                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;-&nbsp;
-                        {% if workInfo.endTime %}
-                        {{ workInfo.endTime|date:"Y-m-d" }}
+                        {{ projectInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
+                        {% if projectInfo.endTime %}
+                        {{ projectInfo.endTime|date:"Y-m-d" }}
                         {% else %}
                         至今
                         {% endif %}
                     </p>
                     <p class="col-md-4">{{ projectInfo.title }}</p>
                     <p class="col-md-4">{{ projectInfo.subTitle }}</p>
-                    <p class="col-md-12">{{ projectInfo.description|safe }}</p>
+                    <div class="col-md-12 projec_description">{{ projectInfo.description|safe }}</p>
                 </li>
             </ul>
         </div>
