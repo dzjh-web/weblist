@@ -52,6 +52,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     "wtype" : wtype,
                     "state" : Status.Close.value,
                     "time" : timezone.now(),
+                    "update_time" : timezone.now(),
                 });
                 wi.save();
                 result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于关闭状态，需手动进行启用。";
@@ -78,6 +79,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         wi.state = Status.Close.value;
                     else:
                         wi.state = Status.Open.value;
+                    wi.update_time = timezone.now();
                     wi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = WebItemForm(request.POST, request.FILES);
@@ -90,7 +92,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         wi.thumbnail = wf.cleaned_data["thumbnail"];
                         wi.description = wf.cleaned_data["description"];
                         wi.url = wf.cleaned_data["url"];
-                        wi.time = timezone.now();
+                        wi.update_time = timezone.now();
                         wi.save();
                         # 更新成功
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】更新成功。";
@@ -118,7 +120,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                 _GG("Log").w(e);
     # 返回已发布的网页
     searchText = request.POST.get("searchText", "");
-    infoList = models.WebItem.objects.filter(Q(name__icontains = searchText) | Q(title__icontains = searchText), wtype = wtype).order_by('-time');
+    infoList = models.WebItem.objects.filter(Q(name__icontains = searchText) | Q(title__icontains = searchText), wtype = wtype).order_by("-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -133,6 +135,7 @@ def update(request, result, isSwitchTab, wtype = 0):
         "description" : webInfo.description,
         "url" : webInfo.url,
         "time" : webInfo.time,
+        "updateTime" : webInfo.update_time,
         "state" : webInfo.state == Status.Open.value and "开启" or "关闭",
         "type" : "首页网页",
     } for webInfo in infoList];

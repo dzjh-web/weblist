@@ -17,18 +17,23 @@
                 padding: 20px;
                 background-color: #989898;
                 border-radius: 6px;
+                box-sizing: border-box;
+                box-shadow: 0 50px 50px #000000;
             }
             .resume_content ul {
                 padding: 20px;
-                border: 1px #868686 solid;
+                /* border: 1px #868686 solid; */
             }
             .resume_content ul > li {
                 margin: 10px 0px;
-                border-bottom: 1px #868686 solid;
+                border-top: 1px #868686 solid;
             }
-            .resume_content ul > li:last-child {
-                margin: 10px 0px;
-                border-bottom: none;
+            .resume_content ul > li:first-child {
+                border-top: none;
+            }
+            .resume_content ul > li > h5 {
+                color: #ABABAB;
+                font-size: 16px;
             }
             .user-info-name {
                 font-size: 28px;
@@ -46,6 +51,7 @@
             }
             .timeline {
                 padding: 0;
+                color: #CDCDCD;
             }
             .timeline-icon {
                 position: relative;
@@ -64,7 +70,7 @@
                 background-color: #CDCDCD;
             }
             .timeline-description {
-                padding: 10px 20px;
+                padding: 20px 20px;
             }
             .projec_description {
                 margin-top: 10px;
@@ -83,24 +89,26 @@
                             <p class="text-center">{{ userInfo.email }}</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-center">个人网站:&nbsp;<a href="{{ userInfo.url }}" target="_blank" title="个人网站">{{ userInfo.url }}</a></p>
-                            <p class="text-center">GitHub:&nbsp;<a href="{{ userInfo.gitUrl }}" target="_blank" title="GitHub地址">{{ userInfo.gitUrl }}</a></p>
+                            <p class="text-center">{{userInfo.urlTitle}}:&nbsp;<a href="{{ userInfo.url }}" target="_blank" title="{{userInfo.urlTitle}}">{{ userInfo.url }}</a></p>
+                            <p class="text-center">{{userInfo.gitUrlTitle}}:&nbsp;<a href="{{ userInfo.gitUrl }}" target="_blank" title="{{userInfo.gitUrlTitle}}">{{ userInfo.gitUrl }}</a></p>
                         </div>
                     </div>
                     <div class="col-md-4 user-info-img">
                         <img class="img-responsive" src="{{ userInfo.img }}" />
                     </div>
                 </li>
-                <!-- 毕业院校 -->
+                <!-- 学历信息 -->
                 <li class="col-md-12">
-                    <p class="col-md-3">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
-                    <p class="col-md-3">{{ schoolInfo.college }}</p>
-                    <p class="col-md-3">{{ schoolInfo.degree }}</p>
-                    <p class="col-md-3">{{ schoolInfo.profession }}</p>
+                    <h5>学历信息</h5>
+                    <p class="col-md-3 text-center">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
+                    <p class="col-md-3 text-center">{{ schoolInfo.college }}</p>
+                    <p class="col-md-3 text-center">{{ schoolInfo.degree }}</p>
+                    <p class="col-md-3 text-center">{{ schoolInfo.profession }}</p>
                 </li>
                 <!-- 工作经历 -->
                 <li class="col-md-12">
-                    <p class="col-md-3">
+                    <h5>工作经历</h5>
+                    <p class="col-md-3 text-center">
                         {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
                         {% if workInfo.endTime %}
                         {{ workInfo.endTime|date:"Y-m-d" }}
@@ -108,30 +116,23 @@
                         至今
                         {% endif %}
                     </p>
-                    <p class="col-md-3"><img class="img-responsive" src="{{ workInfo.companyIcon }}" style="width: 20px;" /></p>
-                    <p class="col-md-3">{{ workInfo.company }}</p>
-                    <p class="col-md-3">{{ workInfo.position }}</p>
+                    <p class="col-md-3 text-center"><img class="img-responsive" src="{{ workInfo.companyIcon }}" style="width: 20px;" /></p>
+                    <p class="col-md-3 text-center">{{ workInfo.company }}</p>
+                    <p class="col-md-3 text-center">{{ workInfo.position }}</p>
                     <div class="col-md-12 work-timeline">
-                        <div class="col-md-4 timeline">
-                            <p class="text-center">2017-07-07</p>
+                        {% for item in workInfo.items %}
+                        <div class="col-md-{{workInfo.itemCols}} timeline">
+                            <p class="text-center">{{ item.time|date:"Y.m.d" }}</p>
                             <div class="timeline-icon"></div>
-                            <p class="timeline-description">描述</p>
+                            <p class="timeline-description text-center">{{ item.description|safe }}</p>
                         </div>
-                        <div class="col-md-4 timeline">
-                            <p class="text-center">2017-07-07</p class="text-center">
-                            <div class="timeline-icon"></div>
-                            <p class="timeline-description">描述</p>
-                        </div>
-                        <div class="col-md-4 timeline">
-                            <p class="text-center">2017-07-07</p class="text-center">
-                            <div class="timeline-icon"></div>
-                            <p class="timeline-description">描述</p>
-                        </div>
+                        {% endfor %}
                     </div>
                 </li>
-                <!-- 项目经历 -->
+                <!-- 项目实践 -->
                 <li class="col-md-12">
-                    <p class="col-md-4">
+                    <h5>项目实践</h5>
+                    <p class="col-md-4 text-center">
                         {{ projectInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
                         {% if projectInfo.endTime %}
                         {{ projectInfo.endTime|date:"Y-m-d" }}
@@ -139,8 +140,8 @@
                         至今
                         {% endif %}
                     </p>
-                    <p class="col-md-4">{{ projectInfo.title }}</p>
-                    <p class="col-md-4">{{ projectInfo.subTitle }}</p>
+                    <p class="col-md-4 text-center">{{ projectInfo.title }}</p>
+                    <p class="col-md-4 text-center">{{ projectInfo.subTitle }}</p>
                     <div class="col-md-12 projec_description">{{ projectInfo.description|safe }}</p>
                 </li>
             </ul>

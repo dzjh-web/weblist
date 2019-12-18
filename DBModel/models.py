@@ -18,6 +18,7 @@ class Carouse(models.Model):
     alt = models.CharField(max_length=255, blank=True, null=True, verbose_name="图片描述")
     wtype = models.IntegerField()
     time = models.DateTimeField()
+    update_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -39,6 +40,7 @@ class GameItem(models.Model):
     schedule = models.IntegerField(verbose_name="进度")
     file_path = models.FileField(upload_to = game_file_path, blank=True, null=True, verbose_name="游戏文件")
     time = models.DateTimeField()
+    update_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -58,6 +60,7 @@ class GameLog(models.Model):
     sketch = models.CharField(max_length=255)
     cid = models.ForeignKey('WebContent', models.DO_NOTHING, db_column='cid')
     time = models.DateTimeField()
+    update_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -102,6 +105,7 @@ class WebItem(models.Model):
     wtype = models.IntegerField()
     state = models.IntegerField()
     time = models.DateTimeField()
+    update_time = models.DateTimeField()
 
     class Meta:
         managed = False

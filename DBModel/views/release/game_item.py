@@ -43,6 +43,7 @@ def upload(request, result, isSwitchTab):
                     "cid" : wc,
                     "schedule" : Schedule.Pending.value,
                     "time" : timezone.now(),
+                    "update_time" : timezone.now(),
                 });
                 gi.save();
                 result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】上传成功。";
@@ -66,6 +67,7 @@ def update(request, result, isSwitchTab):
                 if "schedule" in request.POST:
                     # 更新进度值
                     gi.schedule = request.POST["schedule"];
+                    gi.update_time = timezone.now();
                     gi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = GameItemForm(request.POST, request.FILES);
@@ -77,7 +79,7 @@ def update(request, result, isSwitchTab):
                         gi.category = wf.cleaned_data["category"];
                         gi.thumbnail = wf.cleaned_data["thumbnail"];
                         gi.description = wf.cleaned_data["description"];
-                        gi.time = timezone.now();
+                        gi.update_time = timezone.now();
                         gi.save();
                         # 更新成功
                         result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】更新成功。";
@@ -109,7 +111,7 @@ def update(request, result, isSwitchTab):
                 _GG("Log").w(e);
     # 返回已发布的游戏
     searchText = request.POST.get("searchText", "");
-    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by('-time');
+    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -125,6 +127,7 @@ def update(request, result, isSwitchTab):
         "schedule" : gameInfo.schedule,
         "filePath" : gameInfo.file_path and gameInfo.file_path.url or "",
         "time" : gameInfo.time,
+        "updateTime" : gameInfo.update_time,
         "type" : "游戏网页",
     } for gameInfo in infoList];
     pass;

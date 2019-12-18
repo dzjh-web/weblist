@@ -1,8 +1,13 @@
 import django.utils.timezone as timezone;
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render;
 
-from weblist.settings import HOME_URL
+from DBModel import models;
+
+from weblist.settings import HOME_URL;
+
+from release.base import WebType, Status;
+
+import webkit;
 
 # 游戏列表
 def req(request):
@@ -18,77 +23,59 @@ def req(request):
 
 # 游戏详情
 def detail(request):
-    return render(request, "detail.html", {
+    result = {
         "TITLE" : "Game",
         "TITLE_URL" : "http://localhost:8008/games",
         "SEARCH_URL" : "http://localhost:8008/search?k=game",
         "searchText" : "搜索游戏名称",
-        "hasInfo" : True,
-        "infoList" : getGameList(),
-        "detailInfo" : {
-            "name" : "游戏名称",
-            "title" : "标题",
-            "time" : timezone.now(),
-            "thumbnail" : "/media/home/img/pytoolsip.png",
-            "description" : "<p>游戏介绍</p>",
-            "schedule" : "计划中",
-        },
-        "logInfoList" : [
-            {
-                "url" : "xxx?id=233",
-                "title" : "标题",
-                "subTitle" : "子标题",
-                "content" : "<p>日志内容</p>",
-                "time" : timezone.now(),
-                "exinfoList" : [],
-            },
-            {
-                "url" : "xxx?id=666",
-                "title" : "标题",
-                "content" : "<p>日志内容</p>",
-                "time" : timezone.now(),
-                "exinfoList" : [],
-            },
-        ],
-    });
+        "hasInfo" : False,
+    };
+    try:
+        # 获取相应游戏信息
+        gid = int(request.GET.get("gid", "0"));
+        info = models.GameItem.objects.get(id = gid);
+        result["hasInfo"] = True;
+        result["detailInfo"] = {
+            "name" : info.name,
+            "category" : info.category,
+            "thumbnail" : info.thumbnail,
+            "description" : info.description,
+            "filePath" : info.file_path,
+            "time" : info.time,
+            "updateTime" : info.update_time,
+            "content" : info.cid.content,
+            "schedule" : info.schedule,
+        };
+        # 获取游戏日志信息
+        infoList = models.GameLog.objects.filter(gid = info).order_by("-update_time");
+        result["logInfoList"] = [{
+            "title" : logInfo.title,
+            "subTitle" : logInfo.sub_title,
+            "sketch" : logInfo.sketch,
+            "url" : f"http://localhost:8008/gamelog?gid={logInfo.id}",
+            "time" : logInfo.time,
+            "updateTime" : logInfo.update_time,
+            "content" : logInfo.cid.content,
+            "exinfoList" : [],
+        } for logInfo in infoList];
+    except Exception as e:
+        _GG("Log").w(e);
+    return render(request, "detail.html", result);
 
 # 获取游戏列表
 def getGameList():
-    return [
-        {
-            "title" : "test",
-            "thumbnail" : "/media/home/img/pytoolsip.png",
-            "description" : "只是测试用的。。。",
-            "url" : "http://localhost:8008/games",
-            "time" : timezone.now(),
-            "exinfoList" : [{"key" : "进度", "value" : "计划中"}],
-        },
-        {
-            "title" : "test2",
-            "subTitle" : "xxxtest2",
-            "thumbnail" : "/media/home/img/pytoolsip.png",
-            "description" : "鼎折覆餗",
-            "url" : "http://localhost:8008/games",
-            "time" : timezone.now(),
-            "exinfoList" : [{"key" : "进度", "value" : "筹备中"}],
-        },
-    ];
+    infoList = models.GameItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-update_time");
+    return [{
+        "title" : info.name,
+        "subTitle" : info.category,
+        "thumbnail" : info.thumbnail,
+        "description" : info.description,
+        "url" : f"http://localhost:8008/gamedetail?gid={info.id}",
+        "time" : info.time,
+        "updateTime" : info.update_time,
+        "exinfoList" : [{"key" : "进度", "value" : info.schedule}],
+    } for info in infoList];
 
 # 获取轮播列表
 def getCarouseList():
-    return [
-        {
-            "name" : "test",
-            "img" : "/media/home/img/pytoolsip.png",
-            "alt" : "test",
-            "url" : "===========",
-            "title" : "xxxxxxxxx",
-        },
-        {
-            "name" : "test233",
-            "img" : "/media/home/img/pytoolsip.png",
-            "alt" : "test233",
-            "url" : "=====-------======",
-            "title" : "xxxxx=======xxxx",
-        },
-    ];
+    return webkit.getCarouseList(WebType.Game.value);

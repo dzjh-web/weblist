@@ -26,7 +26,7 @@ from DBModel import views
 urlpatterns = [
     url(r'^$', views.home),
     url(r'^games$', views.game),
-    url(r'^giturls$', views.giturl),
+    url(r'^web$', views.webkit),
     url(r'^gamedetail$', views.gameDetail),
     url(r'^resume$', views.resume),
     url(r'^release$', views.release),

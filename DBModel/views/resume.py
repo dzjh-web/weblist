@@ -8,16 +8,28 @@ import datetime;
 
 # 游戏列表
 def req(request):
+    workItems = [
+        {
+            "time" : datetime.date(2017, 7, 7),
+            "description" : "主要做了什么？",
+        },
+        {
+            "time" : datetime.date(2018, 4, 9),
+            "description" : "主要做了什么？",
+        },
+    ];
     return render(request, "resume.html", {
         "HOME_URL": HOME_URL,
         "TITLE" : "Resume",
         "TITLE_URL" : "http://localhost:8008/resume",
         "userInfo" : {
             "name" : "JinZhang",
-            "url" : "http://jimdreamheart.club",
+            "img" : "/static/img/dzjh-icon.png",
             "phone" : "15602291936",
             "email" : "15602291936@163.com",
-            "img" : "/static/img/dzjh-icon.png",
+            "urlTitle" : "个人网站",
+            "url" : "http://jimdreamheart.club",
+            "gitUrlTitle" : "GitHub网址",
             "gitUrl" : "https://github.com/JDreamHeart",
         },
         "schoolInfo" : {
@@ -32,6 +44,8 @@ def req(request):
             "companyIcon" : "/static/img/dzjh-icon.png",
             "company" : "BY",
             "position" : "--",
+            "items" : workItems,
+            "itemCols" : int(12 / len(workItems)),
         },
         "projectInfo" : {
             "title" : "PyToolsIP",

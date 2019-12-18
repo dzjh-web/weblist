@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render;
 
-from weblist.settings import HOME_URL
+from DBModel import models;
+
+from weblist.settings import HOME_URL;
+
+from release.base import WebType, Status;
 
 # 首页
 def req(request):
@@ -13,58 +17,26 @@ def req(request):
 
 # 获取导航栏项
 def getNavList():
-    return [
-        {
-            "url" : "http://jimdreamheart.club/pytoolsip",
-            "title" : "python工具集成平台",
-            "name" : "PYToolsIP",
-        },
-        {
-            "url" : "http://localhost:8008/games",
-            "title" : "自制游戏",
-            "name" : "JGames",
-        },
-        {
-            "url" : "http://jimdreamheart.club/gitbook",
-            "title" : "文档合集",
-            "name" : "JGitBook",
-        },
-        {
-            "url" : "http://jimdreamheart.club/github",
-            "title" : "GitHub合集",
-            "name" : "JGitHub",
-        },
-    ];
+    infoList = models.Carouse.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-update_time");
+    return [{
+        "name" : info.name,
+        "title" : info.title,
+        "url" : info.url,
+        "img" : info.img,
+        "alt" : info.alt,
+        "time" : info.time,
+        "update_time" : info.update_time,
+    } for info in infoList];
 
 # 获取网站列表
 def getWebList():
-    return [
-        {
-            "url" : "http://jimdreamheart.club/pytoolsip",
-            "img" : "/media/home/img/pytoolsip.png",
-            "name" : "PYToolsIP",
-            "title" : "DzjH",
-            "description" : "<p>基于<b>wxPython</b>框架开发，以提供用户可视化界面来使用<b>Python工具</b>的平台网站。</p>",
-        },
-        {
-            "url" : "http://localhost:8008/games",
-            "img" : "/media/home/img/pytoolsip.png",
-            "name" : "JGames",
-            "title" : "DzjH",
-            "description" : "<p>独立制作的相关游戏列表。</p>",
-        },
-        {
-            "url" : "http://jimdreamheart.club/gitbook",
-            "img" : "/media/home/img/gitbook.png",
-            "name" : "JGitBook",
-            "title" : "JDH",
-            "description" : "<p>基于<b>GitBook</b>发布的，用于记录工作、学习或日常编程的文档网站。</p>",
-        },
-        {
-            "url" : "http://jimdreamheart.club/github",
-            "img" : "/media/home/img/github.png",
-            "name" : "JGitHub",
-            "title" : "JDH",
-            "description" : "<p>个人GitHub地址。</p>",
-        },
-    ];
+    infoList = models.WebItem.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-update_time");
+    return [{
+        "name" : info.name,
+        "title" : info.title,
+        "thumbnail" : info.thumbnail,
+        "description" : info.description,
+        "url" : info.url,
+        "time" : info.time,
+        "updateTime" : info.update_time,
+    } for info in infoList];

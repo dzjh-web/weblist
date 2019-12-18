@@ -46,6 +46,7 @@ def upload(request, result, isSwitchTab):
                             "sub_title" : wf.cleaned_data["sub_title"],
                             "cid" : wc,
                             "time" : timezone.now(),
+                            "update_time" : timezone.now(),
                         });
                         gl.save();
                         result["requestTips"] = f"游戏日志【{gl.title}，{gl.sub_title}】上传成功。";
@@ -64,7 +65,7 @@ def upload(request, result, isSwitchTab):
         pass;
     # 返回已发布的游戏
     searchText = request.POST.get("searchText", "");
-    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by('-time');
+    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -96,7 +97,7 @@ def update(request, result, isSwitchTab):
                         # 保存游戏日志信息
                         gl.title = wf.cleaned_data["title"];
                         gl.sub_title = wf.cleaned_data["sub_title"];
-                        gl.time = timezone.now();
+                        gl.update_time = timezone.now();
                         gl.save();
                         # 更新成功
                         result["requestTips"] = f"游戏日志【{gl.title}，{gl.sub_title}】更新成功。";
@@ -124,7 +125,7 @@ def update(request, result, isSwitchTab):
                 _GG("Log").w(e);
     # 返回已发布的游戏日志
     searchText = request.POST.get("searchText", "");
-    infoList = models.GameLog.objects.filter(title__icontains = searchText).order_by('-time');
+    infoList = models.GameLog.objects.filter(title__icontains = searchText).order_by("-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -137,6 +138,7 @@ def update(request, result, isSwitchTab):
         "subTitle" : gameInfo.sub_title,
         "thumbnail" : gameInfo.thumbnail,
         "time" : gameInfo.time,
+        "updateTime" : gameInfo.update_time,
         "gid" : gameInfo.gid.id,
         "gname" : gameInfo.gid.name,
         "type" : "游戏日志",

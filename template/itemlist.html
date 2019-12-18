@@ -74,8 +74,8 @@
                         <img class="img-responsive center-block" src="{{ info.thumbnail }}" />
                     </div>
                     <div class="item-info-ex col-md-12">
-                        {% if info.time %}
-                        <span>更新时间：{{ info.time|date:"Y-m-d H:i:s" }}</span>
+                        {% if info.updateTime %}
+                        <span>更新时间：{{ info.updateTime|date:"Y-m-d H:i:s" }}</span>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         {% endif %}
                         {% for exInfo in exinfoList %}

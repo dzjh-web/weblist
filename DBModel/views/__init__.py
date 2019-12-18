@@ -14,7 +14,7 @@ sys.path.append(CURRENT_PATH);
 try:
     from home import req as home;
     from game import req as game;
-    from giturl import req as giturl;
+    from webkit import req as webkit;
     from game import detail as gameDetail;
     from release import release;
     from resume import req as resume;
