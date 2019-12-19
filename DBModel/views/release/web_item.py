@@ -30,7 +30,7 @@ class WebItemForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(help_text = content);
+        self.fields["content"] = RichTextUploadingFormField(initial = content);
 
 # 上传首页的网页信息
 def upload(request, result, isSwitchTab, wtype = 0):
@@ -55,7 +55,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     "update_time" : timezone.now(),
                 });
                 wi.save();
-                result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于关闭状态，需手动进行启用。";
+                result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于禁用状态，需手动进行启用。";
                 # 发送邮件通知
                 try:
                     base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
@@ -73,14 +73,16 @@ def update(request, result, isSwitchTab, wtype = 0):
         wid = request.POST.get("wid", None);
         if wid:
             try:
-                wi = models.WebItem.objects.get(id = wid);
+                wi = models.WebItem.objects.get(id = int(wid));
                 if "state" in request.POST:
                     if request.POST["state"] == "open":
-                        wi.state = Status.Close.value;
-                    else:
                         wi.state = Status.Open.value;
+                    else:
+                        wi.state = Status.Close.value;
                     wi.update_time = timezone.now();
                     wi.save();
+                    # 更新成功
+                    result["requestTips"] = f"网页【{wi.name}，{wi.title}】状态更新成功。";
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = WebItemForm(request.POST, request.FILES);
                     if wf.is_valid():
@@ -107,6 +109,10 @@ def update(request, result, isSwitchTab, wtype = 0):
                         result["isEdit"] = True;
                         result["form"] = WebItemForm(instance = wi);
                         result["wid"] = wid;
+                        # 状态信息
+                        result["stateInfo"] = {"state" : "close", "label" : "禁用", "style" : "danger"};
+                        if wi.state == Status.Close.value:
+                            result["stateInfo"] = {"state" : "open", "label" : "启用", "style" : "primary"};
                         return;
                     elif opType == "delete":
                         wi.delete();
@@ -131,12 +137,12 @@ def update(request, result, isSwitchTab, wtype = 0):
         "id" : webInfo.id,
         "name" : webInfo.name,
         "title" : webInfo.title,
-        "thumbnail" : webInfo.thumbnail,
+        "thumbnail" : webInfo.thumbnail.url,
         "description" : webInfo.description,
         "url" : webInfo.url,
         "time" : webInfo.time,
         "updateTime" : webInfo.update_time,
-        "state" : webInfo.state == Status.Open.value and "开启" or "关闭",
+        "state" : webInfo.state == Status.Open.value and "启用" or "禁用",
         "type" : "首页网页",
     } for webInfo in infoList];
     pass;

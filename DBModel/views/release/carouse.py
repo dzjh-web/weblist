@@ -85,7 +85,7 @@ def update(request, result, wtype = 0):
     cid = request.POST.get("cid", None);
     if cid:
         try:
-            c = models.Carouse.objects.get(id = cid);
+            c = models.Carouse.objects.get(id = int(cid));
             opType = request.POST.get("opType", "");
             if opType == "enable":
                 isEnable = base_util.getPostAsBool(request, "isEnable");

@@ -107,6 +107,29 @@ footer a{
 	background-color: #686868;
 	border: 1px #FFFFFF solid;
 }
+/* webInfo style */
+.web-info-item{
+	padding: 10px;
+	padding-top: 0px;
+	background-color: #686868;
+	border: 1px #E1E1E1 solid;
+	border-radius: 4px;
+}
+.web-info-tittle{
+	display: block;
+}
+.web-info-tittle>h3{
+	display: inline-block;
+}
+.web-info-desc{
+	padding: 10px;
+	font-size: 14px;
+	background-color: #545454;
+}
+.web-info-ex-info{
+	color: #A0A0A0;
+	margin-bottom: 2px;
+}
 /* itemInfo style */
 .item-info{
 	margin-bottom: 20px;

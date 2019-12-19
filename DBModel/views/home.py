@@ -22,7 +22,7 @@ def getNavList():
         "name" : info.name,
         "title" : info.title,
         "url" : info.url,
-        "img" : info.img,
+        "img" : info.img.url,
         "alt" : info.alt,
         "time" : info.time,
         "update_time" : info.update_time,
@@ -34,7 +34,7 @@ def getWebList():
     return [{
         "name" : info.name,
         "title" : info.title,
-        "thumbnail" : info.thumbnail,
+        "thumbnail" : info.thumbnail.url,
         "description" : info.description,
         "url" : info.url,
         "time" : info.time,

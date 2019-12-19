@@ -68,7 +68,7 @@ def getGameList():
     return [{
         "title" : info.name,
         "subTitle" : info.category,
-        "thumbnail" : info.thumbnail,
+        "thumbnail" : info.thumbnail.url,
         "description" : info.description,
         "url" : f"http://localhost:8008/gamedetail?gid={info.id}",
         "time" : info.time,

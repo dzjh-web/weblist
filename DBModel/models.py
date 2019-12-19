@@ -16,6 +16,7 @@ class Carouse(models.Model):
     url = models.CharField(max_length=255, verbose_name="链接")
     img = models.ImageField(upload_to=carouse_img_path, blank=True, null=True, verbose_name="图片")
     alt = models.CharField(max_length=255, blank=True, null=True, verbose_name="图片描述")
+    state = models.IntegerField()
     wtype = models.IntegerField()
     time = models.DateTimeField()
     update_time = models.DateTimeField()

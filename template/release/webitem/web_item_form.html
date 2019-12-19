@@ -4,6 +4,9 @@
         发布{{ title }}
     </h2>
     <div id="releaseContent">
+        {% if isEdit %}
+        <a id="enableBtn" class="btn btn-{{stateInfo.style}}" style="color: #FFFFFF;" data-target="{{stateInfostate}}">{{stateInfo.label}}该网页</a>
+        {% endif %}
         {{ form.media }}
         {{ form.as_p }}
         <div>
@@ -95,6 +98,10 @@
                     {"key":"wid", "val":"{{ wid }}", "type":"text"},
                 ]);
             }
+        });
+        // 启用/禁用按钮
+        $("#enableBtn").on("click", function() {
+            requestRelease({"mk" : "{{mkey}}", "wid" : "{{ wid }}", "opType" : "update", "state" : $(this).attr("data-target")});
         });
     })
 </script>

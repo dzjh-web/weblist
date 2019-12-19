@@ -25,7 +25,7 @@ class GameLogForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(help_text = content);
+        self.fields["content"] = RichTextUploadingFormField(initial = content);
         self.files["sketch"] = HiddenInput();
 
 # 上传游戏日志信息
@@ -88,7 +88,7 @@ def update(request, result, isSwitchTab):
         glid = request.POST.get("glid", None);
         if glid:
             try:
-                gl = models.GameLog.objects.get(id = glid);
+                gl = models.GameLog.objects.get(id = int(glid));
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = GameLogForm(request.POST, request.FILES);
                     if wf.is_valid():

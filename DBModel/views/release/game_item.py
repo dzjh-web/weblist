@@ -24,7 +24,7 @@ class GameItemForm(ModelForm):
         instance = kwargs.get("instance", None);
         if instance:
             content = instance.cid.content;
-        self.fields["content"] = RichTextUploadingFormField(help_text = content);
+        self.fields["content"] = RichTextUploadingFormField(initial = content);
 
 # 上传游戏网页信息
 def upload(request, result, isSwitchTab):
@@ -63,7 +63,7 @@ def update(request, result, isSwitchTab):
         gid = request.POST.get("gid", None);
         if gid:
             try:
-                gi = models.GameItem.objects.get(id = gid);
+                gi = models.GameItem.objects.get(id = int(gid));
                 if "schedule" in request.POST:
                     # 更新进度值
                     gi.schedule = request.POST["schedule"];
