@@ -37,17 +37,21 @@
             <th><a href="{{ olInfo.url }}" target="_blank">{{ olInfo.url }}</a></th>
             <th>
                 {% if olInfo.img %}
-                <img class="img-responsive" src="{{ olInfo.img }}" style="width: 40px;">
+                <img class="img-responsive" src="{{ olInfo.img }}">
                 <a class="operate" name="show_big_img" data-target="{{ olInfo.img }}">查看大图</a>
                 {% endif %}
             </th>
             <th>{{ olInfo.alt }}</th>
             <th>{{ olInfo.time|date:"Y-m-d H:i:s" }}</th>
             <th>
+                {% if olInfo.isEnable %}
                 <input class="operate" name="enable" data-target="{{ olInfo.id }}" type="checkbox" checked />
+                {% else %}
+                <input class="operate" name="enable" data-target="{{ olInfo.id }}" type="checkbox" />
+                {% endif %}
             </th>
             <th>
-                <a class="operate" name="delete" data-target="{{ olInfo.id }}">删除</a>
+                <a class="operate danger-btn" name="delete" data-target="{{ olInfo.id }}">删除</a>
             </th>
         </tr>
         {% endfor %}
@@ -112,8 +116,8 @@
                         "cid": tg,
                         "isEnable" : $(this).is(":checked"),
                     }, function(data, status){
-                        if (status != "success") {
-                            showAlert("success", "更新成功。");
+                        if (status == "success") {
+                            showAlert("success", "更新状态成功。");
                         } else{
                             showAlert("danger", "更新失败，请重试！");
                         }

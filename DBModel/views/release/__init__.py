@@ -147,6 +147,7 @@ def getReleaseResult(request, mkey, isSwitchTab):
 # 操作Carouse信息
 def opCarouse(request):
     result = {"isSuccess" : False};
+    mkey = request.POST.get("mk", "");
     if mkey == "home_carouse": # 首页
         carouse.update(request, result, WebType.Home.value);
     elif mkey == "wiki_carouse": # 文档

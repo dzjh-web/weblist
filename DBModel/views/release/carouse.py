@@ -72,11 +72,11 @@ def upload(request, result, isSwitchTab, wtype = 0):
         "name" : info.name,
         "title" : info.title,
         "url" : info.url,
-        "img" : info.img,
+        "img" : info.img.url,
         "alt" : info.alt,
         "time" : info.time,
         "updateTime" : info.update_time,
-        "state" : info.state,
+        "isEnable" : info.state == Status.Open.value and True or False,
     } for info in infoList];
     pass;
 

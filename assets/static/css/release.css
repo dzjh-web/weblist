@@ -77,3 +77,27 @@ label.error {
 #releaseForm a:hover {
     color: rgb(11, 72, 126);
 }
+/* table style */
+table tbody th {
+	background-color: #212121;
+}
+table tbody th>.img-responsive {
+	display: inline-block;
+	width: 40px;
+}
+table tbody th a, table tbody th input {
+	cursor: pointer;
+	color: #428BCA;
+}
+table tbody th a:hover {
+	cursor: pointer;
+	color: rgb(11, 72, 126);
+}
+table tbody th .danger-btn {
+	cursor: pointer;
+	color: lightcoral;
+}
+table tbody th .danger-btn:hover {
+	cursor: pointer;
+	color: darkred;
+}
