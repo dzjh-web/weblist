@@ -17,7 +17,7 @@ def req(request):
 
 # 获取导航栏项
 def getNavList():
-    infoList = models.Carouse.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-update_time");
+    infoList = models.Carouse.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return [{
         "name" : info.name,
         "title" : info.title,
@@ -30,7 +30,7 @@ def getNavList():
 
 # 获取网站列表
 def getWebList():
-    infoList = models.WebItem.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-update_time");
+    infoList = models.WebItem.objects.filter(wtype = WebType.Home.value, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return [{
         "name" : info.name,
         "title" : info.title,

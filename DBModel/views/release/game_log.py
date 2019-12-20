@@ -65,7 +65,7 @@ def upload(request, result, isSwitchTab):
         pass;
     # 返回已发布的游戏
     searchText = request.POST.get("searchText", "");
-    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-update_time");
+    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-sort_id", "-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:

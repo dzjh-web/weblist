@@ -64,7 +64,7 @@ def detail(request):
 
 # 获取游戏列表
 def getGameList():
-    infoList = models.GameItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-update_time");
+    infoList = models.GameItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return [{
         "title" : info.name,
         "subTitle" : info.category,

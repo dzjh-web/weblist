@@ -11,6 +11,18 @@ import json;
 
 from _Global import _GG;
 
+
+# 进度映射值
+ScheduleMap = {
+    0 : "已挂起",
+    1 : "计划中",
+    2 : "筹备中",
+    3 : "开发中",
+    4 : "测试中",
+    5 : "已发布",
+    6 : "已下架",
+}
+
 # 游戏网页表单
 class GameItemForm(ModelForm):
     class Meta:
@@ -44,6 +56,7 @@ def upload(request, result, isSwitchTab):
                     "schedule" : Schedule.Pending.value,
                     "time" : timezone.now(),
                     "update_time" : timezone.now(),
+                    "sort_id" : 0,
                 });
                 gi.save();
                 result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】上传成功。";
@@ -67,6 +80,11 @@ def update(request, result, isSwitchTab):
                 if "schedule" in request.POST:
                     # 更新进度值
                     gi.schedule = request.POST["schedule"];
+                    gi.update_time = timezone.now();
+                    gi.save();
+                if "sortId" in request.POST:
+                    # 更新排序值
+                    gi.sort_id = int(request.POST["sortId"]);
                     gi.update_time = timezone.now();
                     gi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
@@ -94,6 +112,11 @@ def update(request, result, isSwitchTab):
                         result["isEdit"] = True;
                         result["form"] = GameItemForm(instance = gi);
                         result["gid"] = gid;
+                        # 进度
+                        result["schedule"] = ScheduleMap.get(gi.schedule, "未知");
+                        result["scheduleInfoList"] = [{"key" : v, "val" : k} for k,v in ScheduleMap.items()];
+                        # 排序值
+                        result["sortId"] = gi.sort_id;
                         return;
                     elif opType == "delete":
                         # 删除游戏日志
@@ -111,7 +134,7 @@ def update(request, result, isSwitchTab):
                 _GG("Log").w(e);
     # 返回已发布的游戏
     searchText = request.POST.get("searchText", "");
-    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-update_time");
+    infoList = models.GameItem.objects.filter(name__icontains = searchText).order_by("-sort_id", "-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -124,10 +147,11 @@ def update(request, result, isSwitchTab):
         "category" : gameInfo.category,
         "thumbnail" : gameInfo.thumbnail,
         "description" : gameInfo.description,
-        "schedule" : gameInfo.schedule,
+        "schedule" : ScheduleMap.get(gameInfo.schedule, "未知"),
         "filePath" : gameInfo.file_path and gameInfo.file_path.url or "",
         "time" : gameInfo.time,
         "updateTime" : gameInfo.update_time,
+        "sortId" : gameInfo.sort_id,
         "type" : "游戏网页",
     } for gameInfo in infoList];
     pass;

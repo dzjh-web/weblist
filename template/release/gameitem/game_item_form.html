@@ -4,6 +4,22 @@
         发布游戏网页
     </h2>
     <div id="releaseContent">
+        {% if isEdit %}
+        <div>
+            <div class="input-group">
+                <label class="input-group-addon" for="schedule">进度</label>
+                <select id="scheduleSelect" name="schedule" class="form-control" value="{{schedule}}">
+                    {% for scheduleInfo in scheduleInfoList %}
+                    <option data-target="{{ scheduleInfo.val }}">{{ scheduleInfo.key }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-group" style="margin-top: 20px;">
+                <label class="input-group-addon" for="sortId">排序值</label>
+                <input id="sortIdInput" name="sortId" class="form-control" type="number" value="{{sortId}}" />
+            </div>
+        </div>
+        {% endif %}
         {{ form.media }}
         {{ form.as_p }}
         <div>
@@ -109,9 +125,28 @@
                 ]);
             }
         });
-        // 文章ID判断
-        if ("{{gid}}" != "") {
-            $("input[name='name']").attr("readonly", "readonly");
-        }
+        // 启用/禁用按钮
+        $("#scheduleSelect").change(function() {
+            var $selectedOpt = $(this).find("option:selected");
+            if ($selectedOpt.val() != "{{schedule}}") {
+                requestRelease({"mk" : "{{mkey}}", "gid" : "{{ gid }}", "opType" : "update", "schedule" : $selectedOpt.attr("data-target")});
+            }
+        });
+        // 排序值更改
+        $("#sortIdInput").on("input propertychange", function(){
+            var value = $(this).val();
+            $.post(window.location.href, {
+                "mk" : "{{mkey}}",
+                "gid" : "{{ gid }}",
+                "opType" : "update",
+                "sortId" : value,
+            }, function(data, status){
+                if (status == "success") {
+                    showAlert("success", "更新排序值成功。");
+                } else{
+                    showAlert("danger", "更新失败，请重试！");
+                }
+            });
+        });
     })
 </script>

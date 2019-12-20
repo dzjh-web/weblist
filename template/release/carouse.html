@@ -24,7 +24,8 @@
             <th>链接</th>
             <th>图片</th>
             <th>图片描述</th>
-            <th>创建时间</th>
+            <th>更新时间</th>
+            <th>排序值</th>
             <th>是否启用</th>
             <th>操作</th>
         </tr>
@@ -42,7 +43,8 @@
                 {% endif %}
             </th>
             <th>{{ olInfo.alt }}</th>
-            <th>{{ olInfo.time|date:"Y-m-d H:i:s" }}</th>
+            <th>{{ olInfo.update_time|date:"Y-m-d H:i:s" }}</th>
+            <th><input class="sortIdInput" name="sort" data-target="{{ olInfo.id }}" type="number" value="{{olInfo.sortId}}" /></th>
             <th>
                 {% if olInfo.isEnable %}
                 <input class="operate" name="enable" data-target="{{ olInfo.id }}" type="checkbox" checked />
@@ -100,7 +102,6 @@
         });
         // 点击操作
         $(".operate").on("click",function(){
-            var $operate = $(this);
             var opType = $(this).attr("name");
             var tg = $(this).attr("data-target");
             switch(opType) {
@@ -131,6 +132,24 @@
                     }, function(){});
                     break;
             }
+        });
+        $(".sortIdInput").on("input propertychange", function(){
+            var opType = $(this).attr("name");
+            var cid = $(this).attr("data-target");
+            var value = $(this).val();
+            $.post(window.location.href, {
+                "isOpCarouse" : true,
+                "mk" : "{{mkey}}",
+                "opType" : opType,
+                "cid": cid,
+                "sortId" : value,
+            }, function(data, status){
+                if (status == "success") {
+                    showAlert("success", "更新排序值成功。");
+                } else{
+                    showAlert("danger", "更新失败，请重试！");
+                }
+            });
         });
 	})
 </script>

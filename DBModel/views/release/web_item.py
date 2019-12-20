@@ -53,6 +53,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     "state" : Status.Close.value,
                     "time" : timezone.now(),
                     "update_time" : timezone.now(),
+                    "sort_id" : 0,
                 });
                 wi.save();
                 result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于禁用状态，需手动进行启用。";
@@ -83,6 +84,11 @@ def update(request, result, isSwitchTab, wtype = 0):
                     wi.save();
                     # 更新成功
                     result["requestTips"] = f"网页【{wi.name}，{wi.title}】状态更新成功。";
+                if "sortId" in request.POST: # 更新排序值
+                    wi.sort_id = int(request.POST["sortId"]);
+                    wi.update_time = timezone.now();
+                    wi.save();
+                    result["requestTips"] = f"网页【{wi.name}，{wi.title}】排序值（{wi.sort_id}）更新成功。";
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = WebItemForm(request.POST, request.FILES);
                     if wf.is_valid():
@@ -113,6 +119,8 @@ def update(request, result, isSwitchTab, wtype = 0):
                         result["stateInfo"] = {"state" : "close", "label" : "禁用", "style" : "danger"};
                         if wi.state == Status.Close.value:
                             result["stateInfo"] = {"state" : "open", "label" : "启用", "style" : "primary"};
+                        # 排序值
+                        result["sortId"] = wi.sort_id;
                         return;
                     elif opType == "delete":
                         wi.delete();
@@ -126,7 +134,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                 _GG("Log").w(e);
     # 返回已发布的网页
     searchText = request.POST.get("searchText", "");
-    infoList = models.WebItem.objects.filter(Q(name__icontains = searchText) | Q(title__icontains = searchText), wtype = wtype).order_by("-update_time");
+    infoList = models.WebItem.objects.filter(Q(name__icontains = searchText) | Q(title__icontains = searchText), wtype = wtype).order_by("-sort_id", "-update_time");
     result["searchText"] = searchText;
     result["isSearchNone"] = len(infoList) == 0;
     if not searchText:
@@ -143,6 +151,7 @@ def update(request, result, isSwitchTab, wtype = 0):
         "time" : webInfo.time,
         "updateTime" : webInfo.update_time,
         "state" : webInfo.state == Status.Open.value and "启用" or "禁用",
+        "sortId" : webInfo.sort_id,
         "type" : "首页网页",
     } for webInfo in infoList];
     pass;

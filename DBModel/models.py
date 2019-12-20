@@ -20,6 +20,7 @@ class Carouse(models.Model):
     wtype = models.IntegerField()
     time = models.DateTimeField()
     update_time = models.DateTimeField()
+    sort_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -42,6 +43,7 @@ class GameItem(models.Model):
     file_path = models.FileField(upload_to = game_file_path, blank=True, null=True, verbose_name="游戏文件")
     time = models.DateTimeField()
     update_time = models.DateTimeField()
+    sort_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -107,6 +109,7 @@ class WebItem(models.Model):
     state = models.IntegerField()
     time = models.DateTimeField()
     update_time = models.DateTimeField()
+    sort_id = models.IntegerField()
 
     class Meta:
         managed = False

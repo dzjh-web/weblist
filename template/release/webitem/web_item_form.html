@@ -5,7 +5,13 @@
     </h2>
     <div id="releaseContent">
         {% if isEdit %}
-        <a id="enableBtn" class="btn btn-{{stateInfo.style}}" style="color: #FFFFFF;" data-target="{{stateInfostate}}">{{stateInfo.label}}该网页</a>
+        <div>
+            <a id="enableBtn" class="btn btn-{{stateInfo.style}}" style="color: #FFFFFF;" data-target="{{stateInfostate}}">{{stateInfo.label}}该网页</a>
+            <div class="input-group" style="margin-top: 20px;">
+                <label class="input-group-addon" for="sortId">排序值</label>
+                <input id="sortIdInput" name="sortId" class="form-control" type="number" value="{{sortId}}" />
+            </div>
+        </div>
         {% endif %}
         {{ form.media }}
         {{ form.as_p }}
@@ -102,6 +108,22 @@
         // 启用/禁用按钮
         $("#enableBtn").on("click", function() {
             requestRelease({"mk" : "{{mkey}}", "wid" : "{{ wid }}", "opType" : "update", "state" : $(this).attr("data-target")});
+        });
+        // 排序值更改
+        $("#sortIdInput").on("input propertychange", function(){
+            var value = $(this).val();
+            $.post(window.location.href, {
+                "mk" : "{{mkey}}",
+                "wid" : "{{ wid }}",
+                "opType" : "update",
+                "sortId" : value,
+            }, function(data, status){
+                if (status == "success") {
+                    showAlert("success", "更新排序值成功。");
+                } else{
+                    showAlert("danger", "更新失败，请重试！");
+                }
+            });
         });
     })
 </script>

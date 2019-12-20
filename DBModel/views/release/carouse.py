@@ -41,6 +41,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     "wtype" : wtype,
                     "time" : timezone.now(),
                     "update_time" : timezone.now(),
+                    "sort_id" : 0,
                 });
                 c.save();
                 result["requestTips"] = f"Carouse【{c.name}，{c.title}】上传成功，当前处于未启用状态，需手动进行启用。";
@@ -66,7 +67,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
         pass;
     result["form"] = CarouseForm();
     # 返回已发布的轮播图
-    infoList = models.Carouse.objects.filter(wtype = wtype).order_by("-update_time");
+    infoList = models.Carouse.objects.filter(wtype = wtype).order_by("-sort_id", "-update_time");
     result["onlineInfoList"] = [{
         "id" : info.id,
         "name" : info.name,
@@ -77,6 +78,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
         "time" : info.time,
         "updateTime" : info.update_time,
         "isEnable" : info.state == Status.Open.value and True or False,
+        "sortId" : info.sort_id,
     } for info in infoList];
     pass;
 
@@ -96,6 +98,11 @@ def update(request, result, wtype = 0):
                     c.update_time = timezone.now();
                     c.state = state;
                     c.save();
+                result["isSuccess"] = True;
+            elif opType == "sort":
+                c.update_time = timezone.now();
+                c.sort_id = int(request.POST.get("sortId", 0));
+                c.save();
                 result["isSuccess"] = True;
         except Exception as e:
             _GG("Log").w(e);

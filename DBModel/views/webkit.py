@@ -24,7 +24,7 @@ def req(request):
 
 # 获取游戏列表
 def getUrlList(wtype):
-    infoList = models.WebItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-update_time");
+    infoList = models.WebItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return [{
         "name" : info.name,
         "title" : info.title,
@@ -37,7 +37,7 @@ def getUrlList(wtype):
 
 # 获取轮播列表
 def getCarouseList(wtype):
-    infoList = models.Carouse.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-update_time");
+    infoList = models.Carouse.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return [{
         "name" : info.name,
         "title" : info.title,
