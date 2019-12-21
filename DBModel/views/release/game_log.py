@@ -16,7 +16,7 @@ from _Global import _GG;
 class GameLogForm(ModelForm):
     class Meta:
         model = models.GameLog
-        fields = ["title", "sub_title"]
+        fields = ["title", "sub_title", "sketch"]
 
     def __init__(self, *args, **kwargs):
         super(GameLogForm, self).__init__(*args, **kwargs);
@@ -26,7 +26,7 @@ class GameLogForm(ModelForm):
         if instance:
             content = instance.cid.content;
         self.fields["content"] = RichTextUploadingFormField(label = "详细内容", initial = content);
-        self.files["sketch"] = HiddenInput();
+        self.fields["sketch"].widget = HiddenInput();
 
 # 上传游戏日志信息
 def upload(request, result, isSwitchTab):
@@ -34,7 +34,7 @@ def upload(request, result, isSwitchTab):
         gid = request.POST.get("gid", None);
         if gid:
             try:
-                gi = models.GameItem.objects.get(id = gid);
+                gi = models.GameItem.objects.get(id = int(gid));
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = GameLogForm(request.POST, request.FILES);
                     if wf.is_valid():
@@ -44,6 +44,7 @@ def upload(request, result, isSwitchTab):
                             "gid" : gi,
                             "title" : wf.cleaned_data["title"],
                             "sub_title" : wf.cleaned_data["sub_title"],
+                            "sketch" : wf.cleaned_data["sketch"],
                             "cid" : wc,
                             "time" : timezone.now(),
                             "update_time" : timezone.now(),
@@ -136,7 +137,7 @@ def update(request, result, isSwitchTab):
         "id" : gameInfo.id,
         "title" : gameInfo.title,
         "subTitle" : gameInfo.sub_title,
-        "thumbnail" : gameInfo.thumbnail,
+        "sketch" : gameInfo.sketch,
         "time" : gameInfo.time,
         "updateTime" : gameInfo.update_time,
         "gid" : gameInfo.gid.id,
