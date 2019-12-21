@@ -1,7 +1,7 @@
-<div class="col-md-offset-1 col-md-10" style="padding: 0px;margin-bottom: 20px;">
-    <a id="goback" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
-</div>
 {% if isEdit %}
+    <div class="col-md-offset-1 col-md-10" style="padding: 0px;margin-top: 10px;margin-bottom: 10px;">
+        <a id="goback" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
+    </div>
     {% include "release/gamelog/game_log_form.html" %}
 {% else %}
 <form id="searchForm" class="col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 form-group" role="form" enctype="multipart/form-data">
