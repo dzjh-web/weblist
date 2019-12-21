@@ -213,25 +213,25 @@ footer a{
 	color: #FFFFFF;
 	background-color: red;
 }
-/* login-form style */
-.login-form>.form-control, .login-form>.input-group{
+/* dialog-form style */
+.dialog-form>.form-control, .dialog-form>.input-group{
 	height: auto;
 	padding: 10px;
 	font-size: 16px;
 	margin-top: 40px;
 }
-.login-form>.input-group{
+.dialog-form>.input-group{
 	padding: 0px;
 	margin-bottom: 10px;
 }
-.login-form>.form-control:focus{
+.dialog-form>.form-control:focus{
 	z-index: 2;
 }
-.login-form>label{
+.dialog-form>label{
 	font-weight: normal;
 	padding: 10px 0px;
 }
-.login-form>.login-link{
+.dialog-form>.login-link{
 	display: block;
 	margin-top: 10px;
 	padding: 10px;
@@ -501,4 +501,9 @@ label.error {
 .card-hover-item:hover .card-hover-face2{
 	transform: translateY(0);
 	border-radius: 0px 0px 4px 4px;
+}
+/* other style */
+.danger-button:hover {
+	color: #FFFFFF;
+	background-color: red;
 }

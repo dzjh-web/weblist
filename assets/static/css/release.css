@@ -65,17 +65,17 @@ label.error {
     margin-bottom: 40px;
     background-color: #E1E1E1;
 }
-#releaseForm h2 {
+#releaseForm h2, .dialog-form h2 {
     padding: 20px;
     color:forestgreen;
     border: 1px #BCBCBC solid;
     background-color: #F1F1F1;
 }
-#releaseForm a {
+#releaseForm a, .dialog-form a {
     color: #428BCA;
 }
-#releaseForm a:hover {
-    color: rgb(11, 72, 126);
+#releaseForm a:hover, .dialog-form a:hover {
+    color: #0b487e;
 }
 /* table style */
 table tbody th {
@@ -91,7 +91,7 @@ table tbody th a, table tbody th input {
 }
 table tbody th a:hover {
 	cursor: pointer;
-	color: rgb(11, 72, 126);
+	color: #0b487e;
 }
 table tbody th .danger-btn {
 	cursor: pointer;

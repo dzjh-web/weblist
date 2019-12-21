@@ -44,7 +44,7 @@
             </th>
             <th>{{ olInfo.alt }}</th>
             <th>{{ olInfo.update_time|date:"Y-m-d H:i:s" }}</th>
-            <th><input class="sortIdInput" name="sort" data-target="{{ olInfo.id }}" type="number" value="{{olInfo.sortId}}" /></th>
+            <th>{{olInfo.sortId}}</th>
             <th>
                 {% if olInfo.isEnable %}
                 <input class="operate" name="enable" data-target="{{ olInfo.id }}" type="checkbox" checked />
@@ -53,6 +53,7 @@
                 {% endif %}
             </th>
             <th>
+                <a class="operate" name="update" data-target="{{ olInfo.id }}" style="margin-right: 10px;">更新</a>
                 <a class="operate danger-btn" name="delete" data-target="{{ olInfo.id }}">删除</a>
             </th>
         </tr>
@@ -107,7 +108,7 @@
             switch(opType) {
                 case "show_big_img":
                     // 创建弹窗
-                    createDialogPage("<img class='img-responsive' src='"+ tg +"' style='width: 100%;'>");
+                    createDialogPage("<img class='img-responsive' src='"+ tg +"' style='width: 100%;'>", "col-md-8 col-md-offset-2");
                     break;
                 case "enable":
                     $.post(window.location.href, {
@@ -125,31 +126,86 @@
                     });
                     break;
                 case "delete":
-                    requestCallback({
+                    // 创建弹窗
+                    createDialogPage("<form class='dialog-form' role='form' enctype='multipart/form-data'>\
+                                    <h2>是否确认删除？</h2>\
+                                    <blockquote style='color: red;'>注意：删除后无法还原，请谨慎操作！</blockquote>\
+                                    <div class='clearfix'>\
+                                        <button id='cancelOperation' class='btn btn-lg btn-info pull-left'>取消</button>\
+                                        <button id='submitOperation' class='btn btn-lg btn-default pull-right danger-button'>确定</button>\
+                                    </div>\
+                                </form>");
+                    $("#cancelOperation").on("click",function(){
+                        closeDialogPage(); // 关闭弹窗
+                    });
+                    $("#submitOperation").on("click",function(){
+                        requestRelease({"mk" : "{{mkey}}", "cid" : tg, "opType" : opType});
+                        closeDialogPage(); // 关闭弹窗
+                    });
+                    break;
+                case "update":
+                    $.post(window.location.href, {
+                        "isOpCarouse" : true,
                         "mk" : "{{mkey}}",
-                        "opType" : opType,
+                        "opType" : "update",
                         "cid": tg,
-                    }, function(){});
+                    }, function(data, status){
+                        if (status == "success") {
+                            // 创建弹窗
+                            createDialogPage("<form id='updateForm' class='dialog-form' role='form' enctype='multipart/form-data'>\
+                                            <h2>更新Carouse</h2>\
+                                            <div class='input-group' style='margin-top: 20px;'>\
+                                                <label class='input-group-addon' for='sortId'>排序值:</label>\
+                                                <input id='sortIdInput' name='sortId' class='form-control' type='number' value='"+ data.sortId +"' />\
+                                            </div>\
+                                            " + data.html + "\
+                                            <input class='form-control btn btn-success' type='submit' value='确认更新' />\
+                                        </form>", "col-md-8 col-md-offset-2");
+                            $("#updateForm").children("p").each(function(idx, elem){
+                                var $label = $(elem).find("label");
+                                if ($label.length > 0) {
+                                    $(elem).addClass("input-group").css("margin-top", "30px");
+                                    $label.each(function(){
+                                        if ($(this).attr("for") == "img-clear_id") {
+                                            $(this).css("color", "lightcoral");
+                                        } else {
+                                            $(this).addClass("input-group-addon");
+                                            $(this).next().addClass("form-control");
+                                        }
+                                    });
+                                }
+                            })
+                            // 更新校验
+                            $("#updateForm").validate({
+                                rules: {
+                                    name: {
+                                        required: true,
+                                    },
+                                    url: {
+                                        required: true,
+                                    },
+                                    sort_id: {
+                                        required: true,
+                                    },
+                                },
+                                messages: {
+                                    name: "名称不能为空",
+                                    url: "链接不能为空",
+                                    sort_id: "排序值不能为空",
+                                },
+                                submitHandler: function() {
+                                    uploadReleaseForm($("#updateForm"), [
+                                        {"key":"mk", "val":"{{mkey}}", "type":"text"},
+                                        {"key":"opType", "val":"update", "type":"text"},
+                                        {"key":"cid", "val": data.id, "type":"number"},
+                                    ]);
+                                    closeDialogPage(); // 关闭弹窗
+                                }
+                            });
+                        }
+                    });
                     break;
             }
-        });
-        $(".sortIdInput").on("input propertychange", function(){
-            var opType = $(this).attr("name");
-            var cid = $(this).attr("data-target");
-            var value = $(this).val();
-            $.post(window.location.href, {
-                "isOpCarouse" : true,
-                "mk" : "{{mkey}}",
-                "opType" : opType,
-                "cid": cid,
-                "sortId" : value,
-            }, function(data, status){
-                if (status == "success") {
-                    showAlert("success", "更新排序值成功。");
-                } else{
-                    showAlert("danger", "更新失败，请重试！");
-                }
-            });
         });
 	})
 </script>

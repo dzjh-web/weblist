@@ -1,5 +1,6 @@
 from django.db.models import Q;
 import django.utils.timezone as timezone;
+from django.http import HttpResponse;
 from django.forms import ModelForm;
 
 from DBModel import models;
@@ -25,7 +26,8 @@ class CarouseForm(ModelForm):
 
 # 上传轮播图信息
 def upload(request, result, isSwitchTab, wtype = 0):
-    result["title"] = webTypeTitleMap.get(wtype, "轮播图");
+    wTitle = webTypeTitleMap.get(wtype, "轮播图");
+    result["title"] = wTitle;
     if not isSwitchTab:
         isRelease = base_util.getPostAsBool(request, "isRelease");
         if isRelease:
@@ -53,15 +55,34 @@ def upload(request, result, isSwitchTab, wtype = 0):
         cid, opType = request.POST.get("cid", None), request.POST.get("opType", None);
         if cid and opType:
             try:
-                c = models.Carouse.objects.get(id = cid);
+                c = models.Carouse.objects.get(id = int(cid));
                 if opType == "delete":
                     c.delete();
-                    result["requestTips"] = f"Carouse【{c.name}，{c.url}，{c.wtype}】成功删除。";
+                    result["requestTips"] = f"Carouse【{c.name}，{c.url}，{wTitle}】成功删除。";
                     # 发送邮件通知
                     try:
-                        base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{c.wtype}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                        base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                     except Exception as e:
                         _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                elif opType == "update":
+                    cf = CarouseForm(request.POST, request.FILES);
+                    if cf.is_valid():
+                        c.name = cf.cleaned_data["name"];
+                        c.title = cf.cleaned_data["title"];
+                        c.url = cf.cleaned_data["url"];
+                        if cf.cleaned_data["img"]:
+                            c.img = cf.cleaned_data["img"];
+                        c.alt = cf.cleaned_data["alt"];
+                        c.sort_id = request.POST.get("sort_id", c.sort_id);
+                        c.update_time = timezone.now();
+                        c.save();
+                        # 更新成功
+                        result["requestTips"] = f"Carouse【{c.name}，{c.url}，{wTitle}】更新成功";
+                        # 发送邮件通知
+                        try:
+                            base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功更新。");
+                        except Exception as e:
+                            _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             except Exception as e:
                 _GG("Log").w(e);
         pass;
@@ -99,10 +120,12 @@ def update(request, result, wtype = 0):
                     c.state = state;
                     c.save();
                 result["isSuccess"] = True;
-            elif opType == "sort":
-                c.update_time = timezone.now();
-                c.sort_id = int(request.POST.get("sortId", 0));
-                c.save();
+            elif opType == "update":
+                form = CarouseForm(instance=c);
+                html = HttpResponse(form.as_p());
+                result["id"] = c.id;
+                result["sortId"] = c.sort_id;
+                result["html"] = html.getvalue().decode();
                 result["isSuccess"] = True;
         except Exception as e:
             _GG("Log").w(e);

@@ -93,14 +93,14 @@ $(function(){
 		}
 	}
 	// 创建弹窗函数[带有关闭回调参数]
-	createDialog = function(content, closeCallback){
+	createDialog = function(content, closeCallback, sizeClass="col-md-4 col-md-offset-4"){
 		// 关闭原有弹窗
 		closeDialogPage();
 		// 弹窗内容
 		var dialogPage = "<div id='dialogPage'>\
 			<div class='container'>\
 				<div class='row'>\
-					<div class='dialog-background col-md-4 col-md-offset-4'>\
+					<div class='dialog-background " + sizeClass + "'>\
 						<a id='closeDialogPage' href='javascript:void(0);' title='关闭弹窗'><span class='glyphicon glyphicon-remove'></span>关闭</a>\
 						<div class='dialog-content'>" + content + "</div>\
 					</div>\
@@ -140,8 +140,8 @@ $(function(){
 		});
 	}
 	// 创建弹窗函数
-	createDialogPage = function(content){
-		createDialog(content, function(){}); // 关闭弹窗时无回调
+	createDialogPage = function(content, sizeClass="col-md-4 col-md-offset-4"){
+		createDialog(content, function(){}, sizeClass); // 关闭弹窗时无回调
 	}
 	// 创建定时弹窗
 	createIntervalDialog = function(content, seconds, closeCallback){

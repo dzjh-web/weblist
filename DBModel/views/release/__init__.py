@@ -156,4 +156,4 @@ def opCarouse(request):
         carouse.update(request, result, WebType.Github.value);
     elif mkey == "game_carouse": # 游戏
         carouse.update(request, result, WebType.Game.value);
-    return HttpResponse(result);
+    return JsonResponse(result);
