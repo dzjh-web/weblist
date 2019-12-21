@@ -27,9 +27,11 @@ def detail(request):
     result = {
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "Games",
-        "TITLE_URL" : "http://localhost:8008/games",
+        "TITLE_URL" : "http://localhost:8008/game",
         "SEARCH_URL" : "http://localhost:8008/search?k=game",
         "searchText" : "搜索游戏名称",
+        "SEARCH_LOG_URL" : "http://localhost:8008/search?k=gamelog",
+        "searchLogText" : "搜索游戏日志名称",
         "hasInfo" : False,
     };
     try:

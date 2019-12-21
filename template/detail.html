@@ -100,6 +100,27 @@
 			.game-info-schedule-items .schedule-item.active .schedule-no-line .schedule-text{
 				color: red;
 			}
+			.game-log-list {
+				margin-top: 40px;
+				border: 2px #686868 solid;
+				border-radius: 4px;
+			}
+			.game-log-list .row {
+				padding: 10px;
+			}
+			.game-log-list-title {
+				padding: 20px 20px;
+				margin-bottom: 20px;
+				background-color: #111111;
+				border-bottom: 1px #686868 solid;
+			}
+			.game-log-list-title h2 {
+				display: inline-block;
+				margin: 0px;
+				padding-top: 6px;
+				font-weight: bolder;
+				color: #008000;
+			}
 		</style>
 	</head>
 	<body>
@@ -174,7 +195,14 @@
 						</div>
 						</div>
 					{% endif %}
-					<div style="border-top: 1px #BCBCBC solid;padding-top: 40px;margin-top: 40px;">
+					<div class="game-log-list">
+						<div class="game-log-list-title clearfix">
+							<h2>游戏日志</h2>
+							<form action="{{ SEARCH_LOG_URL }}" class="navbar-form pull-right" method="POST">
+								<input name="searchText" type="text" placeholder="{{ searchLogText }}" class="form-control">
+								<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+							</form>
+						</div>
 						<ul class="row">
 							{% for info in logInfoList %}
 							<li class="col-md-12">
