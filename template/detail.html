@@ -7,27 +7,98 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="JDreamHeart[个人网站]">
 		<meta name="author" content="JDreamHeart">
-		<title>{{ TITLE }}</title>
+		<title>{{ HEAD_TITLE }}</title>
 		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
 		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" href= {% static "css/style.css" %} />
 		<style>
 			.game-info-img {
 				border-radius: 4px;
+				border: 1px #BCBCBC solid;
+			}
+			.game-info-desc {
+				margin-top: 20px;
+				font-size: 16px;
+				color: #CDCDCD;
+			}
+			.game-info-exinfo {
+				color: #A0A0A0;
+			}
+			.game-info-body {
+				margin-top: 20px;
+				padding: 0px;
+				border-top: 1px #565656 solid;
 			}
 			.game-info-content {
-				margin: 20px 0px;
-				padding: 20px 0px;
-				border-top: 1px #363636 solid;
-				border-bottom: 1px #363636 solid;
-			}
-			.game-info-schedule {
-				padding: 10px;
-				border: 1px #686868 solid;
+				margin: 40px 0px;
+				border: 2px #686868 solid;
 				border-radius: 4px;
 			}
-			.game-info-schedule h4 {
-				margin-bottom: 20px;
+			.game-info-content h2 {
+				padding: 10px;
+				margin: 0px;
+				font-weight: bolder;
+				color: darkgreen;
+				background-color: #E1E1E1;
+				border-bottom: 1px #BCBCBC solid;
+			}
+			.game-info-content article {
+				padding: 20px 10px;
+				color: #363636;
+				background-color: #E1E1E1;
+			}
+			.game-info-schedule {
+				padding: 0px;
+				border: 2px #686868 solid;
+				border-radius: 4px;
+			}
+			.game-info-schedule h3 {
+				padding: 10px;
+				margin: 0px;
+				margin-bottom: 10px;
+				font-weight: bolder;
+				color: darkgreen;
+				background-color: #E1E1E1;
+			}
+			.game-info-schedule-items {
+				padding: 20px 0px;
+			}
+			.game-info-schedule-items .schedule-item>div {
+				position: relative;
+				height: 3px;
+			}
+			.game-info-schedule-items .schedule-line {
+                background-color: #363636;
+			}
+			.game-info-schedule-items .schedule-item.active .schedule-line {
+                background-color: greenyellow;
+			}
+			.game-info-schedule-items .schedule-circle {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                bottom: -8px;
+                border-radius: 50%;
+                background-color: #363636;
+			}
+			.game-info-schedule-items .schedule-item.active .schedule-circle {
+				background-color: greenyellow;
+			}
+			.game-info-schedule-items .schedule-item.active .schedule-no-line .schedule-circle {
+				background-color: red;
+			}
+			.game-info-schedule-items .schedule-text{
+				padding-top: 14px;
+				color: #363636;
+			}
+			.game-info-schedule-items .schedule-item.active .schedule-text{
+				color: greenyellow;
+			}
+			.game-info-schedule-items .schedule-item.active .schedule-no-line .schedule-text{
+				color: red;
 			}
 		</style>
 	</head>
@@ -60,27 +131,48 @@
 				<div class="col-md-8">
 					<div class="game-info-tittle">
 						<h2>{{ detailInfo.name }}</h2>
-						{% if detailInfo.title %}
-						<p>&nbsp;[{{ detailInfo.category }}]</span>
+						{% if detailInfo.category %}
+						<h4>&nbsp;[{{ detailInfo.category }}]</h4>
 						{% endif %}
 					</div>
-					<p style="color: #A0A0A0;">
+					<blockquote class="game-info-desc">
+						<strong>简介：</strong>
+						{{ detailInfo.description | safe }}
+					</blockquote>
+					<p class="game-info-exinfo">
 						<span>最近更新时间：{{ detailInfo.updateTime|date:"Y-m-d H:i:s" }}</span>
 					</p>
 				</div>
 				<div class="col-md-4">
 					<img class="game-info-img img-responsive" src="{{ detailInfo.thumbnail }}" />
 				</div>
-				<div class="col-md-12">
+				<div class="col-md-12 game-info-body">
 					<div class="game-info-content">
-						<h4>游戏介绍：</h4>
-						<article>{{ detailInfo.description | safe }}</article>
+						<h2 class="text-center">游戏详情</h2>
+						<article>{{ detailInfo.content | safe }}</article>
 					</div>
 					{% if detailInfo.schedule %}
 					<div class="game-info-schedule">
-						<h4 class="text-center">-&nbsp;制作进度&nbsp;-</h4>
-						<p class="text-center">{{ detailInfo.schedule }}</p>
-					</div>
+						<h3 class="text-center">当前进度</h3>
+						<div class="game-info-schedule-items">
+							{% for item in detailInfo.schedule.items %}
+								{% ifequal item.val detailInfo.schedule.val %}
+								<div class="schedule-item active" style="display: inline-block;width: {{detailInfo.schedule.itemWidth}};">
+								{% else %}
+								<div class="schedule-item" style="display: inline-block;width: {{detailInfo.schedule.itemWidth}};">
+								{% endifequal %}
+									{% if item.hasLine %}
+										<div class="schedule-line">
+									{% else %}
+										<div class="schedule-no-line">
+									{% endif %}
+											<div class="schedule-circle"></div>
+											<p class="text-center schedule-text">{{ item.key }}</p>
+										</div>
+								</div>
+							{% endfor %}
+						</div>
+						</div>
 					{% endif %}
 					<div style="border-top: 1px #BCBCBC solid;padding-top: 40px;margin-top: 40px;">
 						<ul class="row">

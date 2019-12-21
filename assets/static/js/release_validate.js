@@ -22,8 +22,8 @@ $(function(){
     $.validator.addMethod(
         "checkFileType",
         function(value, element, param){
-            if (this.optional(element)) {
-                return false;
+            if (this.optional(element)) {// 允许文件为空
+                return true;
             }
             var valList = value.split(".");
             var val = valList[valList.length-1];

@@ -74,21 +74,8 @@ def update(request, result, isSwitchTab, wtype = 0):
         wid = request.POST.get("wid", None);
         if wid:
             try:
+                isEdit = False;
                 wi = models.WebItem.objects.get(id = int(wid));
-                if "state" in request.POST:
-                    if request.POST["state"] == "open":
-                        wi.state = Status.Open.value;
-                    else:
-                        wi.state = Status.Close.value;
-                    wi.update_time = timezone.now();
-                    wi.save();
-                    # 更新成功
-                    result["requestTips"] = f"网页【{wi.name}，{wi.title}】状态更新成功。";
-                if "sortId" in request.POST: # 更新排序值
-                    wi.sort_id = int(request.POST["sortId"]);
-                    wi.update_time = timezone.now();
-                    wi.save();
-                    result["requestTips"] = f"网页【{wi.name}，{wi.title}】排序值（{wi.sort_id}）更新成功。";
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = WebItemForm(request.POST, request.FILES);
                     if wf.is_valid():
@@ -97,13 +84,16 @@ def update(request, result, isSwitchTab, wtype = 0):
                         # 保存网页信息
                         wi.name = wf.cleaned_data["name"];
                         wi.title = wf.cleaned_data["title"];
-                        wi.thumbnail = wf.cleaned_data["thumbnail"];
+                        if wf.cleaned_data["thumbnail"]:
+                            wi.thumbnail = wf.cleaned_data["thumbnail"];
                         wi.description = wf.cleaned_data["description"];
                         wi.url = wf.cleaned_data["url"];
                         wi.update_time = timezone.now();
                         wi.save();
                         # 更新成功
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】更新成功。";
+                        # 跳转编辑页面
+                        isEdit = True;
                         # 发送邮件通知
                         try:
                             base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
@@ -112,16 +102,23 @@ def update(request, result, isSwitchTab, wtype = 0):
                 opType = request.POST.get("opType", None);
                 if opType:
                     if opType == "update":
-                        result["isEdit"] = True;
-                        result["form"] = WebItemForm(instance = wi);
-                        result["wid"] = wid;
-                        # 状态信息
-                        result["stateInfo"] = {"state" : "close", "label" : "禁用", "style" : "danger"};
-                        if wi.state == Status.Close.value:
-                            result["stateInfo"] = {"state" : "open", "label" : "启用", "style" : "primary"};
-                        # 排序值
-                        result["sortId"] = wi.sort_id;
-                        return;
+                        # 更新状态
+                        if "state" in request.POST:
+                            if request.POST["state"] == "open":
+                                wi.state = Status.Open.value;
+                            else:
+                                wi.state = Status.Close.value;
+                            wi.update_time = timezone.now();
+                            wi.save();
+                            result["requestTips"] = f"网页【{wi.name}，{wi.title}】状态更新成功。";
+                        # 更新排序值
+                        if "sortId" in request.POST:
+                            wi.sort_id = int(request.POST["sortId"]);
+                            wi.update_time = timezone.now();
+                            wi.save();
+                            result["requestTips"] = f"网页【{wi.name}，{wi.title}】排序值（{wi.sort_id}）更新成功。";
+                        # 跳转编辑页面
+                        isEdit = True;
                     elif opType == "delete":
                         wi.delete();
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】成功删除。";
@@ -130,6 +127,18 @@ def update(request, result, isSwitchTab, wtype = 0):
                             base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                # 返回页面数据
+                if isEdit:
+                    result["isEdit"] = True;
+                    result["form"] = WebItemForm(instance = wi);
+                    result["wid"] = wid;
+                    # 状态信息
+                    result["stateInfo"] = {"state" : "close", "label" : "禁用", "style" : "danger"};
+                    if wi.state == Status.Close.value:
+                        result["stateInfo"] = {"state" : "open", "label" : "启用", "style" : "primary"};
+                    # 排序值
+                    result["sortId"] = wi.sort_id;
+                    return;
             except Exception as e:
                 _GG("Log").w(e);
     # 返回已发布的网页

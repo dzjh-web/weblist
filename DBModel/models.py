@@ -36,7 +36,7 @@ def game_file_path(instance, filename):
 class GameItem(models.Model):
     name = models.CharField(max_length=255, verbose_name="名称")
     category = models.CharField(max_length=255, verbose_name="类型")
-    thumbnail = models.ImageField(upload_to=game_pic_path, verbose_name="缩略图")
+    thumbnail = models.ImageField(upload_to=game_pic_path, verbose_name="缩略图", blank=True, null=True)
     description = models.CharField(max_length=255, verbose_name="简述")
     cid = models.ForeignKey('WebContent', models.DO_NOTHING, db_column='cid')
     schedule = models.IntegerField(verbose_name="进度")
@@ -101,7 +101,7 @@ def web_pic_path(instance, filename):
 class WebItem(models.Model):
     name = models.CharField(max_length=255, verbose_name="名称")
     title = models.CharField(max_length=255, verbose_name="标题")
-    thumbnail = models.ImageField(upload_to=web_pic_path, verbose_name="缩略图")
+    thumbnail = models.ImageField(upload_to=web_pic_path, verbose_name="缩略图", blank=True, null=True)
     description = models.CharField(max_length=255, verbose_name="简述")
     url = models.CharField(max_length=255, verbose_name="网址")
     cid = models.ForeignKey('WebContent', models.DO_NOTHING, db_column='cid')

@@ -64,27 +64,22 @@
                 var $label = $(elem).find("label");
                 if ($label.length > 0) {
                     $(elem).addClass("input-group").css("margin-top", "30px");
+                    $label.each(function(){
+                        if ($(this).attr("for") == "thumbnail-clear_id") {
+                            $(this).css("color", "lightcoral");
+                        } else {
+                            $(this).addClass("input-group-addon");
+                            $(this).next().addClass("form-control");
+                        }
+                    });
                 }
-                $label.addClass("input-group-addon");
-                $label.next().addClass("form-control");
             })
         }
         // 提交发布表单
-        $("#releaseForm").validate({
+        var validateParams = {
             rules: {
                 name: {
                     required: true,
-                    remote: {
-                        url : window.location.href,
-                        type : "post",
-                        dataType: "json",
-                        data : {
-                            isVerify : true,
-                            gameName : function() {
-                                return $("input[name='name']").val();
-                            }
-                        }
-                    },
                 },
                 category: {
                     required: true,
@@ -105,7 +100,6 @@
             messages: {
                 name: {
                     required: "请输入名称",
-                    remote: "已存在相同名称的游戏！请重新输入",
                 },
                 category: "请输入类型",
                 thumbnail: "请选择缩略图",
@@ -124,7 +118,11 @@
                     {"key":"gid", "val":"{{ gid }}", "type":"text"},
                 ]);
             }
-        });
+        };
+        if ("{{isEdit}}" != "") {
+            delete validateParams.rules.thumbnail;
+        }
+        $("#releaseForm").validate(validateParams);
         // 启用/禁用按钮
         $("#scheduleSelect").change(function() {
             var $selectedOpt = $(this).find("option:selected");

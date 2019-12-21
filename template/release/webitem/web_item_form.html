@@ -57,13 +57,19 @@
                 var $label = $(elem).find("label");
                 if ($label.length > 0) {
                     $(elem).addClass("input-group").css("margin-top", "30px");
+                    $label.each(function(){
+                        if ($(this).attr("for") == "thumbnail-clear_id") {
+                            $(this).css("color", "lightcoral");
+                        } else {
+                            $(this).addClass("input-group-addon");
+                            $(this).next().addClass("form-control");
+                        }
+                    });
                 }
-                $label.addClass("input-group-addon");
-                $label.next().addClass("form-control");
             })
         }
         // 提交发布表单
-        $("#releaseForm").validate({
+        var validateParams = {
             rules: {
                 name: {
                     required: true,
@@ -104,7 +110,11 @@
                     {"key":"wid", "val":"{{ wid }}", "type":"text"},
                 ]);
             }
-        });
+        };
+        if ("{{isEdit}}" != "") {
+            delete validateParams.rules.thumbnail;
+        }
+        $("#releaseForm").validate(validateParams);
         // 启用/禁用按钮
         $("#enableBtn").on("click", function() {
             requestRelease({"mk" : "{{mkey}}", "wid" : "{{ wid }}", "opType" : "update", "state" : $(this).attr("data-target")});

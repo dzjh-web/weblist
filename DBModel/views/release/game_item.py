@@ -5,23 +5,12 @@ from ckeditor_uploader.fields import RichTextUploadingFormField;
 
 from DBModel import models;
 from utils import base_util;
-from release.base import Schedule;
+from release.base import Schedule, ScheduleMap;
 
 import json;
 
 from _Global import _GG;
 
-
-# 进度映射值
-ScheduleMap = {
-    0 : "已挂起",
-    1 : "计划中",
-    2 : "筹备中",
-    3 : "开发中",
-    4 : "测试中",
-    5 : "已发布",
-    6 : "已下架",
-}
 
 # 游戏网页表单
 class GameItemForm(ModelForm):
@@ -76,17 +65,8 @@ def update(request, result, isSwitchTab):
         gid = request.POST.get("gid", None);
         if gid:
             try:
+                isEdit = False;
                 gi = models.GameItem.objects.get(id = int(gid));
-                if "schedule" in request.POST:
-                    # 更新进度值
-                    gi.schedule = request.POST["schedule"];
-                    gi.update_time = timezone.now();
-                    gi.save();
-                if "sortId" in request.POST:
-                    # 更新排序值
-                    gi.sort_id = int(request.POST["sortId"]);
-                    gi.update_time = timezone.now();
-                    gi.save();
                 if base_util.getPostAsBool(request, "isRelease"):
                     wf = GameItemForm(request.POST, request.FILES);
                     if wf.is_valid():
@@ -95,29 +75,41 @@ def update(request, result, isSwitchTab):
                         # 保存游戏网页信息
                         gi.name = wf.cleaned_data["name"];
                         gi.category = wf.cleaned_data["category"];
-                        gi.thumbnail = wf.cleaned_data["thumbnail"];
+                        if wf.cleaned_data["thumbnail"]:
+                            gi.thumbnail = wf.cleaned_data["thumbnail"];
+                        if wf.cleaned_data["file_path"]:
+                            gi.file_path = wf.cleaned_data["file_path"];
                         gi.description = wf.cleaned_data["description"];
                         gi.update_time = timezone.now();
                         gi.save();
                         # 更新成功
                         result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】更新成功。";
+                        # 跳转编辑页面
+                        isEdit = True;
                         # 发送邮件通知
                         try:
                             base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                    else:
+                        _GG("Log").w(f"Invalid form data!");
                 opType = request.POST.get("opType", None);
                 if opType:
                     if opType == "update":
-                        result["isEdit"] = True;
-                        result["form"] = GameItemForm(instance = gi);
-                        result["gid"] = gid;
-                        # 进度
-                        result["schedule"] = ScheduleMap.get(gi.schedule, "未知");
-                        result["scheduleInfoList"] = [{"key" : v, "val" : k} for k,v in ScheduleMap.items()];
-                        # 排序值
-                        result["sortId"] = gi.sort_id;
-                        return;
+                        # 更新进度值
+                        if "schedule" in request.POST:
+                            gi.schedule = request.POST["schedule"];
+                            gi.update_time = timezone.now();
+                            gi.save();
+                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】排序值（{gi.schedule}）更新成功。";
+                        # 更新排序值
+                        if "sortId" in request.POST:
+                            gi.sort_id = int(request.POST["sortId"]);
+                            gi.update_time = timezone.now();
+                            gi.save();
+                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】排序值（{gi.sort_id}）更新成功。";
+                        # 跳转编辑页面
+                        isEdit = True;
                     elif opType == "delete":
                         # 删除游戏日志
                         for log in models.GameLog.objects.filter(gid = gi):
@@ -130,6 +122,17 @@ def update(request, result, isSwitchTab):
                             base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                # 返回页面数据
+                if isEdit:
+                    result["isEdit"] = True;
+                    result["form"] = GameItemForm(instance = gi);
+                    result["gid"] = gid;
+                    # 进度
+                    result["schedule"] = ScheduleMap.get(gi.schedule, "未知");
+                    result["scheduleInfoList"] = [{"key" : v, "val" : k} for k,v in ScheduleMap.items()];
+                    # 排序值
+                    result["sortId"] = gi.sort_id;
+                    return;
             except Exception as e:
                 _GG("Log").w(e);
     # 返回已发布的游戏
@@ -145,7 +148,7 @@ def update(request, result, isSwitchTab):
         "id" : gameInfo.id,
         "name" : gameInfo.name,
         "category" : gameInfo.category,
-        "thumbnail" : gameInfo.thumbnail,
+        "thumbnail" : gameInfo.thumbnail.url,
         "description" : gameInfo.description,
         "schedule" : ScheduleMap.get(gameInfo.schedule, "未知"),
         "filePath" : gameInfo.file_path and gameInfo.file_path.url or "",

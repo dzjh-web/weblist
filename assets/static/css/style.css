@@ -134,8 +134,8 @@ footer a{
 .item-info{
 	margin-bottom: 20px;
 	padding: 10px;
-	background-color: #363636;
-	border: 1px #E1E1E1 solid;
+	background-color: #464646;
+	border: 2px #BCBCBC solid;
 	border-radius: 4px;
 }
 .item-info:hover{

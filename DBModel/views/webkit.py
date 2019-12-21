@@ -14,6 +14,7 @@ def req(request):
         wtype = WebType.Github.value;
     return render(request, "cardlist_hover.html", {
         "HOME_URL": HOME_URL,
+        "HEAD_TITLE" : webKey.capitalize(),
         "TITLE" : webKey.capitalize(),
         "TITLE_URL" : f"http://localhost:8008/web?k={webKey}",
         "SEARCH_URL" : f"http://localhost:8008/search?k={webKey}",
