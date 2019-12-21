@@ -1,8 +1,8 @@
 {% if isEdit %}
-    <div style="padding: 0px 20px;">
-        <a id="goback" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
+    <div class="col-md-offset-1 col-md-10" style="padding: 0px;margin-top: 10px;margin-bottom: 10px;">
+        <a id="goback" class="btn btn-lg btn-info"><span class="glyphicon glyphicon-chevron-left"></span>返回上一级</a>
     </div>
-    {% include "release/gameitem/game_log_form.html" %}
+    {% include "release/gamelog/game_log_form.html" %}
 {% else %}
 <form id="searchForm" class="col-sm-8 col-sm-offset-2 col-md-offset-3 col-md-6 form-group" role="form" enctype="multipart/form-data">
     <h3 class="text-center">
@@ -20,13 +20,16 @@
         <p class="text-center">{{searchNoneTips}}</p>
     {% endif %}
     {% for gameInfo in onlineInfoList %}
-        <div class="col-md-4 tool-info-item">
-            <h3 class="tool-info-tittle">{{ gameInfo.name }}</h3>
-            {% if gameInfo.category %}
-            <p class="tool-info-id">[{{ gameInfo.category }}]</p>
-            {% endif %}
-            <p>{{ gameInfo.description }}</p>
-            <p class="tool-info-detail"><a class="btn btn-primary add-game-log-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">新增游戏日志</a></p>
+        <div class="col-md-4 web-info-item">
+            <div class="web-info-tittle">
+                <h3 class="web-info-tittle">{{ gameInfo.name }}</h3>
+                {% if gameInfo.category %}
+                <span class="web-info-sub-tittle">[{{ gameInfo.category }}]</span>
+                {% endif %}
+            </div>
+            <img class="img-responsive center-block" src="{{gameInfo.thumbnail}}" style="width: 100%;"/>
+            <p class="web-info-desc">{{ gameInfo.description }}</p class="web-info-desc">
+            <p class="web-info-detail"><a class="btn btn-primary add-game-log-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">新增游戏日志</a></p>
         </div>
     {% endfor %}
 </div>

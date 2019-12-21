@@ -76,7 +76,7 @@ def upload(request, result, isSwitchTab):
         "id" : gameInfo.id,
         "name" : gameInfo.name,
         "category" : gameInfo.category,
-        "thumbnail" : gameInfo.thumbnail,
+        "thumbnail" : gameInfo.thumbnail.url,
         "description" : gameInfo.description,
     } for gameInfo in infoList];
     pass;

@@ -1,16 +1,17 @@
 .sidebarToggle {
     position: fixed;
-    top: 51px;
+    top: 58px;
     z-index: 1000;
     display: block;
 }
 .sidebar {
     position: fixed;
-    top: 51px;
+    top: 52px;
     bottom: 0;
     z-index: 999;
     display: block;
     padding: 20px;
+    padding-top: 24px;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
     background-color: #363636;
     border-right: 1px solid #686868;
@@ -34,6 +35,9 @@
     font-size: 18px;
     color: #232323;
     background-color: #428BCA;
+}
+#contentList {
+    padding-top: 20px;
 }
 #contentList > h2, .item-content > h2{
     padding-top: 10px;
