@@ -86,7 +86,7 @@ def detail(request):
         result["hasLogInfo"] = len(result["logInfoList"]) > 0;
     except Exception as e:
         _GG("Log").w(e);
-    return render(request, "detail.html", result);
+    return render(request, "game_detail.html", result);
 
 # 获取游戏列表
 def getGameList():
@@ -132,3 +132,40 @@ def searchLog(request):
     except Exception as e:
         _GG("Log").w(e);
     return JsonResponse(result);
+
+# 游戏日志详情
+def gameLog(request):
+    # 返回详情
+    result = {
+        "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
+        "HEAD_TITLE": "GameDetail",
+        "TITLE" : "游戏列表",
+        "TITLE_URL" : "http://localhost:8008/game",
+        "SEARCH_URL" : "http://localhost:8008/search?k=game",
+        "searchText" : "搜索游戏名称",
+        "searchLogText" : "搜索游戏日志名称",
+        "hasInfo" : False,
+    };
+    try:
+        # 获取相应游戏信息
+        gid = int(request.GET.get("gid", "0"));
+        info = models.GameLog.objects.get(id = gid);
+        result["gid"] = gid;
+        result["hasInfo"] = True;
+        result["HEAD_TITLE"] = info.title;
+        result["gameInfo"] = {
+            "url" : "http://localhost:8008/gamedetail?gid=" + str(info.gid.id),
+            "name" : info.gid.name,
+            "category" : info.gid.category,
+        };
+        result["detailInfo"] = {
+            "title" : info.title,
+            "subTitle" : info.sub_title,
+            "time" : info.time,
+            "updateTime" : info.update_time,
+            "content" : info.cid.content,
+        };
+    except Exception as e:
+        _GG("Log").w(e);
+    return render(request, "gamelog_detail.html", result);

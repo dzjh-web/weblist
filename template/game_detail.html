@@ -164,6 +164,8 @@
 						{{ detailInfo.description | safe }}
 					</blockquote>
 					<p class="game-info-exinfo">
+						<span>创建时间：{{ detailInfo.time|date:"Y-m-d H:i:s" }}</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<span>最近更新时间：{{ detailInfo.updateTime|date:"Y-m-d H:i:s" }}</span>
 					</p>
 				</div>

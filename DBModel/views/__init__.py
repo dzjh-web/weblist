@@ -16,6 +16,7 @@ try:
     from game import req as game;
     from webkit import req as webkit;
     from game import detail as gameDetail;
+    from game import gameLog;
     from release import release;
     from resume import req as resume;
     
