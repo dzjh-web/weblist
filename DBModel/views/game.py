@@ -1,4 +1,7 @@
+from django.views.decorators.csrf import csrf_exempt;
+from django.db.models import Q;
 import django.utils.timezone as timezone;
+from django.http import JsonResponse;
 from django.shortcuts import render;
 
 from DBModel import models;
@@ -26,7 +29,13 @@ def req(request):
     });
 
 # 游戏详情
+@csrf_exempt
 def detail(request):
+    request.encoding = "utf-8";
+    _GG("Log").d("detail GET :", request.GET, "; POST :", request.POST, "; FILES :", request.FILES);
+    if "searchLog" in request.GET:
+        return searchLog(request);
+    # 返回详情
     result = {
         "HOME_URL": HOME_URL,
         "HOME_TITLE": "JDreamHeart",
@@ -35,7 +44,6 @@ def detail(request):
         "TITLE_URL" : "http://localhost:8008/game",
         "SEARCH_URL" : "http://localhost:8008/search?k=game",
         "searchText" : "搜索游戏名称",
-        "SEARCH_LOG_URL" : "http://localhost:8008/search?k=gamelog",
         "searchLogText" : "搜索游戏日志名称",
         "hasInfo" : False,
     };
@@ -43,6 +51,7 @@ def detail(request):
         # 获取相应游戏信息
         gid = int(request.GET.get("gid", "0"));
         info = models.GameItem.objects.get(id = gid);
+        result["gid"] = gid;
         result["hasInfo"] = True;
         result["HEAD_TITLE"] = info.name;
         result["detailInfo"] = {
@@ -72,9 +81,9 @@ def detail(request):
             "url" : f"http://localhost:8008/gamelog?gid={logInfo.id}",
             "time" : logInfo.time,
             "updateTime" : logInfo.update_time,
-            "content" : logInfo.cid.content,
             "exinfoList" : [],
         } for logInfo in infoList];
+        result["hasLogInfo"] = len(result["logInfoList"]) > 0;
     except Exception as e:
         _GG("Log").w(e);
     return render(request, "detail.html", result);
@@ -96,3 +105,30 @@ def getGameList():
 # 获取轮播列表
 def getCarouseList():
     return webkit.getCarouseList(WebType.Game.value);
+
+# 搜索日志
+def searchLog(request):
+    searchText = request.GET.get("searchLog", "");
+    result = {"htmlData" : "<p class='text-center'>数据异常，请重试！</p>"};
+    try:
+        # 获取相应游戏信息
+        gid = int(request.POST.get("gid", "0"));
+        gi = models.GameItem.objects.get(id = gid);
+        # 获取游戏日志信息
+        infoList = models.GameLog.objects.filter(Q(title__icontains = searchText) | Q(sub_title__icontains = searchText), gid = gi).order_by("-update_time");
+        result["htmlData"] = bytes.decode(render(request, "gamelog_list.html", {
+            "searchText" : searchText,
+            "logInfoList" : [{
+                "title" : logInfo.title,
+                "subTitle" : logInfo.sub_title,
+                "sketch" : logInfo.sketch,
+                "url" : f"http://localhost:8008/gamelog?gid={logInfo.id}",
+                "time" : logInfo.time,
+                "updateTime" : logInfo.update_time,
+                "exinfoList" : [],
+            } for logInfo in infoList],
+            "hasLogInfo" : len(infoList) > 0,
+        }).content);
+    except Exception as e:
+        _GG("Log").w(e);
+    return JsonResponse(result);

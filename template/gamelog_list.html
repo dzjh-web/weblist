@@ -1,0 +1,38 @@
+
+{% if hasLogInfo %}
+    <ul class="row">
+        {% for info in logInfoList %}
+        <li class="col-md-12">
+            <a class="btn-block col-md-12 item-info" href="{{ info.url }}" target="_blank">
+                <div class="item-info-tittle">
+                    <h3>{{ info.title }}</h3>
+                    {% if info.subTitle %}
+                    <p>&nbsp;[{{ info.subTitle }}]</p>
+                    {% endif %}
+                </div>
+                <blockquote class="item-info-desc">{{ info.sketch | safe }}</blockquote>
+                <div class="item-info-ex col-md-12">
+                    {% if info.updateTime %}
+                    <span>更新时间：{{ info.updateTime|date:"Y-m-d H:i:s" }}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endif %}
+                    {% if info.time %}
+                    <span>创建时间：{{ info.time|date:"Y-m-d H:i:s" }}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endif %}
+                    {% for exInfo in info.exinfoList %}
+                    <span>{{ exInfo.key }}：{{ exInfo.value }}</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endfor %}
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    {% if searchText %}
+    <p class="text-center">未搜索到标题包含[&nbsp;<span style="color: lightcoral;">{{ searchText }}</span>&nbsp;]的游戏日志</p>
+    {% else %}
+    <p class="text-center">暂无游戏日志</p>
+    {% endif %}
+{% endif %}
