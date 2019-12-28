@@ -249,12 +249,16 @@ body{
 	margin: 0 0 32px 0;
   }
 }
-/*描述区域显示*/
-.content-description-en, .content-description-ch{
+/*标题区域显示*/
+.cover-title {
+	padding-bottom: 20px;
+}
+.title-description{
 	cursor: pointer;
 }
-.content-description-en>p, .content-description-ch>p{
+.title-description>h1{
+	margin-bottom: 20px;
+}
+.title-description>p{
 	padding: 0px 80px;
-	margin-top: 40px;
-	margin-bottom: 40px;
 }

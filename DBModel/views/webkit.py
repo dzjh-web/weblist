@@ -6,20 +6,26 @@ from weblist.settings import HOME_URL;
 
 from release.base import WebType, Status;
 
+webTypeTitleMap = {
+    "github" : "Github",
+    "wiki" : "文档",
+};
+
 # url列表
 def req(request):
     webKey = request.GET.get("k", "wiki");
     wtype = WebType.Wiki.value;
     if webKey == "github":
         wtype = WebType.Github.value;
+    title = webTypeTitleMap.get(webKey, "网页");
     return render(request, "cardlist_hover.html", {
         "HOME_URL": HOME_URL,
         "HOME_TITLE": "JDreamHeart",
-        "HEAD_TITLE" : webKey.capitalize(),
-        "TITLE" : webKey.capitalize(),
-        "TITLE_URL" : f"http://localhost:8008/web?k={webKey}",
+        "HEAD_TITLE" : title + "列表",
+        "TITLE" : title + "列表",
+        "TITLE_URL" : f"http://localhost:8008/webkit?k={webKey}",
         "SEARCH_URL" : f"http://localhost:8008/search?k={webKey}",
-        "searchText" : f"搜索{webKey}名称",
+        "searchText" : f"搜索{title}名称",
         "infoList" : getUrlList(wtype),
         "carouselList" : getCarouseList(wtype),
     });

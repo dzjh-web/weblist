@@ -11,6 +11,7 @@
 		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
 		<link rel="stylesheet" href="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
 		<link rel="stylesheet" href={% static "css/home.css" %} />
+		<link rel="stylesheet" href= {% static "css/style.css" %} />
 	</head>
 	<body>
 		<div class="cover">
@@ -24,15 +25,23 @@
 							{% endfor %}
 						</ul>
 					</nav>
-					<div class="cover-content">
-						<div class="content-description-en">
-							<h1>MY WEB</h1>
-							<p class="lead">It lists the websites that I developed or used. And it's not only to show my personal works, but also to guide visitors or users to get the entrance of my web.</p>
-						</div>
-						<div class="content-description-ch hidden">
+					<div class="cover-title">
+						<div class="title-description" title="Click to switch to English" data-target="ch">
 							<h1>我的主站</h1>
-							<p class="lead">这里主要罗列了本人开发或使用的网站。而这不仅展示了个人的作品，还能用于引导访客或用户们找到我的站点入口。</p>
+							<div class="lead">
+								<p>本网站主要罗列了本人所开发或使用的网站。</p>
+								<p>制作这个网站不仅是为了跟大家分享我的一些作品，还希望我的这些作品，能够对大家有所帮助。</p>
+							</div>
 						</div>
+						<div class="title-description hidden" title="点击切换为中文" data-target="en">
+							<h1>MY WEB</h1>
+							<div class="lead">
+								<p>It lists the websites that I developed or used.</p>
+								<p>Making this website is not only to share some of my works with you, but also to help you if they can.</p>
+							</div>
+						</div>
+					</div>
+					<div class="cover-content">
 						<div class="content-cols">
 							{% for webInfo in webList %}
 							<div class="content-col" ontouchstart="this.classList.toggle('hover');">
@@ -40,7 +49,7 @@
 									<div class="col-container-front" style="background-image:url({{ webInfo.thumbnail }});">
 										<div class="col-container-inner">
 											<p>{{ webInfo.name }}</p>
-											<span>{{ webInfo.title }}</span>
+											<span style="font-size: 14px;">{{ webInfo.title }}</span>
 										</div>
 									</div>
 									<div class="col-container-back">
@@ -61,15 +70,20 @@
 		</div>
 		<script src="http://jimdreamheart.club/resource/jquery/jquery-3.4.0.min.js"></script>
 		<script src="http://jimdreamheart.club/resource/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+		<script src={% static "js/main.js" %}></script>
         <script language="JavaScript">
             $(function(){
-				$(".content-description-en").on("mouseenter", function(){
-					$(this).toggleClass("hidden");
-					$(".content-description-ch").toggleClass("hidden");
-				});
-				$(".content-description-ch").on("mouseleave", function(){
-					$(this).toggleClass("hidden");
-					$(".content-description-en").toggleClass("hidden");
+				var updateDescription = function(type) {
+					$(".title-description").each(function(idx, elem){
+						if ($(elem).attr("data-target") != type) {
+							$(elem).removeClass("hidden");
+						} else {
+							$(elem).addClass("hidden");
+						}
+					});
+				}
+				$(".title-description").on("click", function(){
+					updateDescription($(this).attr("data-target"));
 				});
 				$("#aboutDzjH").on("mouseenter", function(){
 					$(this).text("梦心DH");
