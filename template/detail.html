@@ -42,10 +42,13 @@
 				background-color: #E1E1E1;
 				border-bottom: 1px #BCBCBC solid;
 			}
+			.game-info-content a {
+				cursor: pointer;
+			}
 			.game-info-content article {
 				padding: 20px 10px;
 				color: #363636;
-				background-color: #E1E1E1;
+				background-color: #FFFFFF;
 			}
 			.game-info-schedule {
 				padding: 0px;
@@ -127,7 +130,7 @@
 		<header id = "header">
 			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 				<div class="web-navbar">
-					<a class="navbar-brand" href="http://jimdreamheart.club" title="DzjH">DzjH</a>
+					<a class="navbar-brand" href="{{ HOME_URL }}" title="{{ HOME_TITLE }}">{{ HOME_TITLE }}</a>
 				</div>
 				<div class="container">
 					<div class="container-fluid navbar-header">
@@ -168,10 +171,6 @@
 					<img class="game-info-img img-responsive" src="{{ detailInfo.thumbnail }}" />
 				</div>
 				<div class="col-md-12 game-info-body">
-					<div class="game-info-content">
-						<h2 class="text-center">游戏详情</h2>
-						<article>{{ detailInfo.content | safe }}</article>
-					</div>
 					{% if detailInfo.schedule %}
 					<div class="game-info-schedule">
 						<h3 class="text-center">当前进度</h3>
@@ -195,6 +194,11 @@
 						</div>
 						</div>
 					{% endif %}
+					<div class="game-info-content">
+						<h2 class="text-center">游戏详情</h2>
+						<a class="game-info-content-controller content-shown btn-block text-center">点击<span class="content-op">隐藏</span>游戏详情<span class="glyphicon glyphicon-chevron-up"></span></a>
+						<article>{{ detailInfo.content | safe }}</article>
+					</div>
 					<div class="game-log-list">
 						<div class="game-log-list-title clearfix">
 							<h2>游戏日志</h2>
@@ -258,7 +262,32 @@
 		<script src="http://jimdreamheart.club/resource/jsencrypt/jsencrypt.min.js"></script>
 		<script src={% static "js/main.js" %}></script>
 		<script language="JavaScript">
-			$(function(){})
+			$(function(){
+				$(".game-info-content-controller").on("click", function(){
+					var $btn = $(this);
+					var $optext = $btn.find(".content-op");
+					var $icon = $btn.find(".glyphicon");
+					var $article = $(this).next();
+					$btn.toggleClass("content-shown");
+					if ($btn.hasClass("content-shown")) {
+						$optext.text("隐藏");
+						$icon.removeClass("glyphicon-chevron-down");
+						if (!$icon.hasClass("glyphicon-chevron-up")) {
+							$icon.addClass("glyphicon-chevron-up");
+						}
+						// 显示详情
+						$article.removeClass("hidden");
+					} else {
+						$optext.text("显示");
+						$icon.removeClass("glyphicon-chevron-up");
+						if (!$icon.hasClass("glyphicon-chevron-down")) {
+							$icon.addClass("glyphicon-chevron-down");
+						}
+						// 隐藏详情
+						$article.addClass("hidden");
+					}
+				});
+			})
 		</script>
 	</body>
 </html>
