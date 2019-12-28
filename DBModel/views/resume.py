@@ -20,6 +20,7 @@ def req(request):
     ];
     return render(request, "resume.html", {
         "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : "JinZhang-Resume",
         "TITLE" : "Resume",
         "TITLE_URL" : "http://localhost:8008/resume",

@@ -105,6 +105,7 @@ def getReleaseResult(request, mkey, isSwitchTab):
     # 返回页面内容
     result = {
         "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
         "mkey" : mkey,
         "requestTips" : "", # 请求提示
         "requestFailedTips" : "", # 请求失败提示

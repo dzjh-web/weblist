@@ -10,6 +10,7 @@ from release.base import WebType, Status;
 def req(request):
     return render(request, "home.html", {
         "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "JDreamHeart",
         "TITLE": "JDreamHeart",
         "navList" : getNavList(),

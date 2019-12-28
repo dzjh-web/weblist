@@ -9,10 +9,13 @@ from release.base import WebType, Status, Schedule, ScheduleMap;
 
 import webkit;
 
+from _Global import _GG;
+
 # 游戏列表
 def req(request):
     return render(request, "itemlist.html", {
         "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "Games",
         "TITLE" : "Games",
         "TITLE_URL" : "http://localhost:8008/games",
@@ -25,6 +28,8 @@ def req(request):
 # 游戏详情
 def detail(request):
     result = {
+        "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "Games",
         "TITLE_URL" : "http://localhost:8008/game",
