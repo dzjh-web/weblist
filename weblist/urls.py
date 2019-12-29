@@ -27,8 +27,6 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^game$', views.game),
     url(r'^web$', views.webkit),
-    url(r'^gamedetail$', views.gameDetail),
-    url(r'^gamelog$', views.gameLog),
     url(r'^resume$', views.resume),
     url(r'^release$', views.release),
     url(r'^media/(?P<path>.*)', serve, {"document_root":settings.MEDIA_ROOT}),

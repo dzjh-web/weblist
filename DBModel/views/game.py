@@ -15,21 +15,33 @@ import webkit;
 from _Global import _GG;
 
 # 游戏列表
+@csrf_exempt
 def req(request):
-    return render(request, "itemlist.html", {
+    reqKey = request.GET.get("k", "");
+    if reqKey == "detail":
+        return detail(request);
+    elif reqKey == "log":
+        return gameLog(request);
+    elif reqKey == "search":
+        return search(request);
+    # 返回游戏列表数据
+    isHasInfo, infoList = getGameInfoList();
+    return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "游戏列表",
         "TITLE" : "游戏列表",
         "TITLE_URL" : "http://localhost:8008/game",
-        "SEARCH_URL" : "http://localhost:8008/search?k=game",
+        "SEARCH_URL" : "http://localhost:8008/game?k=search",
+        "SEARCH_KEY" : "游戏",
         "searchText" : "搜索游戏名称",
-        "infoList" : getGameList(),
         "carouselList" : getCarouseList(),
+        "hasInfo" : isHasInfo,
+        "infoList" : infoList,
+        "resultKey" : "itemlist",
     });
 
 # 游戏详情
-@csrf_exempt
 def detail(request):
     request.encoding = "utf-8";
     _GG("Log").d("detail GET :", request.GET, "; POST :", request.POST, "; FILES :", request.FILES);
@@ -42,7 +54,8 @@ def detail(request):
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "游戏列表",
         "TITLE_URL" : "http://localhost:8008/game",
-        "SEARCH_URL" : "http://localhost:8008/search?k=game",
+        "SEARCH_URL" : "http://localhost:8008/game?k=search",
+        "searchKey" : "游戏",
         "searchText" : "搜索游戏名称",
         "searchLogText" : "搜索游戏日志名称",
         "hasInfo" : False,
@@ -78,7 +91,7 @@ def detail(request):
             "title" : logInfo.title,
             "subTitle" : logInfo.sub_title,
             "sketch" : logInfo.sketch,
-            "url" : f"http://localhost:8008/gamelog?gid={logInfo.id}",
+            "url" : f"http://localhost:8008/game?k=log&gid={logInfo.id}",
             "time" : logInfo.time,
             "updateTime" : logInfo.update_time,
             "exinfoList" : [],
@@ -96,7 +109,7 @@ def getGameList():
         "subTitle" : info.category,
         "thumbnail" : info.thumbnail.url,
         "description" : info.description,
-        "url" : f"http://localhost:8008/gamedetail?gid={info.id}",
+        "url" : f"http://localhost:8008/game?k=detail&gid={info.id}",
         "time" : info.time,
         "updateTime" : info.update_time,
         "exinfoList" : [{"key" : "进度", "value" : info.schedule}],
@@ -122,7 +135,7 @@ def searchLog(request):
                 "title" : logInfo.title,
                 "subTitle" : logInfo.sub_title,
                 "sketch" : logInfo.sketch,
-                "url" : f"http://localhost:8008/gamelog?gid={logInfo.id}",
+                "url" : f"http://localhost:8008/game?k=log&gid={logInfo.id}",
                 "time" : logInfo.time,
                 "updateTime" : logInfo.update_time,
                 "exinfoList" : [],
@@ -142,7 +155,7 @@ def gameLog(request):
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "游戏列表",
         "TITLE_URL" : "http://localhost:8008/game",
-        "SEARCH_URL" : "http://localhost:8008/search?k=game",
+        "SEARCH_URL" : "http://localhost:8008/game?k=search",
         "searchText" : "搜索游戏名称",
         "searchLogText" : "搜索游戏日志名称",
         "hasInfo" : False,
@@ -155,7 +168,7 @@ def gameLog(request):
         result["hasInfo"] = True;
         result["HEAD_TITLE"] = info.title;
         result["gameInfo"] = {
-            "url" : "http://localhost:8008/gamedetail?gid=" + str(info.gid.id),
+            "url" : "http://localhost:8008/game?k=detail&gid=" + str(info.gid.id),
             "name" : info.gid.name,
             "category" : info.gid.category,
         };
@@ -169,3 +182,38 @@ def gameLog(request):
     except Exception as e:
         _GG("Log").w(e);
     return render(request, "gamelog_detail.html", result);
+
+# 获取游戏信息列表
+def getGameInfoList(nameText = ""):
+    infoList = models.GameItem.objects.filter(name__icontains = nameText).order_by("-sort_id", "-update_time");
+    return len(infoList) > 0, [{
+        "title" : info.name,
+        "subTitle" : info.category,
+        "thumbnail" : info.thumbnail.url,
+        "description" : info.description,
+        "url" : f"http://localhost:8008/game?k=detail&gid={info.id}",
+        "time" : info.time,
+        "updateTime" : info.update_time,
+        "exinfoList" : [{"key" : "进度", "value" : info.schedule}],
+    } for info in infoList];
+
+# 搜索游戏
+def search(request):
+    searchText = request.POST.get("searchText", "");
+    isHasInfo, infoList = getGameInfoList(searchText);
+    return render(request, "webkit.html", {
+        "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
+        "HEAD_TITLE": "游戏列表",
+        "TITLE" : "游戏列表",
+        "TITLE_URL" : "http://localhost:8008/game",
+        "hasInfo" : isHasInfo,
+        "infoList" : infoList,
+        "resultKey" : "itemlist",
+        "searchInfo" : {
+            "key" : "游戏",
+            "type" : "名称",
+            "value" : searchText,
+            "placeholder" : "搜索游戏名称",
+        },
+    });
