@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt;
 from django.shortcuts import render;
 
 from DBModel import models;
@@ -11,37 +12,38 @@ webTypeTitleMap = {
     "wiki" : "文档",
 };
 
-# url列表
+resultKeyMap = {
+    "github" : "cardlist",
+    "wiki" : "cardlist_hover",
+};
+
+# 网页列表
+@csrf_exempt
 def req(request):
-    webKey = request.GET.get("k", "wiki");
+    webType = request.GET.get("t", "wiki");
     wtype = WebType.Wiki.value;
-    if webKey == "github":
+    if webType == "github":
         wtype = WebType.Github.value;
-    title = webTypeTitleMap.get(webKey, "网页");
-    return render(request, "cardlist_hover.html", {
+    title = webTypeTitleMap.get(webType, "网页");
+    # 返回url列表
+    reqKey = request.GET.get("k", "");
+    if reqKey == "search":
+        return search(request, webType, wtype, title);
+    isHasInfo, infoList = getWebInfoList(wtype);
+    return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : title + "列表",
         "TITLE" : title + "列表",
-        "TITLE_URL" : f"http://localhost:8008/webkit?k={webKey}",
-        "SEARCH_URL" : f"http://localhost:8008/search?k={webKey}",
+        "TITLE_URL" : f"http://localhost:8008/web?t={webType}",
+        "SEARCH_URL" : f"http://localhost:8008/web?t={webType}&k=search",
+        "SEARCH_KEY" : title,
         "searchText" : f"搜索{title}名称",
-        "infoList" : getUrlList(wtype),
         "carouselList" : getCarouseList(wtype),
+        "hasInfo" : isHasInfo,
+        "infoList" : infoList,
+        "resultKey" : resultKeyMap.get(webType, "cardlist"),
     });
-
-# 获取游戏列表
-def getUrlList(wtype):
-    infoList = models.WebItem.objects.filter(wtype = wtype, state = Status.Open.value).order_by("-sort_id", "-update_time");
-    return [{
-        "name" : info.name,
-        "title" : info.title,
-        "thumbnail" : info.thumbnail.url,
-        "description" : info.description,
-        "url" : info.url,
-        "time" : info.time,
-        "updateTime" : info.update_time,
-    } for info in infoList];
 
 # 获取轮播列表
 def getCarouseList(wtype):
@@ -55,3 +57,37 @@ def getCarouseList(wtype):
         "time" : info.time,
         "update_time" : info.update_time,
     } for info in infoList];
+
+# 获取网页信息列表
+def getWebInfoList(wtype, nameText = ""):
+    infoList = models.WebItem.objects.filter(name__icontains = nameText, wtype = wtype, state = Status.Open.value).order_by("-sort_id", "-update_time");
+    return len(infoList) > 0, [{
+        "title" : info.name,
+        "subTitle" : info.title,
+        "thumbnail" : info.thumbnail.url,
+        "description" : info.description,
+        "url" : info.url,
+        "time" : info.time,
+        "updateTime" : info.update_time,
+    } for info in infoList] * 4;
+
+# 搜索网页
+def search(request, webType, wtype, title):
+    searchText = request.POST.get("searchText", "");
+    isHasInfo, infoList = getWebInfoList(wtype, searchText);
+    return render(request, "webkit.html", {
+        "HOME_URL": HOME_URL,
+        "HOME_TITLE": "JDreamHeart",
+        "HEAD_TITLE" : title + "列表-搜索",
+        "TITLE" : title + "列表",
+        "TITLE_URL" : f"http://localhost:8008/web?t={webType}",
+        "hasInfo" : isHasInfo,
+        "infoList" : infoList,
+        "resultKey" : resultKeyMap.get(webType, "cardlist"),
+        "searchInfo" : {
+            "key" : title,
+            "type" : "名称",
+            "value" : searchText,
+            "placeholder" : f"搜索{title}名称",
+        },
+    });

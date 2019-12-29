@@ -75,15 +75,23 @@
         </div>
         {% endif %}
         <div id="searchResult" class="container">
-            {% ifequal resultKey "itemlist" %}
-                {% include "itemlist.html" %}
-            {% endifequal %}
-            {% ifequal resultKey "cardlist" %}
-                {% include "cardlist.html" %}
-            {% endifequal %}
-            {% ifequal resultKey "cardlist_hover" %}
-                {% include "cardlist_hover.html" %}
-            {% endifequal %}
+            {% if hasInfo %}
+                {% ifequal resultKey "itemlist" %}
+                    {% include "itemlist.html" %}
+                {% endifequal %}
+                {% ifequal resultKey "cardlist" %}
+                    {% include "cardlist.html" %}
+                {% endifequal %}
+                {% ifequal resultKey "cardlist_hover" %}
+                    {% include "cardlist_hover.html" %}
+                {% endifequal %}
+            {% else %}
+                {% if searchInfo %}
+                <p class="text-center">未搜索到{{ searchInfo.type }}包含[&nbsp;<span style="color: lightcoral;">{{ searchInfo.value }}</span>&nbsp;]的{{ searchInfo.key }}</p>
+                {% else %}
+                <p class="text-center">暂无{{ SEARCH_KEY }}</p>
+                {% endif %}
+            {% endif %}
         </div>
 		<div class="fixdRight">
 			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
@@ -100,6 +108,9 @@
             $(function(){
                 $("#mainCarousel ul").find("li").first().addClass("active");
                 $("#mainCarousel ol").find("li").first().addClass("active");
+                if (typeof initWebkitFunc == "function") {
+                    initWebkitFunc();
+                }
             });
         </script>
     </body>

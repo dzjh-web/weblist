@@ -101,20 +101,6 @@ def detail(request):
         _GG("Log").w(e);
     return render(request, "game_detail.html", result);
 
-# 获取游戏列表
-def getGameList():
-    infoList = models.GameItem.objects.all().order_by("-sort_id", "-update_time");
-    return [{
-        "title" : info.name,
-        "subTitle" : info.category,
-        "thumbnail" : info.thumbnail.url,
-        "description" : info.description,
-        "url" : f"http://localhost:8008/game?k=detail&gid={info.id}",
-        "time" : info.time,
-        "updateTime" : info.update_time,
-        "exinfoList" : [{"key" : "进度", "value" : info.schedule}],
-    } for info in infoList];
-
 # 获取轮播列表
 def getCarouseList():
     return webkit.getCarouseList(WebType.Game.value);
@@ -204,7 +190,7 @@ def search(request):
     return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
         "HOME_TITLE": "JDreamHeart",
-        "HEAD_TITLE": "游戏列表",
+        "HEAD_TITLE": "游戏列表-搜索",
         "TITLE" : "游戏列表",
         "TITLE_URL" : "http://localhost:8008/game",
         "hasInfo" : isHasInfo,

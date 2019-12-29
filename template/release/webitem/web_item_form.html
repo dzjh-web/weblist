@@ -6,7 +6,7 @@
     <div id="releaseContent">
         {% if isEdit %}
         <div>
-            <a id="enableBtn" class="btn btn-{{stateInfo.style}}" style="color: #FFFFFF;" data-target="{{stateInfostate}}">{{stateInfo.label}}该网页</a>
+            <a id="enableBtn" class="btn btn-{{stateInfo.style}}" style="color: #FFFFFF;" data-target="{{stateInfo.state}}">{{stateInfo.label}}该网页</a>
             <div class="input-group" style="margin-top: 20px;">
                 <label class="input-group-addon" for="sortId">排序值</label>
                 <input id="sortIdInput" name="sortId" class="form-control" type="number" value="{{sortId}}" />
