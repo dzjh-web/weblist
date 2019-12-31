@@ -108,3 +108,4 @@ venv.bak/
 *.pem
 assets/media/*
 release_token.json
+config.json
