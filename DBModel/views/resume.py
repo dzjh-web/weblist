@@ -2,7 +2,7 @@ import django.utils.timezone as timezone;
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
-from weblist.settings import HOME_URL
+from weblist.settings import HOME_URL, RESOURCE_URL;
 
 import datetime;
 
@@ -20,6 +20,7 @@ def req(request):
     ];
     return render(request, "resume.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : "JinZhang-Resume",
         "TITLE" : "Resume",

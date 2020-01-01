@@ -4,7 +4,7 @@ from django.http import JsonResponse,HttpResponse
 from django.core.cache import cache
 from django.core.mail import send_mail
 
-from weblist.settings import HOME_URL
+from weblist.settings import HOME_URL, RESOURCE_URL;
 from DBModel import models
 from utils import base_util, random_util
 
@@ -38,14 +38,14 @@ def release(request):
         return opCarouse(request);
     # 判断是否已登陆
     if request.method == 'GET':
-        return render(request, "release/index.html", {"HOME_URL": HOME_URL});
+        return render(request, "release/index.html", {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL});
     # 检测登陆
     loginResult = loginRelease(request);
     if loginResult:
         return loginResult;
     if not checkReleaseToken(request):
         # 返回登陆页面信息
-        ret = {"HOME_URL": HOME_URL};
+        ret = {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL};
         return render(request, "release/login.html", ret);
     # 是否切换Tab
     isSwitchTab = base_util.getPostAsBool(request, "isSwitchTab");
@@ -105,6 +105,7 @@ def getReleaseResult(request, mkey, isSwitchTab):
     # 返回页面内容
     result = {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "mkey" : mkey,
         "requestTips" : "", # 请求提示

@@ -6,7 +6,7 @@ from django.shortcuts import render;
 
 from DBModel import models;
 
-from weblist.settings import HOME_URL;
+from weblist.settings import HOME_URL, RESOURCE_URL;
 
 from release.base import WebType, Status, Schedule, ScheduleMap;
 
@@ -28,6 +28,7 @@ def req(request):
     isHasInfo, infoList = getGameInfoList();
     return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "游戏列表",
         "TITLE" : "游戏列表",
@@ -50,6 +51,7 @@ def detail(request):
     # 返回详情
     result = {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "游戏列表",
@@ -137,6 +139,7 @@ def gameLog(request):
     # 返回详情
     result = {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "GameDetail",
         "TITLE" : "游戏列表",
@@ -189,6 +192,7 @@ def search(request):
     isHasInfo, infoList = getGameInfoList(searchText);
     return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "游戏列表-搜索",
         "TITLE" : "游戏列表",

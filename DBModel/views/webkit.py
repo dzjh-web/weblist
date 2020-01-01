@@ -3,7 +3,7 @@ from django.shortcuts import render;
 
 from DBModel import models;
 
-from weblist.settings import HOME_URL;
+from weblist.settings import HOME_URL, RESOURCE_URL;
 
 from release.base import WebType, Status;
 
@@ -32,6 +32,7 @@ def req(request):
     isHasInfo, infoList = getWebInfoList(wtype);
     return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : title + "列表",
         "TITLE" : title + "列表",
@@ -77,6 +78,7 @@ def search(request, webType, wtype, title):
     isHasInfo, infoList = getWebInfoList(wtype, searchText);
     return render(request, "webkit.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : title + "列表-搜索",
         "TITLE" : title + "列表",

@@ -2,7 +2,7 @@ from django.shortcuts import render;
 
 from DBModel import models;
 
-from weblist.settings import HOME_URL;
+from weblist.settings import HOME_URL, RESOURCE_URL;
 
 from release.base import WebType, Status;
 
@@ -10,6 +10,7 @@ from release.base import WebType, Status;
 def req(request):
     return render(request, "home.html", {
         "HOME_URL": HOME_URL,
+        "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE": "JDreamHeart",
         "TITLE": "JDreamHeart",
