@@ -24,7 +24,7 @@ def req(request):
         "HOME_TITLE": "JDreamHeart",
         "HEAD_TITLE" : "JinZhang-Resume",
         "TITLE" : "Resume",
-        "TITLE_URL" : "http://localhost:8008/resume",
+        "TITLE_URL" : f"{HOME_URL}/resume",
         "userInfo" : {
             "name" : "JinZhang",
             "img" : "/static/img/dzjh-icon.png",
