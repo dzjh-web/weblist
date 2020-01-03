@@ -27,28 +27,31 @@
 			.game-info-body {
 				margin-top: 20px;
 				padding: 0px;
-				border-top: 1px #565656 solid;
 			}
 			.game-info-content {
 				margin: 40px 0px;
 				border: 2px #686868 solid;
 				border-radius: 4px;
 			}
-			.game-info-content h2 {
+			.game-info-content h3 {
 				padding: 10px;
 				margin: 0px;
 				font-weight: bolder;
-				color: darkgreen;
-				background-color: #E1E1E1;
-				border-bottom: 1px #BCBCBC solid;
+				color: #008000;
+				background-color: #000000;
+				border-bottom: 1px #363636 solid;
+				border-radius: 4px 4px 0px 0px;
 			}
 			.game-info-content a {
 				cursor: pointer;
+				padding: 2px;
+				background-color: #000000;
 			}
 			.game-info-content article {
 				padding: 20px 10px;
-				color: #363636;
-				background-color: #FFFFFF;
+				color: #000000;
+				background-color: #CDCDCD;
+				border-radius: 0px 0px 4px 4px;
 			}
 			.game-info-schedule {
 				padding: 0px;
@@ -60,8 +63,10 @@
 				margin: 0px;
 				margin-bottom: 10px;
 				font-weight: bolder;
-				color: darkgreen;
-				background-color: #E1E1E1;
+				color: #008000;
+				background-color: #000000;
+				border-bottom: 1px #363636 solid;
+				border-radius: 4px 4px 0px 0px;
 			}
 			.game-info-schedule-items {
 				padding: 20px 0px;
@@ -116,6 +121,7 @@
 				margin-bottom: 20px;
 				background-color: #111111;
 				border-bottom: 1px #686868 solid;
+				border-radius: 4px 4px 0px 0px;
 			}
 			.game-log-list-title h2 {
 				display: inline-block;
@@ -197,8 +203,8 @@
 						</div>
 					{% endif %}
 					<div class="game-info-content">
-						<h2 class="text-center">游戏详情</h2>
-						<a class="game-info-content-controller content-shown btn-block text-center">点击<span class="content-op">隐藏</span>游戏详情<span class="glyphicon glyphicon-chevron-up"></span></a>
+						<h3 class="text-center">游戏详情</h3>
+						<a class="game-info-content-controller content-shown btn-block text-center">点击<span class="content-op">隐藏</span>&nbsp;<span class="glyphicon glyphicon-chevron-up"></span></a>
 						<article>{{ detailInfo.content | safe }}</article>
 					</div>
 					<div class="game-log-list">
