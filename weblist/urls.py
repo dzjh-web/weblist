@@ -17,6 +17,7 @@ from django.views.static import serve
 from django.urls import path
 from django.conf.urls import url, include
 
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import never_cache
 from ckeditor_uploader import views as ckeditorView
 
@@ -30,6 +31,6 @@ urlpatterns = [
     url(r'^resume$', views.resume),
     url(r'^release$', views.release),
     url(r'^media/(?P<path>.*)', serve, {"document_root":settings.MEDIA_ROOT}),
-    url(r'^ckeditor/upload/', views.checkToken(ckeditorView.upload), name='ckeditor_upload'),
+    url(r'^ckeditor/upload/', csrf_exempt(views.checkToken(ckeditorView.upload)), name='ckeditor_upload'),
     url(r'^ckeditor/browse/', never_cache(views.checkToken(ckeditorView.browse)), name='ckeditor_browse'),
 ]

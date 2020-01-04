@@ -25,7 +25,7 @@
             {% if gamelogInfo.sub_title %}
             <p class="web-info-sub-tittle">[{{ gamelogInfo.sub_title }}]</p>
             {% endif %}
-            <p>所属游戏：<a href="{{ HOME_URL }}/gamedetail?gid={{ gamelogInfo.gid }}" target="_blank"><strong>{{ gamelogInfo.gname }}</strong></a></p>
+            <p>所属游戏：<a href="{{ HOME_URL }}/game?k=detail&gid={{ gamelogInfo.gid }}" target="_blank"><strong>{{ gamelogInfo.gname }}</strong></a></p>
             <p class="web-info-desc">{{ gamelogInfo.sketch }}</p>
             <p class="web-info-detail clearfix">
                 <a class="btn btn-info update-ol-item-btn" href="javascript:void(0);" role="button" data-target="{{ gamelogInfo.id }}">更新日志信息</a>

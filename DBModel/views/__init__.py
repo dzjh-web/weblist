@@ -1,4 +1,5 @@
 from django.http import JsonResponse;
+from django.core.cache import cache;
 from DBModel import models;
 
 # 加载全局变量
@@ -26,6 +27,14 @@ finally:
 
 from _Global import _GG;
 
+# 构造user
+class User(object):
+    is_superuser = False; # 超级用户的标记
+    
+    # 获取用户名
+    def get_username(self):
+        return "jdreamheart";
+
 # 检测Token
 def checkToken(func):
     # 获取登陆的用户信息
@@ -34,7 +43,10 @@ def checkToken(func):
         request.user = None;
         # 根据token信息获取用户信息
         token = _GG("DecodeStr")(request.COOKIES.get("jdreamheart_token", ""));
+        if cache.has_key(token): # 从缓存中获取token值
+            token = cache.get(token);
         if token == _GG("GetReleaseToken")():
+            request.user = User();
             return func(request, *args, **kwargs);
-        return JsonResponse({"redult" : "Token异常，请刷新后重试！"});
+        return JsonResponse({"result" : u"Token异常，请刷新后重试！"});
     return wrapper;
