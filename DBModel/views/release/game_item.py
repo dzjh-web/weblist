@@ -101,7 +101,7 @@ def update(request, result, isSwitchTab):
                             gi.schedule = request.POST["schedule"];
                             gi.update_time = timezone.now();
                             gi.save();
-                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】排序值（{gi.schedule}）更新成功。";
+                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】进度（{gi.schedule}）更新成功。";
                         # 更新排序值
                         if "sortId" in request.POST:
                             gi.sort_id = int(request.POST["sortId"]);
