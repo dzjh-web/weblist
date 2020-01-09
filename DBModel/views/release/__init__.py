@@ -38,14 +38,14 @@ def release(request):
         return opCarouse(request);
     # 判断是否已登陆
     if request.method == 'GET':
-        return render(request, "release/index.html", {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL});
+        return render(request, "release/index.html", {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL, "HOME_TITLE": "JDreamHeart"});
     # 检测登陆
     loginResult = loginRelease(request);
     if loginResult:
         return loginResult;
     if not checkReleaseToken(request):
         # 返回登陆页面信息
-        ret = {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL};
+        ret = {"HOME_URL": HOME_URL, "RESOURCE_URL" : RESOURCE_URL, "HOME_TITLE": "JDreamHeart"};
         return render(request, "release/login.html", ret);
     # 是否切换Tab
     isSwitchTab = base_util.getPostAsBool(request, "isSwitchTab");

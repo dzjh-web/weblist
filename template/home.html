@@ -18,7 +18,7 @@
 			<div class="cover-inner">
 				<div class="cover-container">
 					<nav class="cover-header">
-						<h3 class="cover-icon">{{ TITLE }}</h3>
+						<h3 class="cover-icon"><img class="img-responsive home-icon" src={% static "img/home-icon.png" %} style="height: 22px; margin-top: -6px; margin-right: 2px;" />{{ TITLE }}</h3>
 						<ul class="cover-nav">
 							{% for navInfo in navList %}
 							<li><a class="cover-icon" href="{{ navInfo.url }}" target="_blank" title="{{ navInfo.title }}">{{ navInfo.name }}</a></li>

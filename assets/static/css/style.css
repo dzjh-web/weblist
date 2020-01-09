@@ -71,6 +71,18 @@ footer a{
 	border: 1px #E1E1E1 solid;
 	opacity: 0.9;
 }
+img.home-icon {
+	display: inline-block;
+	height: 14px;
+	margin-top: -2px;
+	margin-right: 0px;
+}
+img.home-icon-normal {
+	display: inline-block;
+	height: 16px;
+	margin-top: -4px;
+	margin-right: 2px;
+}
 #searchResult{
 	margin-top: 40px;
 	padding-top: 20px;
