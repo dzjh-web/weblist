@@ -53,7 +53,6 @@ footer a{
 	right: 2%;
 	bottom: 4%;
 	opacity: 0.5;
-	background-color: #000000;
 }
 .fixdRight a{
 	display: block;
@@ -62,6 +61,7 @@ footer a{
 	font-size: 12px;
 	padding-top: 9px;
 	padding-left: 6px;
+	background-color: #000000;
 	border: 1px #FFFFFF solid;
 	border-radius: 2px;
 }
@@ -70,6 +70,9 @@ footer a{
 	background-color: #E1E1E1;
 	border: 1px #E1E1E1 solid;
 	opacity: 0.9;
+}
+.fixdRight > div {
+	margin-bottom: 4px;
 }
 img.home-icon {
 	display: inline-block;
