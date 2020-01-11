@@ -66,7 +66,7 @@
 						<p>
 							Copyright&nbsp;&copy;&nbsp;2019&nbsp;by&nbsp;&nbsp;
 							<a class="aboutDzjH" href="javascript:void(0);" title="关于梦心DH" data-target="ch">梦心DH</a>
-							<a class="aboutDzjH" href="javascript:void(0);" title="About DzjH" data-target="en">D·zj·H</a>
+							<a class="aboutDzjH" href="javascript:void(0);" title="About DzjH" data-target="en">&nbsp;D·zj·H&nbsp;</a>
 						</p>
 					</div>
 				</div>
@@ -82,7 +82,7 @@
 				// 更新语言
 				var updateTitleDesc = function() {
 					if (titleDescPrevLan != language) {
-						$(".title-description[data-target='"+titleDescPrevLan+"']").fadeOut(0.2, function(){
+						$(".title-description[data-target='"+titleDescPrevLan+"']").fadeOut(0.4, function(){
 							$(".title-description[data-target='"+language+"']").fadeIn("slow");
 						});
 					}
@@ -90,7 +90,7 @@
 				}
 				var updateAboutDzjH = function() {
 					if (aboutDzjHPrevLan != language) {
-						$(".aboutDzjH[data-target='"+aboutDzjHPrevLan+"']").fadeOut(0.2, function(){
+						$(".aboutDzjH[data-target='"+aboutDzjHPrevLan+"']").fadeOut(0.4, function(){
 							$(".aboutDzjH[data-target='"+language+"']").fadeIn("slow");
 						});
 					}
