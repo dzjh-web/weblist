@@ -26,18 +26,18 @@
 						</ul>
 					</nav>
 					<div class="cover-title">
-						<div class="title-description hidden" title="Click to switch to English" data-target="ch">
+						<div class="title-description" title="我的主站" data-target="ch">
 							<h1>我的主站</h1>
 							<div class="lead">
-								<p>本网站主要罗列了本人所开发或使用的网站。</p>
-								<p>制作这个网站不仅是为了跟大家分享我的一些作品，还希望我的这些作品，能够对大家有所帮助。</p>
+								<p>本网站主要收录了本人所设计或参与开发的网站、应用和文档等内容。</p>
+								<p>希望本网站的内容，能够对大家有所帮助。</p>
 							</div>
 						</div>
-						<div class="title-description" title="点击切换为中文" data-target="en">
+						<div class="title-description" title="MY WEB" data-target="en">
 							<h1>MY WEB</h1>
 							<div class="lead">
-								<p>It lists the websites that I developed or used.</p>
-								<p>Making this website is not only to share some of my works with you, but also to help you if they can.</p>
+								<p>It mainly includes the websites, applications and documents designed or developed by myself.</p>
+								<p>I hope the content of this website, can be helpful to you.</p>
 							</div>
 						</div>
 					</div>
@@ -63,7 +63,11 @@
 						</div>
 					</div>
 					<div class="cover-footer">
-						<p>Copyright&nbsp;&copy;&nbsp;2019&nbsp;by&nbsp;&nbsp;<a id="aboutDzjH" href="javascript:void(0);" title="关于梦心DH">D·zj·H</a>.</p>
+						<p>
+							Copyright&nbsp;&copy;&nbsp;2019&nbsp;by&nbsp;&nbsp;
+							<a class="aboutDzjH" href="javascript:void(0);" title="关于梦心DH" data-target="ch">梦心DH</a>
+							<a class="aboutDzjH" href="javascript:void(0);" title="About DzjH" data-target="en">D·zj·H</a>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -73,23 +77,62 @@
 		<script src={% static "js/main.js" %}></script>
         <script language="JavaScript">
             $(function(){
-				var updateDescription = function(type) {
-					$(".title-description").each(function(idx, elem){
-						if ($(elem).attr("data-target") != type) {
-							$(elem).removeClass("hidden");
-						} else {
-							$(elem).addClass("hidden");
-						}
-					});
+				var language = "en";
+				var titleDescPrevLan = language, aboutDzjHPrevLan = language;
+				// 更新语言
+				var updateTitleDesc = function() {
+					if (titleDescPrevLan != language) {
+						$(".title-description[data-target='"+titleDescPrevLan+"']").fadeOut(0.2, function(){
+							$(".title-description[data-target='"+language+"']").fadeIn("slow");
+						});
+					}
+					titleDescPrevLan = language;
 				}
-				$(".title-description").on("click", function(){
-					updateDescription($(this).attr("data-target"));
+				var updateAboutDzjH = function() {
+					if (aboutDzjHPrevLan != language) {
+						$(".aboutDzjH[data-target='"+aboutDzjHPrevLan+"']").fadeOut(0.2, function(){
+							$(".aboutDzjH[data-target='"+language+"']").fadeIn("slow");
+						});
+					}
+					aboutDzjHPrevLan = language;
+				}
+				// 监听事件
+				var titleDescEnabled = true, aboutDzjHEnabled = true;
+				// 更新当前语言
+				var updateLanguage = function() {
+					// 更新当前语言
+					if (language == "ch") {
+						language = "en";
+					} else {
+						language = "ch";
+					}
+					// 更新内容
+					if (titleDescEnabled) {
+						updateTitleDesc();
+					}
+					if (aboutDzjHEnabled) {
+						updateAboutDzjH();
+					}
+				}
+				// 创建定时器
+				var seconds = 6; // 定时器时长
+				window.setInterval(updateLanguage, seconds * 1000);
+				updateLanguage(); // 初始化时先更新语言
+				// 网站描述监听
+				$(".title-description").on("mouseenter", function(){
+					titleDescEnabled = false;
 				});
+				$(".title-description").on("mouseleave", function(){
+					titleDescEnabled = true;
+					updateTitleDesc();
+				});
+				// 关于事件监听
 				$("#aboutDzjH").on("mouseenter", function(){
-					$(this).text("梦心DH");
+					aboutDzjHEnabled = false;
 				});
 				$("#aboutDzjH").on("mouseleave", function(){
-					$(this).text("D·zj·H");
+					aboutDzjHEnabled = true;
+					updateAboutDzjH();
 				});
             })
         </script>
