@@ -264,7 +264,7 @@ $(function(){
 	};
 
 	// 显示关于弹窗
-	$("#aboutDzjH").on("click", function(){
+	showAboutDzjHDialog = function(){
 		// 创建弹窗
 		createDialogPage("<div>\
 		<style>\
@@ -306,7 +306,8 @@ $(function(){
 			<span>GitHub：<a href='https://github.com/JDreamHeart' title='JDreamHeart'>https://github.com/JDreamHeart</a></span>\
 		</div>\
 		</div>", "col-md-8 col-md-offset-2");
-	});
+	};
+	$("#aboutDzjH").on("click", showAboutDzjHDialog);
 	
 	// 点击反馈事件
 	$("#feedback").on("click",function(){

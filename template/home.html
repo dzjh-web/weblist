@@ -127,12 +127,16 @@
 					updateTitleDesc();
 				});
 				// 关于事件监听
-				$("#aboutDzjH").on("mouseenter", function(){
+				$(".aboutDzjH").on("mouseenter", function(){
 					aboutDzjHEnabled = false;
 				});
-				$("#aboutDzjH").on("mouseleave", function(){
+				$(".aboutDzjH").on("mouseleave", function(){
 					aboutDzjHEnabled = true;
 					updateAboutDzjH();
+				});
+				// 显示关于弹窗
+				$(".aboutDzjH").on("click", function(){
+					showAboutDzjHDialog();
 				});
             })
         </script>
