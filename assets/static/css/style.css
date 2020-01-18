@@ -37,11 +37,13 @@ footer{
 	color: #A0A0A0;
 	text-align: center;
 	margin-top: 60px;
-	background-color: #282828;
+	background-color: rgba(28, 28, 28, 0.6);
 }
-/* footer span{
-	font-size: 14px;
-} */
+footer p{
+	margin: 0px;
+	padding: 4px 0px;
+	font-size: 12px;
+}
 footer a{
 	font-size: 8px;
 }
