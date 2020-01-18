@@ -197,4 +197,4 @@ CKEDITOR_CONFIGS = {
 
 # home url
 HOME_URL = config.get("HOME_URL", "http://localhost:8008")
-RESOURCE_URL = config.get("RESOURCE_URL", "http://jimdreamheart.club/resource")
+RESOURCE_URL = config.get("RESOURCE_URL", "https://jdreamheart.com/resource")
