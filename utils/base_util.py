@@ -9,7 +9,7 @@ def getPostAsBool(request, key):
 
 # 发送消息给所有管理员
 def sendMsgToAllMgrs(msg):
-    mgrEmails = ["15602291936@163.com"];
+    mgrEmails = ["pytoolsip@jdreamheart.com"];
     return sendToEmails(msg, mgrEmails);
 
 def sendToEmails(msg, emails):

@@ -29,7 +29,7 @@ def req(request):
             "name" : "JinZhang",
             "img" : "/static/img/dzjh-icon.png",
             "phone" : "15602291936",
-            "email" : "15602291936@163.com",
+            "email" : "manager@jdreamheart.com",
             "urlTitle" : "个人网站",
             "url" : "http://jimdreamheart.club",
             "gitUrlTitle" : "GitHub网址",
