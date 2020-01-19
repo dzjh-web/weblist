@@ -70,7 +70,7 @@ def getWebInfoList(wtype, nameText = ""):
         "url" : info.url,
         "time" : info.time,
         "updateTime" : info.update_time,
-    } for info in infoList] * 4;
+    } for info in infoList];
 
 # 搜索网页
 def search(request, webType, wtype, title):
