@@ -36,7 +36,6 @@ body{
 .cover-header>h3{
 	cursor: pointer;
 	padding: 10px;
-	border: 1px #BCBCBC solid;
 }
 .cover-content{
 	padding: 30px 10px;

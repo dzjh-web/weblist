@@ -56,6 +56,9 @@ def upload(request, result, isSwitchTab):
                             base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                    else:
+                        result["requestFailedTips"] = "游戏日志内容无效！";
+                        _GG("Log").w("Invalid game log!");
                 else:
                     result["isEdit"] = True;
                     result["form"] = GameLogForm();
@@ -107,6 +110,9 @@ def update(request, result, isSwitchTab):
                             base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                    else:
+                        result["requestFailedTips"] = "游戏日志内容无效！";
+                        _GG("Log").w("Invalid game log!");
                 opType = request.POST.get("opType", None);
                 if opType:
                     if opType == "update":

@@ -52,6 +52,9 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+            else:
+                result["requestFailedTips"] = f"Carouse内容无效！";
+                _GG("Log").w(f"Invalid carouse!");
         cid, opType = request.POST.get("cid", None), request.POST.get("opType", None);
         if cid and opType:
             try:
@@ -83,6 +86,9 @@ def upload(request, result, isSwitchTab, wtype = 0):
                             base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功更新。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                    else:
+                        result["requestFailedTips"] = f"Carouse内容无效，更新失败！";
+                        _GG("Log").w(f"Invalid carouse!");
             except Exception as e:
                 _GG("Log").w(e);
         pass;

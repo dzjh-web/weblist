@@ -62,6 +62,9 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+            else:
+                result["requestFailedTips"] = f"网页内容无效（不能为空）！";
+                _GG("Log").w(f"Invalid web content!");
         pass;
     result["form"] = WebItemForm();
     pass;
@@ -99,6 +102,9 @@ def update(request, result, isSwitchTab, wtype = 0):
                             base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+                    else:
+                        result["requestFailedTips"] = f"网页内容无效（不能为空），更新失败！";
+                        _GG("Log").w(f"Invalid web content!");
                 opType = request.POST.get("opType", None);
                 if opType:
                     if opType == "update":

@@ -37,6 +37,9 @@ def upload(request, result, isSwitchTab):
                     base_util.sendMsgToAllMgrs(f"简历Token【{rt.name}，{rt.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+            else:
+                result["requestFailedTips"] = "简历信息无效！";
+                _GG("Log").w("Invalid resume info!");
         pass;
     result["form"] = ResumeTokenForm();
     pass;

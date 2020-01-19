@@ -54,6 +54,9 @@ def upload(request, result, isSwitchTab):
                     base_util.sendMsgToAllMgrs(f"游戏网页【{gi.name}，{gi.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
+            else:
+                result["requestFailedTips"] = f"游戏网页内容无效！";
+                _GG("Log").w(f"Invalid game web!");
         pass;
     result["form"] = GameItemForm();
     pass;
@@ -92,7 +95,8 @@ def update(request, result, isSwitchTab):
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                     else:
-                        _GG("Log").w(f"Invalid form data!");
+                        result["requestFailedTips"] = f"游戏网页内容无效！";
+                        _GG("Log").w("Invalid form data!");
                 opType = request.POST.get("opType", None);
                 if opType:
                     if opType == "update":
