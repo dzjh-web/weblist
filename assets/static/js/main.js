@@ -27,7 +27,6 @@ $(function(){
 		$('body,html').animate({scrollTop:0},280);
 	});
 	// 首页链接
-	// var HOME_URL = "http://jimdreamheart.club";
 	var HOME_URL = "http://localhost:8008";
 	// 登陆链接
 	var loginUrl = HOME_URL + "/release";

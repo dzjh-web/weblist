@@ -25,6 +25,8 @@ from logCore.Logger import Logger;
 from rsaCore import encodeStr, decodeStr, getPublicKey;
 from utils import base_util;
 
+from weblist.settings import HOME_URL;
+
 # 初始化全局变量
 def _initGlobal_G_():
 	_G.initGlobal_GTo_Global();
@@ -63,13 +65,17 @@ def _loadRsaDecode_():
 	# 加载rsa密钥编解码方法
 	_G.setGlobalVarTo_Global("EncodeStr", encodeStr);
 	_G.setGlobalVarTo_Global("DecodeStr", decodeStr);
-	# 更新main.js的公钥
+	# 更新main.js的公钥和首页地址
 	publicKey = getPublicKey();
 	publicKey = publicKey.replace("\n", "")
 	mainJSFile, content = os.path.join(CURRENT_PATH, "assets", "static", "js", "main.js"), "";
 	with open(mainJSFile, "r", encoding = "utf-8") as f:
 		isPking = False;
 		for line in f.readlines():
+			# 更新HOME_URL
+			if re.search("var HOME_URL.*=.*\".*\"", line):
+				line = re.sub("\".*\";?", f"\"{HOME_URL}\";", line);
+			# 更新PUBLIC_KEY
 			if re.search("var PUBLIC_KEY.*\".*\"", line):
 				line = re.sub("\".*\";?", f"\"{publicKey}\";", line);
 			elif re.search("var PUBLIC_KEY.*\".*", line):
@@ -101,7 +107,7 @@ def _loadReleaseToken_():
 		randCode = random_util.randomMulti(32); # 32位随机码
 		releaseToken = hashlib.md5("|".join([datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f%z"), randCode]).encode("utf-8")).hexdigest();
 		_G._GG("Log").i("======== New Release Token ========", releaseToken);
-		base_util.sendMsgToAllMgrs(f"JDreamHeart New Release Token : /n {releaseToken}.");
+		base_util.sendMsgToAllMgrs(f"JDreamHeart New Release Token: {releaseToken}.");
 		# 保存到文件中
 		with open(tokenFilePath, "w") as f:
 			f.write(json.dumps({
