@@ -463,13 +463,12 @@ label.error {
 }
 .card-hover-item .card-hover-face1{
 	position: relative;
-	background: #545454;
+	background: #626262;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	z-index: 1;
 	transform: translateY(50px);
-	border: 2px #ABABAB solid;
 	border-radius: 4px;
 }
 .card-hover-item:hover .card-hover-face1{
@@ -479,7 +478,7 @@ label.error {
 	border: none;
 }
 .card-hover-item .card-hover-face1 .card-hover-content{
-	opacity: 0.4;
+	opacity: 0.6;
 	transition: 0.5s;
 }
 .card-hover-item:hover .card-hover-face1 .card-hover-content{
