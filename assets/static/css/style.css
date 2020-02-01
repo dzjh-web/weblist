@@ -469,6 +469,7 @@ label.error {
 	align-items: center;
 	z-index: 1;
 	transform: translateY(50px);
+	border: 2px #ABABAB solid;
 	border-radius: 4px;
 }
 .card-hover-item:hover .card-hover-face1{
