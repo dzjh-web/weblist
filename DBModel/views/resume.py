@@ -28,12 +28,12 @@ def req(request):
         "userInfo" : {
             "name" : "JinZhang",
             "img" : "/static/img/dzjh-icon.png",
-            "phone" : "15602291936",
-            "email" : "manager@jdreamheart.com",
-            "urlTitle" : "个人网站",
-            "url" : "http://jimdreamheart.club",
-            "gitUrlTitle" : "GitHub网址",
-            "gitUrl" : "https://github.com/JDreamHeart",
+            "kvList" : [
+                {"k" : "Phone", "v" : "15602291936"},
+                {"k" : "Email", "v" : "manager@jdreamheart.com"},
+                {"k" : "MyWeb", "v" : "https://jdreamheart.com", "vt" : "a"},
+                {"k" : "GitHub", "v" : "https://github.com/JDreamHeart", "vt" : "a"},
+            ],
         },
         "schoolInfo" : {
             "startTime" : datetime.date(2013, 9, 1),

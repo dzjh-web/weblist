@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="JDreamHeart[个人网站]">
-		<meta name="author" content="JDreamHeart">
-		<title>{{ HEAD_TITLE }}</title>
-		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
-		<link rel="stylesheet" href="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="JDreamHeart[个人网站]">
+        <meta name="author" content="JDreamHeart">
+        <title>{{ HEAD_TITLE }}</title>
+        <link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+        <link rel="stylesheet" href="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
         <link rel="stylesheet" href= {% static "css/style.css" %} />
         <style>
+            a, a:link {
+                color: #428BCA;
+            }
+            a:visited, a:hover{
+                color: #0b487e;
+            }
             .resume_content {
                 margin-top: 20px;
                 padding: 20px;
-                background-color: #989898;
+                color: #363636;
+                background-color: #FCFCFC;
                 border-radius: 6px;
                 box-sizing: border-box;
                 box-shadow: 0 50px 50px #000000;
@@ -25,37 +32,64 @@
                 /* border: 1px #868686 solid; */
             }
             .resume_content ul > li {
-                margin: 10px 0px;
-                border-top: 1px #868686 solid;
+                margin: 20px 0px;
+                padding: 0;
+                padding-bottom: 10px;
+                background-color: #FFFFFF;
+                border: 1px #F9F9F9 solid;
+                border-top: 2px #36366899 solid;
+                border-radius: 0 0 4px 4px;
+                box-sizing: border-box;
+                box-shadow: 0 12px 12px #E1E1E1;
             }
             .resume_content ul > li:first-child {
-                border-top: none;
+                border-top: 1px #F9F9F9 solid;
+                padding-top: 10px;
+                border-radius: 4px;
             }
             .resume_content ul > li > h5 {
-                color: #ABABAB;
+                margin: 0;
+                margin-bottom: 10px;
+            }
+            .resume_content ul > li > h5 > span {
+                display: inline-block;
+                padding: 2px;
+                margin: 0;
                 font-size: 16px;
+                color: #FFFFFF;
+                background-color: #363668;
+                opacity: 0.6;
+            }
+            .resume-title {
+                font-weight: bolder;
             }
             .user-info-name {
+                color: #191970;
                 font-size: 28px;
+                font-weight: bolder;
                 padding-bottom: 10px;
             }
             .user-info-img {
                 position: relative;
+                height: 120px;
+                padding-top: 10px;
             }
             .user-info-img img {
                 position: absolute;
                 left: 50%;
                 transform: translateX(-50%);
                 height: 100px;
-                border: 2px #BCBCBC solid;
+                border-radius: 2px;
+                box-sizing: border-box;
+                box-shadow: 4px 6px 10px #BCBCBC;
             }
             .timeline {
                 padding: 0;
-                color: #CDCDCD;
+                color: #868686;
             }
             .timeline-icon {
                 position: relative;
-                border-bottom: 3px solid #CDCDCD;
+                border-bottom: 3px solid #BCBCBC;
             }
             .timeline-icon:before {
                 content: "";
@@ -67,31 +101,47 @@
                 right: 0;
                 bottom: -10px;
                 border-radius: 50%;
-                background-color: #CDCDCD;
+                background-color: #BCBCBC;
+            }
+            .timeline-time {
+                font-style: italic;
             }
             .timeline-description {
                 padding: 20px 20px;
             }
             .projec_description {
                 margin-top: 10px;
+                color: #868686;
+            }
+            .resume-icon {
+                position: relative;
+            }
+            .resume-icon img {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
             }
         </style>
-	</head>
-	<body>
+    </head>
+    <body>
         <div class="container resume_content">
             <ul class="row">
                 <!-- 个人信息 -->
                 <li class="col-md-12 resume_item">
                     <div class="col-md-8">
                         <p class="text-center user-info-name">{{ userInfo.name }}</p>
-                        <div class="col-md-6">
-                            <p class="text-center">{{ userInfo.phone }}</p>
-                            <p class="text-center">{{ userInfo.email }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="text-center">{{userInfo.urlTitle}}:&nbsp;<a href="{{ userInfo.url }}" target="_blank" title="{{userInfo.urlTitle}}">{{ userInfo.url }}</a></p>
-                            <p class="text-center">{{userInfo.gitUrlTitle}}:&nbsp;<a href="{{ userInfo.gitUrl }}" target="_blank" title="{{userInfo.gitUrlTitle}}">{{ userInfo.gitUrl }}</a></p>
-                        </div>
+                        {% for kv in userInfo.kvList %}
+                        <p class="text-center col-md-6">
+                            {% if kv.k %}
+                                {{kv.k}}:&nbsp;
+                            {% endif %}
+                            {% ifequal kv.vt "a" %}
+                                <a href="{{ kv.v }}" target="_blank">{{ kv.v }}</a>
+                            {% else %}
+                                {{ kv.v }}
+                            {% endifequal %}
+                        </p>
+                        {% endfor %}
                     </div>
                     <div class="col-md-4 user-info-img">
                         <img class="img-responsive" src="{{ userInfo.img }}" />
@@ -99,30 +149,34 @@
                 </li>
                 <!-- 学历信息 -->
                 <li class="col-md-12">
-                    <h5>学历信息</h5>
-                    <p class="col-md-3 text-center">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
-                    <p class="col-md-3 text-center">{{ schoolInfo.college }}</p>
-                    <p class="col-md-3 text-center">{{ schoolInfo.degree }}</p>
-                    <p class="col-md-3 text-center">{{ schoolInfo.profession }}</p>
+                    <h5><span>学历信息</span></h5>
+                    <div class="col-md-12 resume-title">
+                        <p class="col-md-3 text-center">{{ schoolInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ schoolInfo.endTime|date:"Y-m-d" }}</p>
+                        <p class="col-md-3 text-center">{{ schoolInfo.college }}</p>
+                        <p class="col-md-3 text-center">{{ schoolInfo.degree }}</p>
+                        <p class="col-md-3 text-center">{{ schoolInfo.profession }}</p>
+                    </div>
                 </li>
                 <!-- 工作经历 -->
                 <li class="col-md-12">
-                    <h5>工作经历</h5>
-                    <p class="col-md-3 text-center">
-                        {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
-                        {% if workInfo.endTime %}
-                        {{ workInfo.endTime|date:"Y-m-d" }}
-                        {% else %}
-                        至今
-                        {% endif %}
-                    </p>
-                    <p class="col-md-3 text-center"><img class="img-responsive" src="{{ workInfo.companyIcon }}" style="width: 20px;" /></p>
-                    <p class="col-md-3 text-center">{{ workInfo.company }}</p>
-                    <p class="col-md-3 text-center">{{ workInfo.position }}</p>
+                    <h5><span>工作经历</span></h5>
+                    <div class="col-md-12 resume-title">
+                        <p class="col-md-3 text-center">
+                            {{ workInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
+                            {% if workInfo.endTime %}
+                            {{ workInfo.endTime|date:"Y-m-d" }}
+                            {% else %}
+                            至今
+                            {% endif %}
+                        </p>
+                        <p class="col-md-3 text-center resume-icon" style="height: 20px;"><img class="img-responsive" src="{{ workInfo.companyIcon }}" style="height: 20px;" /></p>
+                        <p class="col-md-3 text-center">{{ workInfo.company }}</p>
+                        <p class="col-md-3 text-center">{{ workInfo.position }}</p>
+                    </div>
                     <div class="col-md-12 work-timeline">
                         {% for item in workInfo.items %}
                         <div class="col-md-{{workInfo.itemCols}} timeline">
-                            <p class="text-center">{{ item.time|date:"Y.m.d" }}</p>
+                            <p class="timeline-time text-center">{{ item.time|date:"Y.m.d" }}</p>
                             <div class="timeline-icon"></div>
                             <p class="timeline-description text-center">{{ item.description|safe }}</p>
                         </div>
@@ -131,24 +185,26 @@
                 </li>
                 <!-- 项目实践 -->
                 <li class="col-md-12">
-                    <h5>项目实践</h5>
-                    <p class="col-md-4 text-center">
-                        {{ projectInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
-                        {% if projectInfo.endTime %}
-                        {{ projectInfo.endTime|date:"Y-m-d" }}
-                        {% else %}
-                        至今
-                        {% endif %}
-                    </p>
-                    <p class="col-md-4 text-center">{{ projectInfo.title }}</p>
-                    <p class="col-md-4 text-center">{{ projectInfo.subTitle }}</p>
+                    <h5><span>项目实践</span></h5>
+                    <div class="col-md-12 resume-title">
+                        <p class="col-md-4 text-center">
+                            {{ projectInfo.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
+                            {% if projectInfo.endTime %}
+                            {{ projectInfo.endTime|date:"Y-m-d" }}
+                            {% else %}
+                            至今
+                            {% endif %}
+                        </p>
+                        <p class="col-md-4 text-center">{{ projectInfo.title }}</p>
+                        <p class="col-md-4 text-center">{{ projectInfo.subTitle }}</p>
+                    </div>
                     <div class="col-md-12 projec_description">{{ projectInfo.description|safe }}</p>
                 </li>
             </ul>
         </div>
-		<div class="fixdRight">
-			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
-		</div>
+        <div class="fixdRight">
+            <div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+        </div>
         <footer>
             <div class="container">
                 <p>&copy;&nbsp;2019-2020&nbsp;&nbsp;<a id="aboutDzjH" href="javascript:void(0);" title="关于梦心DH">D·zj·H</a>.</p>
