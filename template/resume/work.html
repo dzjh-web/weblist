@@ -1,0 +1,28 @@
+<h5><span>{{ info.name }}</span></h5>
+<div class="col-md-12 resume-item">
+	{% for item in info.items %}
+	<div class="col-md-12 resume-line"><div></div></div>
+	<div class="col-md-12 resume-title">
+		<p class="col-md-3 text-center">
+			{{ item.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;
+			{% if item.endTime %}
+			{{ item.endTime|date:"Y-m-d" }}
+			{% else %}
+			至今
+			{% endif %}
+		</p>
+		<p class="col-md-3 text-center resume-icon" style="height: 20px;"><img class="img-responsive" src="{{ item.companyIcon }}" style="height: 20px;" /></p>
+		<p class="col-md-3 text-center">{{ item.company }}</p>
+		<p class="col-md-3 text-center">{{ item.position }}</p>
+	</div>
+	<div class="col-md-12 work-timeline">
+	    {% for v in item.items %}
+	    <div class="col-md-{{item.itemCols}} timeline">
+	        <p class="timeline-time text-center">{{ v.time|date:"Y.m.d" }}</p>
+	        <div class="timeline-icon"></div>
+	        <p class="timeline-description text-center">{{ v.description|safe }}</p>
+	    </div>
+	    {% endfor %}
+	</div>
+	{% endfor %}
+</div>
