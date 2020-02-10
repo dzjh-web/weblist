@@ -48,7 +48,7 @@ def upload(request, result, isSwitchTab):
                     t = models.ResumeToken.objects.get(id = int(tid));
                     if opType == "change_expires":
                         if "expires" in request.POST:
-                            t.expires = request.POST["expires"];
+                            t.expires = int(request.POST["expires"]);
                             t.save();
                     elif opType == "active":
                         t.active_at = timezone.now();
@@ -83,8 +83,8 @@ def getOlTokenList():
         };
         if info.expires > 0:
             targetTime = info.active_at + datetime.timedelta(days = info.expires);
-            delta = targetTime - datetime.datetime.now();
-            leftDays = datetime.days + datetime.seconds / 86400;
+            delta = targetTime - timezone.now();
+            leftDays = delta.days + delta.seconds / 86400;
             if leftDays > 0:
                 olInfo["state"] = f"剩余{leftDays}天";
                 olInfo["isNotActive"] = False;
