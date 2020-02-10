@@ -24,8 +24,8 @@ def req(request):
         rt = models.ResumeToken.objects.get(token = token);
         if rt.expires > 0: # 校验简历token
             targetTime = rt.active_at + datetime.timedelta(days = rt.expires);
-            delta = targetTime - datetime.datetime.now();
-            leftDays = datetime.days + datetime.seconds / 86400;
+            delta = targetTime - timezone.now();
+            leftDays = delta.days + delta.seconds / 86400;
             if leftDays > 0:
                 resumeInfo = getResumeInfo();
                 resumeInfo["HOME_URL"] = HOME_URL;
