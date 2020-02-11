@@ -2,9 +2,12 @@ import django.utils.timezone as timezone;
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+from DBModel import models;
 from weblist.settings import HOME_URL, RESOURCE_URL;
 
 import datetime;
+
+from _Global import _GG;
 
 workItems = [
     {
@@ -18,6 +21,7 @@ workItems = [
 ];
 
 # 简历请求
+@csrf_exempt
 def req(request):
     try:
         token = request.GET.get("token", "");
@@ -38,6 +42,7 @@ def req(request):
         "HOME_URL" : HOME_URL,
         "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE" : "JDreamHeart",
+        "HEAD_TITLE" : "Login-Resume",
     });
 
 def getResumeInfo():
