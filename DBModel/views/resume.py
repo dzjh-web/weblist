@@ -16,25 +16,26 @@ from _Global import _GG;
 @csrf_exempt
 def req(request):
     reqFailedTips = ""; # 请求失败提示
-    try:
-        token = request.GET.get("token", "");
-        rt = models.ResumeToken.objects.get(token = token);
-        if rt.expires > 0: # 校验简历token
-            targetTime = rt.active_at + datetime.timedelta(days = rt.expires);
-            delta = targetTime - timezone.now();
-            leftDays = delta.days + delta.seconds / 86400;
-            if leftDays > 0:
-                resumeInfo = getResumeInfo(rt.remarks);
-                if resumeInfo:
-                    resumeInfo["HOME_URL"] = HOME_URL;
-                    resumeInfo["RESOURCE_URL"] = RESOURCE_URL;
-                    resumeInfo["HOME_TITLE"] = "JDreamHeart";
-                    return render(request, "resume/index.html", resumeInfo);
-                else:
-                    reqFailedTips = "对应Token的remarks（备注）无效！获取简历信息失败！";
-    except Exception as e:
-        _GG("Log").e(f"Invalid resume token! Err[{e}]!");
-        reqFailedTips = "输入的Token无效！请重试！";
+    token = request.GET.get("token", "");
+    if token:
+        try:
+            rt = models.ResumeToken.objects.get(token = token);
+            if rt.expires > 0: # 校验简历token
+                targetTime = rt.active_at + datetime.timedelta(days = rt.expires);
+                delta = targetTime - timezone.now();
+                leftDays = delta.days + delta.seconds / 86400;
+                if leftDays > 0:
+                    resumeInfo = getResumeInfo(rt.remarks);
+                    if resumeInfo:
+                        resumeInfo["HOME_URL"] = HOME_URL;
+                        resumeInfo["RESOURCE_URL"] = RESOURCE_URL;
+                        resumeInfo["HOME_TITLE"] = "JDreamHeart";
+                        return render(request, "resume/index.html", resumeInfo);
+                    else:
+                        reqFailedTips = "对应Token的remarks（备注）无效！获取简历信息失败！";
+        except Exception as e:
+            _GG("Log").e(f"Invalid resume token! Err[{e}]!");
+            reqFailedTips = "输入的Token无效！请重试！";
     return render(request, "resume/login.html", {
         "HOME_URL" : HOME_URL,
         "RESOURCE_URL" : RESOURCE_URL,
