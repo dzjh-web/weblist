@@ -23,6 +23,7 @@ workItems = [
 # 简历请求
 @csrf_exempt
 def req(request):
+    reqFailedTips = ""; # 请求失败提示
     try:
         token = request.GET.get("token", "");
         rt = models.ResumeToken.objects.get(token = token);
@@ -38,11 +39,13 @@ def req(request):
                 return render(request, "resume/index.html", resumeInfo);
     except Exception as e:
         _GG("Log").e(f"Invalid resume token! Err[{e}]!");
+        reqFailedTips = "输入的Token无效！请重试！";
     return render(request, "resume/login.html", {
         "HOME_URL" : HOME_URL,
         "RESOURCE_URL" : RESOURCE_URL,
         "HOME_TITLE" : "JDreamHeart",
         "HEAD_TITLE" : "Login-Resume",
+        "requestFailedTips" : reqFailedTips,
     });
 
 def getResumeInfo():
