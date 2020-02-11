@@ -3,8 +3,13 @@
 	{% for item in info.items %}
 	<div class="col-md-12 resume-line"><div></div></div>
 	<div class="col-md-12 resume-title">
-		<p class="col-md-3 text-center">{{ item.startTime|date:"Y-m-d" }}&nbsp;~&nbsp;{{ item.endTime|date:"Y-m-d" }}</p>
-		<p class="col-md-3 text-center">{{ item.college }}</p>
+		<p class="col-md-3 text-center">{{ item.startTime }}&nbsp;~&nbsp;{{ item.endTime }}</p>
+		<p class="col-md-3 text-center">
+			{% if item.icon %}
+			<img class="img-responsive" src="{{ item.icon }}" style="display: inline-block; height: 24px; margin-top: -2px" />
+			{% endif %}
+			{{ item.college }}
+		</p>
 		<p class="col-md-3 text-center">{{ item.degree }}</p>
 		<p class="col-md-3 text-center">{{ item.profession }}</p>
 	</div>

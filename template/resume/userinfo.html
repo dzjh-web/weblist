@@ -3,7 +3,11 @@
     {% for kv in userInfo.kvList %}
     <p class="text-center col-md-6">
         {% if kv.k %}
-            {{kv.k}}:&nbsp;
+            {% ifequal kv.kt "img" %}
+                <img class="img-responsive" src="{{ kv.k }}" style="display: inline-block; height: 20px; margin-top: -2px" />
+            {% else %}
+                {{kv.k}}:&nbsp;
+            {% endifequal %}
         {% endif %}
         {% ifequal kv.vt "a" %}
             <a href="{{ kv.v }}" target="_blank">{{ kv.v }}</a>
