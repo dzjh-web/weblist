@@ -33,6 +33,10 @@ def req(request):
                         return render(request, "resume/index.html", resumeInfo);
                     else:
                         reqFailedTips = "对应Token的remarks（备注）无效！获取简历信息失败！";
+                else:
+                    reqFailedTips = "输入的Token已过期！";
+            else:
+                reqFailedTips = "输入的Token已过期！";
         except Exception as e:
             _GG("Log").e(f"Invalid resume token! Err[{e}]!");
             reqFailedTips = "输入的Token无效！请重试！";
