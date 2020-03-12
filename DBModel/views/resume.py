@@ -2,64 +2,67 @@ import django.utils.timezone as timezone;
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 
+from DBModel import models;
 from weblist.settings import HOME_URL, RESOURCE_URL;
 
+import os;
+import json;
 import datetime;
 
-# 游戏列表
+from _Global import _GG;
+
+
+# 简历请求
+@csrf_exempt
 def req(request):
-    workItems = [
-        {
-            "time" : datetime.date(2017, 7, 7),
-            "description" : "主要做了什么？",
-        },
-        {
-            "time" : datetime.date(2018, 4, 9),
-            "description" : "主要做了什么？",
-        },
-    ];
-    return render(request, "resume.html", {
-        "HOME_URL": HOME_URL,
+    reqFailedTips = ""; # 请求失败提示
+    token = request.GET.get("token", "");
+    if token:
+        try:
+            rt = models.ResumeToken.objects.get(token = token);
+            if rt.expires > 0: # 校验简历token
+                targetTime = rt.active_at + datetime.timedelta(days = rt.expires);
+                delta = targetTime - timezone.now();
+                leftDays = delta.days + delta.seconds / 86400;
+                if leftDays > 0:
+                    resumeInfo = getResumeInfo(rt.remarks);
+                    if resumeInfo:
+                        resumeInfo["HOME_URL"] = HOME_URL;
+                        resumeInfo["RESOURCE_URL"] = RESOURCE_URL;
+                        resumeInfo["HOME_TITLE"] = "JDreamHeart";
+                        return render(request, "resume/index.html", resumeInfo);
+                    else:
+                        reqFailedTips = "对应Token的remarks（备注）无效！获取简历信息失败！";
+                else:
+                    reqFailedTips = "输入的Token已过期！";
+            else:
+                reqFailedTips = "输入的Token已过期！";
+        except Exception as e:
+            _GG("Log").e(f"Invalid resume token! Err[{e}]!");
+            reqFailedTips = "输入的Token无效！请重试！";
+    return render(request, "resume/login.html", {
+        "HOME_URL" : HOME_URL,
         "RESOURCE_URL" : RESOURCE_URL,
-        "HOME_TITLE": "JDreamHeart",
-        "HEAD_TITLE" : "JinZhang-Resume",
-        "TITLE" : "Resume",
-        "TITLE_URL" : f"{HOME_URL}/resume",
-        "userInfo" : {
-            "name" : "JinZhang",
-            "img" : "/static/img/dzjh-icon.png",
-            "phone" : "15602291936",
-            "email" : "manager@jdreamheart.com",
-            "urlTitle" : "个人网站",
-            "url" : "http://jimdreamheart.club",
-            "gitUrlTitle" : "GitHub网址",
-            "gitUrl" : "https://github.com/JDreamHeart",
-        },
-        "schoolInfo" : {
-            "startTime" : datetime.date(2013, 9, 1),
-            "endTime" : datetime.date(2017, 7, 1),
-            "degree" : "本科",
-            "college" : "SCNU",
-            "profession" : "GD",
-        },
-        "workInfo" : {
-            "startTime" : datetime.date(2017, 7, 7),
-            "companyIcon" : "/static/img/dzjh-icon.png",
-            "company" : "BY",
-            "position" : "--",
-            "items" : workItems,
-            "itemCols" : int(12 / len(workItems)),
-        },
-        "projectInfo" : {
-            "title" : "PyToolsIP",
-            "subTitle" : "Python工具集成平台",
-            "description" : """<div>
-                    <p>本平台基于<a href="https://wxpython.org/" target="_blank" title="wxpython"><b>wxPython</b></a>框架开发，包含<b>Python3.7</b>版本运行库，旨在提供用户以可视化界面来使用<b>Python工具</b>。</p>
-                    <p>在使用工具时，除了可使用本平台自带的工具外，还允许<b>用户开发自定义功能</b>的工具，而用户可选择将所开发的工具上传到本平台，以共享给其他人下载使用。</p>
-                </div>""",
-            "startTime" : datetime.date(2018, 4, 19),
-        },
+        "HOME_TITLE" : "JDreamHeart",
+        "HEAD_TITLE" : "Login-Resume",
+        "requestFailedTips" : reqFailedTips,
     });
 
-def getResumeInfo():
-    return ;
+# 获取简历信息
+def getResumeInfo(remarks = "resume"):
+    filePath = os.path.join(_GG("ProjectPath"), "assets", "static", "json", "resume", remarks+".json");
+    if os.path.exists(filePath):
+        try:
+            with open(filePath, "rb") as f:
+                info = json.loads(f.read().decode("utf-8"));
+                for itemInfo in info.get("infoList", []):
+                    if itemInfo.get("type", "") == "work":
+                        for item in itemInfo.get("items", []):
+                            workItems = item.get("items", []);
+                            if len(workItems) > 0:
+                                item["itemCols"] = int(12 / len(workItems));
+                    pass;
+                return info;
+        except Exception as e:
+            _GG("Log").e(f"Invalid resume remarks! Err[{e}]!");
+    return {};

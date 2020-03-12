@@ -109,3 +109,4 @@ venv.bak/
 assets/media/*
 release_token.json
 config.json
+assets/static/json/resume/*

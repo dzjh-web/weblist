@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: JDreamHeart
 # @Date:   2018-04-19 14:22:56
-# @Last Modified by:   JinZhang
-# @Last Modified time: 2019-03-28 18:34:16
+# @Last Modified by:   JimZhang
+# @Last Modified time: 2020-02-11 13:32:12
 import re,os,sys,time;
 import hashlib;
 import datetime;
@@ -43,9 +43,15 @@ def loadGlobalInfo():
 
 # 加载全局变量
 def _loadGlobal_():
+	_loadPaths_(); # 加载全局路径名变量
 	_loadLogger_(); # 加载日志类变量
 	_loadRsaDecode_(); # 加载rsa密钥解码方法
 	_loadReleaseToken_(); # 加载发布token
+
+# 加载全局路径名变量
+def _loadPaths_():
+	_G.setGlobalVarTo_Global("ProjectPath", CURRENT_PATH + "/");
+	pass;
 
 # 加载全局日志类
 def _loadLogger_():

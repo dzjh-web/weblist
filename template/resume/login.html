@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="{{ HOME_TITLE }}[个人网站]">
+		<meta name="author" content="{{ HOME_TITLE }}">
+		<title>{{ HEAD_TITLE }}</title>
+		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+		<link rel="stylesheet" href="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <style>
+        </style>
+	</head>
+	<body>
+        <div class="container">
+            <div class="row">
+                <div id="alertList"></div>
+                <div class="dialog-background col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                    <form class="dialog-form" role="form" enctype="multipart/form-data" method="get">
+                        <h1 class="text-center">简历</h1>
+                        <input name="token" class="form-control" type="text" placeholder="Resume Token" required autofocus />
+                        <button class="btn btn-lg btn-success btn-block form-control" type="submit"><span class="glyphicon glyphicon-log-in"></span>&nbsp;点击进入</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="container">
+                <p>
+                    <a href="{{ HOME_URL }}" title="{{ HOME_TITLE }}"><img class="home-icon img-responsive" src={% static "img/home-icon.png" %} />{{ HOME_TITLE }}</a>
+                    &nbsp;&copy;&nbsp;2019-2020&nbsp;&nbsp;
+                    <a id="aboutDzjH" href="javascript:void(0);" title="关于梦心DH">D·zj·H</a>.
+                </p>
+            </div>
+        </footer>
+        <script src="{{ RESOURCE_URL }}/jquery/jquery-3.4.0.min.js"></script>
+        <script src="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src={% static "js/main.js" %}></script>
+        <script language="JavaScript">
+            $(function(){
+                // 显示弹出信息
+                var showAlert = function(type, text) {
+                    $("#alertList").append("<div class='alert alert-"+ type +"' role='alert'>\
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>\
+                            <span class='alertContent'>"+ text +"</span>\
+                        </div>");
+                }
+                var tips = "{{requestFailedTips}}";
+                if (tips != "") {
+                    showAlert("danger", tips);
+                } else {
+                    tips = "{{requestTips}}";
+                    if (tips != "") {
+                        showAlert("success", tips);
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>

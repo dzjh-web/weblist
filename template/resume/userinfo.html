@@ -1,0 +1,22 @@
+<div class="col-md-8">
+    <p class="text-center user-info-name">{{ userInfo.name }}</p>
+    {% for kv in userInfo.kvList %}
+    <p class="text-center col-md-6">
+        {% if kv.k %}
+            {% ifequal kv.kt "img" %}
+                <img class="img-responsive" src="{{ kv.k }}" style="display: inline-block; height: 20px; margin-top: -2px" />
+            {% else %}
+                {{kv.k}}:&nbsp;
+            {% endifequal %}
+        {% endif %}
+        {% ifequal kv.vt "a" %}
+            <a href="{{ kv.v }}" target="_blank">{{ kv.v }}</a>
+        {% else %}
+            {{ kv.v }}
+        {% endifequal %}
+    </p>
+    {% endfor %}
+</div>
+<div class="col-md-4 user-info-img">
+    <img class="img-responsive" src="{{ userInfo.img }}" />
+</div>

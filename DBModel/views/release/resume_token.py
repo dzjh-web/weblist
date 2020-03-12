@@ -31,23 +31,40 @@ def upload(request, result, isSwitchTab):
                     "active_at" : timezone.now(),
                 });
                 rt.save();
-                result["requestTips"] = f"简历Token【{rt.name}，{rt.category}】创建成功。";
+                result["requestTips"] = f"简历Token【{rt.token}】创建成功。";
                 # 发送邮件通知
                 try:
-                    base_util.sendMsgToAllMgrs(f"简历Token【{rt.name}，{rt.category}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"简历Token【{rt.token}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             else:
                 result["requestFailedTips"] = "简历信息无效！";
                 _GG("Log").w("Invalid resume info!");
-        pass;
+        else:
+            opType = request.POST.get("opType", "");
+            if opType:
+                try:
+                    tid = request.POST.get("tid", -1);
+                    t = models.ResumeToken.objects.get(id = int(tid));
+                    if opType == "change_expires":
+                        if "expires" in request.POST:
+                            t.expires = int(request.POST["expires"]);
+                            t.save();
+                    elif opType == "active":
+                        t.active_at = timezone.now();
+                        t.save();
+                    elif opType == "delete":
+                        t.delete();
+                except Exception as e:
+                    _GG("Log").e(f"Failed to operate resume token! Err[{e}]!");
     result["form"] = ResumeTokenForm();
+    result["onlineInfoList"] = getOlTokenList();
     pass;
 
 # 创建Token
 def createToken():
     randCode = random_util.randomMulti(32); # 32位随机码
-    return hashlib.md5("|".join([timezone.now(), randCode]).encode("utf-8")).hexdigest();
+    return hashlib.md5("|".join([timezone.now().strftime('%Y-%m-%d-%H-%M-%S'), randCode]).encode("utf-8")).hexdigest();
 
 # 获取已创建的Token
 def getOlTokenList():
@@ -66,10 +83,10 @@ def getOlTokenList():
         };
         if info.expires > 0:
             targetTime = info.active_at + datetime.timedelta(days = info.expires);
-            delta = targetTime - datetime.datetime.now();
-            leftDays = datetime.days + datetime.seconds / 86400;
+            delta = targetTime - timezone.now();
+            leftDays = delta.days + delta.seconds / 86400;
             if leftDays > 0:
                 olInfo["state"] = f"剩余{leftDays}天";
                 olInfo["isNotActive"] = False;
         olList.append(olInfo);
-    result["onlineInfoList"] = olList;
+    return olList;

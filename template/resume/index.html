@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="{{ HOME_TITLE }}[个人网站]">
+		<meta name="author" content="{{ HOME_TITLE }}">
+		<title>{{ HEAD_TITLE }}</title>
+		<link rel="shortcut icon" href={% static "icon/dzjh.ico" %} type="image/x-icon" />
+		<link rel="stylesheet" href="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href= {% static "css/style.css" %} />
+        <style>
+			a, a:link, a:visited {
+				color: #428BCA;
+			}
+			a:hover{
+				color: #0b487e;
+			}
+            .resume_content {
+                margin-top: 20px;
+                padding: 20px;
+				color: #363636;
+                background-color: #FCFCFC;
+                border-radius: 6px;
+                box-sizing: border-box;
+                box-shadow: 0 50px 50px #000000;
+            }
+            .resume_content ul {
+                padding: 20px;
+                /* border: 1px #868686 solid; */
+            }
+            .resume_content ul > li {
+                margin: 20px 0px;
+				padding: 0;
+				padding-bottom: 10px;
+                background-color: #FFFFFF;
+				border: 1px #F9F9F9 solid;
+                border-top: 2px #36366899 solid;
+				border-radius: 0 0 4px 4px;
+                box-sizing: border-box;
+                box-shadow: 0 12px 12px #E1E1E1;
+            }
+            .resume_content ul > li:first-child {
+                border-top: 1px #F9F9F9 solid;
+				padding-top: 10px;
+				border-radius: 4px;
+            }
+            .resume_content ul > li > h5 {
+				margin: 0;
+				margin-bottom: 10px;
+            }
+            .resume_content ul > li > h5 > span {
+				display: inline-block;
+				padding: 2px;
+				margin: 0;
+                font-size: 16px;
+                color: #FFFFFF;
+				background-color: #363668;
+				opacity: 0.6;
+			}
+            .resume-item .resume-line {
+                padding: 0 20px;
+            }
+            .resume-item .resume-line > div:first-child {
+                margin: 10px 0;
+                border-bottom: 1px lightblue dotted;
+            }
+            .resume-item .resume-line:first-child > div:first-child {
+                margin: 0;
+                border: none;
+            }
+			.resume-title {
+                margin-top: 10px;
+				font-weight: bolder;
+			}
+            .user-info-name {
+                color: #191970;
+                font-size: 28px;
+                font-weight: bolder;
+                padding-bottom: 10px;
+            }
+            .user-info-img {
+                position: relative;
+                height: 120px;
+				padding-top: 10px;
+            }
+            .user-info-img img {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 100px;
+				border-radius: 2px;
+                box-sizing: border-box;
+                box-shadow: 4px 6px 10px #BCBCBC;
+            }
+            .work-timeline {
+                padding: 0 20px
+            }
+            .timeline {
+                padding: 0;
+				color: #868686;
+            }
+            .timeline-icon {
+                position: relative;
+                border-bottom: 3px solid #BCBCBC;
+            }
+            .timeline-icon:before {
+                content: "";
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                margin: 0 auto;
+                left: 0;
+                right: 0;
+                bottom: -10px;
+                border-radius: 50%;
+                background-color: #BCBCBC;
+            }
+			.timeline-time {
+				font-style: italic;
+			}
+            .timeline-description {
+                margin: 0;
+                padding: 10px;
+            }
+            .projec_description {
+                margin-top: 10px;
+				color: #868686;
+            }
+			.resume-icon {
+                position: relative;
+            }
+            .resume-icon img {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        </style>
+	</head>
+	<body>
+        <div class="container resume_content">
+            <ul class="row">
+                <li class="col-md-12">
+                    {% include "resume/userinfo.html" %}
+                </li>
+                {% for info in infoList %}
+                <li class="col-md-12">
+                    {% ifequal info.type "school" %}
+                        {% include "resume/school.html" %}
+                    {% endifequal %}
+                    {% ifequal info.type "work" %}
+                        {% include "resume/work.html" %}
+                    {% endifequal %}
+                    {% ifequal info.type "project" %}
+                        {% include "resume/project.html" %}
+                    {% endifequal %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+		<div class="fixdRight">
+			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+		</div>
+        <footer>
+            <div class="container">
+                <p>&copy;&nbsp;2019-2020&nbsp;&nbsp;<a id="aboutDzjH" href="javascript:void(0);" title="关于梦心DH">D·zj·H</a>.</p>
+            </div>
+        </footer>
+        <script src="{{ RESOURCE_URL }}/jquery/jquery-3.4.0.min.js"></script>
+        <script src="{{ RESOURCE_URL }}/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+        <script src={% static "js/main.js" %}></script>
+        <script language="JavaScript">
+            $(function(){
+            });
+        </script>
+    </body>
+</html>
