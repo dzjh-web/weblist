@@ -135,6 +135,7 @@ body{
 	border-radius: 10px;
 	color: lightcyan;
 	font-size: 24px;
+	animation: breathe 2000ms ease-out infinite alternate;
 }
 .col-container-front:after{
 	position: absolute;
@@ -145,12 +146,21 @@ body{
 	height: 100%;
 	content: '';
 	display: block;
-	opacity: .6;
+	opacity: .72;
 	background-color: #000000;
-	border: 1px rgba(255,255,255,0.8) solid;
 	-webkit-backface-visibility: hidden;
 			backface-visibility: hidden;
 	border-radius: 10px;
+}
+@keyframes breathe {
+	0% {
+		border-color: lightcyan;
+		box-shadow: 0 0 5px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1), 0 0px 0 lightcyan;
+	}
+	100% {
+		border-color: lightcyan;
+		box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0px 0 lightcyan;
+	}
 }
 .col-container:hover .col-container-front,
 .col-container:hover .col-container-back{
