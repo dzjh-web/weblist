@@ -132,7 +132,7 @@ body{
 	text-align: center;
 	min-height: 240px;
 	height: auto;
-	border-radius: 10px;
+	border-radius: 20px;
 	color: lightcyan;
 	font-size: 24px;
 	animation: breathe 2000ms ease-out infinite alternate;
@@ -150,7 +150,7 @@ body{
 	background-color: #000000;
 	-webkit-backface-visibility: hidden;
 			backface-visibility: hidden;
-	border-radius: 10px;
+	border-radius: 20px;
 }
 @keyframes breathe {
 	0% {
