@@ -134,7 +134,7 @@ body{
 	border-radius: 20px;
 	color: lightcyan;
 	font-size: 24px;
-	animation: breathe 2000ms ease-out infinite alternate;
+	animation: breathe 3000ms ease-out infinite alternate;
 }
 .col-container-front:after{
 	position: absolute;
@@ -153,14 +153,12 @@ body{
 }
 @keyframes breathe {
 	0% {
-		opacity: 0.5;
-		border-color: lightcyan;
-		box-shadow: 0 0 5px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1), 0 0px 0 lightcyan;
+		opacity: 1;
+		box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0px 0 lightcyan;
 	}
 	100% {
-		opacity: 1;
-		border-color: lightcyan;
-		box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0px 0 lightcyan;
+		opacity: 0.5;
+		box-shadow: 0 0 5px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1), 0 0px 0 lightcyan;
 	}
 }
 .col-container:hover .col-container-front,
@@ -170,6 +168,7 @@ body{
 	-o-transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
 	transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
 	transition: transform .7s cubic-bezier(0.4, 0.2, 0.2, 1), -webkit-transform .7s cubic-bezier(0.4, 0.2, 0.2, 1);
+	animation: none;
 }
 .col-container-back{
 	position: absolute;
