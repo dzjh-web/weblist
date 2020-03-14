@@ -145,7 +145,7 @@ body{
 	height: 100%;
 	content: '';
 	display: block;
-	opacity: 0.5;
+	opacity: 0.3;
 	background-color: #000000;
 	-webkit-backface-visibility: hidden;
 			backface-visibility: hidden;
