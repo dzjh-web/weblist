@@ -31,6 +31,7 @@ body{
 }
 .cover-header{
 	margin-top: 10px;
+	opacity: 0.4;
 	/* border-bottom: 1px #BCBCBC solid; */
 }
 .cover-header>h3{
@@ -39,8 +40,6 @@ body{
 }
 .cover-content{
 	padding: 30px 10px;
-	border-top: #686868 2px solid;
-	border-bottom: #686868 2px solid;
 }
 .cover-footer{
 	margin-bottom: 20px;
