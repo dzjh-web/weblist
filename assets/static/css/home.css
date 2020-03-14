@@ -153,10 +153,12 @@ body{
 }
 @keyframes breathe {
 	0% {
+		opacity: 0.6;
 		border-color: lightcyan;
 		box-shadow: 0 0 5px rgba(255, 255, 255, 0.2), inset 0 0 5px rgba(255, 255, 255, 0.1), 0 0px 0 lightcyan;
 	}
 	100% {
+		opacity: 1;
 		border-color: lightcyan;
 		box-shadow: 0 0 20px rgba(255, 255, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.4), 0 0px 0 lightcyan;
 	}
@@ -263,8 +265,6 @@ body{
 /*标题区域显示*/
 .cover-title {
 	padding-bottom: 20px;
-}
-.title-description{
 	cursor: pointer;
 }
 .title-description>h1{

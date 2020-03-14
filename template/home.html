@@ -18,14 +18,14 @@
 			<div class="cover-inner">
 				<div class="cover-container">
 					<nav class="cover-header">
-						<h3 class="cover-icon"><img class="img-responsive home-icon" src={% static "img/home-icon.png" %} style="height: 22px; margin-top: -6px; margin-right: 2px;" />{{ TITLE }}</h3>
 						<ul class="cover-nav">
 							{% for navInfo in navList %}
-							<li><a class="cover-icon" href="{{ navInfo.url }}" target="_blank" title="{{ navInfo.title }}">{{ navInfo.name }}</a></li>
+							<li><a href="{{ navInfo.url }}" target="_blank" title="{{ navInfo.title }}">{{ navInfo.name }}</a></li>
 							{% endfor %}
 						</ul>
 					</nav>
 					<div class="cover-title">
+						<h3 class="text-center" style="opacity: 0.6;"><img class="img-responsive home-icon" src={% static "img/home-icon.png" %} style="height: 22px; margin-top: -6px; margin-right: 2px;" />{{ TITLE }}</h3>
 						<div class="title-description" title="我的主站" data-target="ch">
 							<h1>我的主站</h1>
 							<div class="lead">
