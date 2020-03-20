@@ -35,7 +35,7 @@ def req(request):
         "TITLE_URL" : f"{HOME_URL}/game",
         "SEARCH_URL" : f"{HOME_URL}/game?k=search",
         "SEARCH_KEY" : "游戏",
-        "searchText" : "搜索游戏名称",
+        "placeholder" : "搜索游戏名称",
         "carouselList" : getCarouseList(),
         "hasInfo" : isHasInfo,
         "infoList" : infoList,
@@ -58,8 +58,8 @@ def detail(request):
         "TITLE_URL" : f"{HOME_URL}/game",
         "SEARCH_URL" : f"{HOME_URL}/game?k=search",
         "searchKey" : "游戏",
-        "searchText" : "搜索游戏名称",
-        "searchLogText" : "搜索游戏日志名称",
+        "placeholder" : "搜索游戏名称",
+        "logPlaceholder" : "搜索游戏日志名称",
         "hasInfo" : False,
     };
     try:
@@ -145,8 +145,7 @@ def gameLog(request):
         "TITLE" : "游戏列表",
         "TITLE_URL" : f"{HOME_URL}/game",
         "SEARCH_URL" : f"{HOME_URL}/game?k=search",
-        "searchText" : "搜索游戏名称",
-        "searchLogText" : "搜索游戏日志名称",
+        "placeholder" : "搜索游戏名称",
         "hasInfo" : False,
     };
     try:

@@ -20,7 +20,8 @@
         <p class="text-center">{{searchNoneTips}}</p>
     {% endif %}
     {% for webInfo in onlineInfoList %}
-        <div class="col-md-4 web-info-item">
+    <div class="col-md-4">
+        <div class="web-info-item">
             <div class="web-info-tittle">
                 <h3 class="web-info-tittle">{{ webInfo.name }}</h3>
                 {% if webInfo.title %}
@@ -43,6 +44,7 @@
                 <span>排序值：{{ webInfo.sortId }}</span>
             </p>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endif %}

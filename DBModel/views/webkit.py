@@ -39,7 +39,7 @@ def req(request):
         "TITLE_URL" : f"{HOME_URL}/web?t={webType}",
         "SEARCH_URL" : f"{HOME_URL}/web?t={webType}&k=search",
         "SEARCH_KEY" : title,
-        "searchText" : f"搜索{title}名称",
+        "placeholder" : f"搜索{title}名称",
         "carouselList" : getCarouseList(wtype),
         "hasInfo" : isHasInfo,
         "infoList" : infoList,

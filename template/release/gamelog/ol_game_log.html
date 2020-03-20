@@ -20,10 +20,11 @@
         <p class="text-center">{{searchNoneTips}}</p>
     {% endif %}
     {% for gamelogInfo in onlineInfoList %}
-        <div class="col-md-4 web-info-item">
+    <div class="col-md-4">
+        <div class="web-info-item">
             <h3 class="web-info-tittle">{{ gamelogInfo.title }}</h3>
-            {% if gamelogInfo.sub_title %}
-            <p class="web-info-sub-tittle">[{{ gamelogInfo.sub_title }}]</p>
+            {% if gamelogInfo.subTitle %}
+            <p class="web-info-sub-tittle">[{{ gamelogInfo.subTitle }}]</p>
             {% endif %}
             <p>所属游戏：<a href="{{ HOME_URL }}/game?k=detail&gid={{ gamelogInfo.gid }}" target="_blank"><strong>{{ gamelogInfo.gname }}</strong></a></p>
             <p class="web-info-desc">{{ gamelogInfo.sketch }}</p>
@@ -38,6 +39,7 @@
                 <span>上传时间：{{ gamelogInfo.time|date:"Y-m-d H:i" }}</span>
             </p>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endif %}

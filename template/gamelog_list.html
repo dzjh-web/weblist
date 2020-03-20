@@ -1,4 +1,3 @@
-
 {% if hasLogInfo %}
     <ul class="row">
         {% for info in logInfoList %}
@@ -30,8 +29,8 @@
         {% endfor %}
     </ul>
 {% else %}
-    {% if searchText %}
-    <p class="text-center">未搜索到标题包含[&nbsp;<span style="color: lightcoral;">{{ searchText }}</span>&nbsp;]的游戏日志</p>
+    {% if searchLogText %}
+    <p class="text-center">未搜索到标题包含[&nbsp;<span style="color: lightcoral;">{{ searchLogText }}</span>&nbsp;]的游戏日志</p>
     {% else %}
     <p class="text-center">暂无游戏日志</p>
     {% endif %}

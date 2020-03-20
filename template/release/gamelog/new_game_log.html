@@ -20,7 +20,8 @@
         <p class="text-center">{{searchNoneTips}}</p>
     {% endif %}
     {% for gameInfo in onlineInfoList %}
-        <div class="col-md-4 web-info-item">
+    <div class="col-md-4">
+        <div class="web-info-item">
             <div class="web-info-tittle">
                 <h3 class="web-info-tittle">{{ gameInfo.name }}</h3>
                 {% if gameInfo.category %}
@@ -31,6 +32,7 @@
             <p class="web-info-desc">{{ gameInfo.description }}</p class="web-info-desc">
             <p class="web-info-detail"><a class="btn btn-primary add-game-log-btn" href="javascript:void(0);" role="button" data-target="{{ gameInfo.id }}">新增游戏日志</a></p>
         </div>
+    </div>
     {% endfor %}
 </div>
 {% endif %}
