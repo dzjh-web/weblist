@@ -151,11 +151,19 @@ img.home-icon-normal {
 	font-size: 14px;
 	line-height: 24px;
 	background-color: #545454;
-	height: 102px;
+	height: 52px;
 	overflow: hidden;
 	display: -webkit-box;
 	text-overflow: ellipsis;
-	-webkit-line-clamp: 4;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+.web-info-desc-ex{
+	height: 172px;
+	overflow: hidden;
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	-webkit-line-clamp: 7;
 	-webkit-box-orient: vertical;
 }
 .web-info-ex-info{
