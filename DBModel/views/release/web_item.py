@@ -59,7 +59,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                 result["requestTips"] = f"网页【{wi.name}，{wi.title}】上传成功，当前处于禁用状态，需手动进行启用。";
                 # 发送邮件通知
                 try:
-                    base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             else:
@@ -99,7 +99,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         isEdit = True;
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
+                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                     else:
@@ -130,7 +130,7 @@ def update(request, result, isSwitchTab, wtype = 0):
                         result["requestTips"] = f"网页【{wi.name}，{wi.title}】成功删除。";
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                            base_util.sendMsgToAllMgrs(f"网页【{wi.name}，{wi.title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                 # 返回页面数据

@@ -53,7 +53,7 @@ def upload(request, result, isSwitchTab):
                         result["requestTips"] = f"游戏日志【{gl.title}，{gl.sub_title}】上传成功。";
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                     else:
@@ -107,7 +107,7 @@ def update(request, result, isSwitchTab):
                         result["requestTips"] = f"游戏日志【{gl.title}，{gl.sub_title}】更新成功。";
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
+                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）更新成功。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                     else:
@@ -125,7 +125,7 @@ def update(request, result, isSwitchTab):
                         result["requestTips"] = f"游戏日志【{gl.title}，{gl.sub_title}】成功删除。";
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                            base_util.sendMsgToAllMgrs(f"游戏日志【{gl.title}，{gl.sub_title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             except Exception as e:

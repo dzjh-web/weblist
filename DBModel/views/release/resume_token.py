@@ -34,7 +34,7 @@ def upload(request, result, isSwitchTab):
                 result["requestTips"] = f"简历Token【{rt.token}】创建成功。";
                 # 发送邮件通知
                 try:
-                    base_util.sendMsgToAllMgrs(f"简历Token【{rt.token}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"简历Token【{rt.token}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             else:
@@ -64,7 +64,7 @@ def upload(request, result, isSwitchTab):
 # 创建Token
 def createToken():
     randCode = random_util.randomMulti(32); # 32位随机码
-    return hashlib.md5("|".join([timezone.now().strftime('%Y-%m-%d-%H-%M-%S'), randCode]).encode("utf-8")).hexdigest();
+    return hashlib.md5("|".join([timezone.localtime(timezone.now()).strftime('%Y-%m-%d-%H-%M-%S'), randCode]).encode("utf-8")).hexdigest();
 
 # 获取已创建的Token
 def getOlTokenList():

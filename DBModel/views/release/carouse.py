@@ -49,7 +49,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                 result["requestTips"] = f"Carouse【{c.name}，{c.title}】上传成功，当前处于未启用状态，需手动进行启用。";
                 # 发送邮件通知
                 try:
-                    base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.title}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
+                    base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.title}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）上传成功。");
                 except Exception as e:
                     _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
             else:
@@ -64,7 +64,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                     result["requestTips"] = f"Carouse【{c.name}，{c.url}，{wTitle}】成功删除。";
                     # 发送邮件通知
                     try:
-                        base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
+                        base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）成功删除。");
                     except Exception as e:
                         _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                 elif opType == "update":
@@ -83,7 +83,7 @@ def upload(request, result, isSwitchTab, wtype = 0):
                         result["requestTips"] = f"Carouse【{c.name}，{c.url}，{wTitle}】更新成功";
                         # 发送邮件通知
                         try:
-                            base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.now().strftime('%Y-%m-%d %H:%M:%S')}）成功更新。");
+                            base_util.sendMsgToAllMgrs(f"Carouse【{c.name}，{c.url}，{wTitle}】于（{timezone.localtime(timezone.now()).strftime('%Y-%m-%d %H:%M:%S')}）成功更新。");
                         except Exception as e:
                             _GG("Log").e(f"Failed to send message to all managers! Error({e})!");
                     else:
