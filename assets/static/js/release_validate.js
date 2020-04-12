@@ -38,7 +38,7 @@ $(function(){
             }
             return false;
         },
-        $.validator.format("请选择{0}格式的文件")
+        $.validator.format("所选文件的格式错误！请选择{0}、{1}、{2}、{3}...格式的文件")
     );
     // 校验只能输入下划线、字母或数字，且不能以数字开头
     $.validator.addMethod(
