@@ -16,7 +16,7 @@ from _Global import _GG;
 class GameItemForm(ModelForm):
     class Meta:
         model = models.GameItem
-        fields = ["name", "category", "thumbnail", "description", "file_path"]
+        fields = ["name", "category", "thumbnail", "description", "file_path", "demo_video"]
 
     def __init__(self, *args, **kwargs):
         super(GameItemForm, self).__init__(*args, **kwargs);
@@ -82,6 +82,8 @@ def update(request, result, isSwitchTab):
                             gi.thumbnail = wf.cleaned_data["thumbnail"];
                         if wf.cleaned_data["file_path"]:
                             gi.file_path = wf.cleaned_data["file_path"];
+                        if wf.cleaned_data["demo_video"]:
+                            gi.demo_video = wf.cleaned_data["demo_video"];
                         gi.description = wf.cleaned_data["description"];
                         gi.update_time = timezone.now();
                         gi.save();
@@ -156,6 +158,7 @@ def update(request, result, isSwitchTab):
         "description" : gameInfo.description,
         "schedule" : ScheduleMap.get(gameInfo.schedule, "未知"),
         "filePath" : gameInfo.file_path and gameInfo.file_path.url or "",
+        "demoVideo" : gameInfo.demo_video,
         "time" : gameInfo.time,
         "updateTime" : gameInfo.update_time,
         "sortId" : gameInfo.sort_id,

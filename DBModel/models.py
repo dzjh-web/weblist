@@ -44,6 +44,7 @@ class GameItem(models.Model):
     time = models.DateTimeField()
     update_time = models.DateTimeField()
     sort_id = models.IntegerField()
+    demo_video = models.CharField(max_length=255, blank=True, null=True, verbose_name="演示视频")
 
     class Meta:
         managed = False

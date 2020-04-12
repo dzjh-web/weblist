@@ -75,6 +75,7 @@ def detail(request):
             "thumbnail" : info.thumbnail.url,
             "description" : info.description,
             "filePath" : info.file_path and info.file_path.url,
+            "demoVideo" : info.demo_video,
             "time" : info.time,
             "updateTime" : info.update_time,
             "content" : info.cid.content,
@@ -87,7 +88,7 @@ def detail(request):
         result["detailInfo"]["schedule"]["items"].insert(0, {"key" : ScheduleMap[Schedule.Pending.value], "val" : Schedule.Pending.value});
         result["detailInfo"]["schedule"]["items"].append({"key" : ScheduleMap[Schedule.Off.value], "val" : Schedule.Off.value});
         result["detailInfo"]["schedule"]["itemWidth"] = str(int(100 / len(result["detailInfo"]["schedule"]["items"]))) + "%";
-        if info.file_path:
+        if info.file_path or info.demo_video:
             result["detailInfo"]["hasGameContent"] = True;
         # 获取游戏日志信息
         infoList = models.GameLog.objects.filter(gid = info).order_by("-update_time");
