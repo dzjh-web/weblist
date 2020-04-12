@@ -108,6 +108,30 @@
 			.game-info-schedule-items .schedule-item.active .schedule-no-line .schedule-text{
 				color: red;
 			}
+			.game-info-header {
+				padding: 0px;
+				margin-top: 20px;
+				border: 2px #686868 solid;
+				border-radius: 4px;
+			}
+			.game-info-header h3 {
+				padding: 10px;
+				margin: 0px;
+				font-weight: bolder;
+				color: #008000;
+				background-color: #000000;
+				border-bottom: 1px #363636 solid;
+				border-radius: 4px 4px 0px 0px;
+			}
+			.game-info-header-content {
+				padding: 20px;
+			}
+			.game-info-header-content > a {
+				margin-left: 60px;
+			}
+			.game-info-header-content > a:first-child {
+				margin-left: 0px;
+			}
 			.game-log-list {
 				margin-top: 40px;
 				border: 2px #686868 solid;
@@ -201,6 +225,19 @@
 							{% endfor %}
 						</div>
 						</div>
+					{% endif %}
+					{% if detailInfo.hasGameContent %}
+					<div class="game-info-header">
+						<h3 class="text-center">游戏内容</h3>
+						<div class="text-center game-info-header-content">
+							{% if detailInfo.demo %}
+							<a class="btn btn-default" href="{{ detailInfo.demo }}" target="_blank" title="DEMO演示">DEMO演示</a>
+							{% endif %}
+							{% if detailInfo.filePath %}
+							<a class="btn btn-primary" href="{{ detailInfo.filePath }}" target="_blank" title="游戏包下载">游戏包下载</a>
+							{% endif %}
+						</div>
+					</div>
 					{% endif %}
 					<div class="game-info-content">
 						<h3 class="text-center">游戏详情</h3>
