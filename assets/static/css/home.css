@@ -135,6 +135,7 @@ body{
 	color: lightcyan;
 	font-size: 24px;
 	animation: breathe 2000ms ease-out infinite alternate;
+	border: 2px #FFFFFF solid;
 }
 .col-container-front:after{
 	position: absolute;
