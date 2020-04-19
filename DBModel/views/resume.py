@@ -30,6 +30,7 @@ def req(request):
                         resumeInfo["HOME_URL"] = HOME_URL;
                         resumeInfo["RESOURCE_URL"] = RESOURCE_URL;
                         resumeInfo["HOME_TITLE"] = "JDreamHeart";
+                        resumeInfo["resumeTips"] = "当前Token<span style='color: green'>有效期</span>剩余 <span style='color: red'>{:.2f}</span> 天".format(leftDays);
                         return render(request, "resume/index.html", resumeInfo);
                     else:
                         reqFailedTips = "对应Token的名称无效！获取简历信息失败！";

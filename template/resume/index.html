@@ -18,8 +18,22 @@
 			a:hover{
 				color: #0b487e;
 			}
+            .fixdRight a{
+                font-size: 20px;
+                padding: 0;
+                padding-top: 4px;
+            }
+            .fixdRight a:hover{
+                border: 1px #000 solid;
+            }
+            body {
+                padding-top: 10px;
+            }
+            .resume-tips {
+                color: gray;
+            }
             .resume_content {
-                margin-top: 20px;
+                margin-bottom: 10px;
                 padding: 20px;
 				color: #363636;
                 background-color: #FCFCFC;
@@ -147,6 +161,7 @@
         </style>
 	</head>
 	<body>
+        <div class="text-center resume-tips"><p>{{ resumeTips | safe }}</p></div>
         <div class="container resume_content">
             <ul class="row">
                 <li class="col-md-12">
@@ -168,7 +183,8 @@
             </ul>
         </div>
 		<div class="fixdRight">
-			<div id="toTop"><a href="javascript:void(0);" title="回到顶部">╱╲</a></div>
+			<div id="screenshot"><a class="text-center" href="javascript:void(0);" title="生成简历图片"><span class="glyphicon glyphicon-screenshot"></span></a></div>
+			<div id="toTop"><a class="text-center" href="javascript:void(0);" title="回到顶部"><span class="glyphicon glyphicon-chevron-up"></span></a></div>
 		</div>
         <footer>
             <div class="container">
@@ -180,6 +196,34 @@
         <script src={% static "js/main.js" %}></script>
         <script language="JavaScript">
             $(function(){
+                $("#screenshot > a").on("click",function(){
+                    // 创建弹窗
+                    createDialogPage("<div>\
+                                        <h2 style='color:darkgreen;'>生成简历图片</h2>\
+                                        <div>\
+                                            <p class='text-center' style='margin-bottom: 20px; color: gray;'>此生成方式基于浏览器（谷歌浏览器）的【开发者工具】，来进行网页内容的截图。</strong></p>\
+                                            <p><strong>开始之前：</strong>可点击以下的【打开生成图片模式】按钮，将当前页面的非简历信息隐藏，避免生成图片中包含了这些信息。</p>\
+                                            <p><strong>第一步：</strong>打开【开发者工具】。可通过按下键盘的<strong>F12键</strong>，或者通过以下3个步骤打开。</p>\
+                                            <p><img class='img-responsive' src='/static/img/resume_dev/chrome_dev_tool.png' style='max-height: 280px;' /></p>\
+                                            <p><strong>第二步：</strong>调整网页内容的显示大小（尤其是左右两边，尽量减少空余的地方）。将鼠标放在以下方框中的<strong>两竖线</strong>位置，按下后可进行拉伸，来调整左右两边的空余。</p>\
+                                            <p><img class='img-responsive' src='/static/img/resume_dev/chrome_dev_tool_adjust.png' style='max-height: 150px;' /></p>\
+                                            <p><strong>第三步：</strong>调出命令框。可通过按顺序按下（不松开）键盘的<strong>Ctrl、Shift、P键</strong>，或者通过以上2个步骤打开。</p>\
+                                            <p><strong>第四步：</strong>在命令框输入screenshot。有多种截图方式可选择，一般选择<strong>Capture full size screenshot</strong>即可。</p>\
+                                        </div>\
+                                        <div class='text-center' style='margin-top:30px;'>\
+                                            <a id='openPicPattern' class='btn btn-lg btn-success'>打开生成图片模式</a>\
+                                        </div>\
+                                    </div>", "col-md-10 col-md-offset-1");
+                    $("#openPicPattern").on("click",function(){
+                        $("body").css("background-color", "white");
+                        $(".resume_content").css("box-shadow", "none");
+                        $(".resume-tips").hide();
+                        $(".fixdRight").hide();
+                        $("footer").hide();
+                        // 关闭弹窗
+                        closeDialogPage();
+                    });
+                });
             });
         </script>
     </body>
