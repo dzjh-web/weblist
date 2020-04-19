@@ -14,7 +14,7 @@ from _Global import _GG;
 class ResumeTokenForm(ModelForm):
     class Meta:
         model = models.ResumeToken
-        fields = ["remarks", "expires"]
+        fields = ["name", "remarks", "expires"]
 
 # 上传简历Token信息
 def upload(request, result, isSwitchTab):
@@ -25,6 +25,7 @@ def upload(request, result, isSwitchTab):
             if rtf.is_valid():
                 rt = models.ResumeToken(**{
                     "token" : createToken(),
+                    "name" : rtf.cleaned_data["name"],
                     "remarks" : rtf.cleaned_data["remarks"],
                     "expires" : rtf.cleaned_data["expires"],
                     "create_at" : timezone.now(),
@@ -46,7 +47,11 @@ def upload(request, result, isSwitchTab):
                 try:
                     tid = request.POST.get("tid", -1);
                     t = models.ResumeToken.objects.get(id = int(tid));
-                    if opType == "change_expires":
+                    if opType == "change_remarks":
+                        if "remarks" in request.POST:
+                            t.remarks = request.POST["remarks"];
+                            t.save();
+                    elif opType == "change_expires":
                         if "expires" in request.POST:
                             t.expires = int(request.POST["expires"]);
                             t.save();
@@ -74,7 +79,8 @@ def getOlTokenList():
         olInfo = {
             "id" : info.id,
             "token" : info.token,
-            "remarks" : info.remarks,
+            "name" : info.name or "",
+            "remarks" : info.remarks or "",
             "expires" : info.expires,
             "create_at" : info.create_at,
             "active_at" : info.active_at,
@@ -86,7 +92,7 @@ def getOlTokenList():
             delta = targetTime - timezone.now();
             leftDays = delta.days + delta.seconds / 86400;
             if leftDays > 0:
-                olInfo["state"] = f"剩余{leftDays}天";
+                olInfo["state"] = "剩余{:.2f}天".format(leftDays);
                 olInfo["isNotActive"] = False;
         olList.append(olInfo);
     return olList;

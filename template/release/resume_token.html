@@ -18,6 +18,7 @@
     <thead>
         <tr>
             <th>Token</th>
+            <th>名称（简历索引）</th>
             <th>备注</th>
             <th>有效期</th>
             <th>创建时间</th>
@@ -30,7 +31,11 @@
         {% for olInfo in onlineInfoList %}
         <tr>
             <th>{{ olInfo.token }}</th>
-            <th>{{ olInfo.remarks }}</th>
+            <th>{{ olInfo.name }}</th>
+            <th>
+                <span style="margin-right: 4px;">{{ olInfo.remarks }}</span>
+                <a class="operate" name="change_remarks" data-target="{{ olInfo.id }}" data-value="{{ olInfo.remarks }}">修改</a>
+            </th>
             <th>
                 <span style="margin-right: 4px;">{{ olInfo.expires }}</span>
                 <a class="operate" name="change_expires" data-target="{{ olInfo.id }}" data-value="{{ olInfo.expires }}">修改</a>
@@ -83,6 +88,37 @@
             var opType = $(this).attr("name");
             var tid = $(this).attr("data-target");
             switch(opType) {
+                case "change_remarks":
+                    // 创建弹窗
+                    createDialogPage("<form id='remarksForm' class='dialog-form' role='form' enctype='multipart/form-data'>\
+                                    <h2>修改备注</h2>\
+                                    <div class='input-group'>\
+                                        <label class='input-group-addon' for='description'>备注</label>\
+                                        <input name='remarks' class='form-control' type='text' value="+ $(this).attr("data-value") +" required autofocus />\
+                                    </div>\
+                                    <button class='btn btn-lg btn-success form-control' type='submit'>&nbsp;确认修改</button>\
+                                </form>");
+                    $("#remarksForm").validate({
+                        rules: {
+                            remarks: {
+                                required: true,
+                            },
+                        },
+                        messages: {
+                            remarks: "备注不能为空",
+                        },
+                        submitHandler: function() {
+                            requestCallback({
+                                "mk" : "{{mkey}}",
+                                "opType" : opType,
+                                "tid" : tid,
+                                "remarks" : $("#remarksForm input[name='remarks']").val(),
+                            }, function(){
+                                closeDialogPage(); // 请求后关闭弹窗
+                            });
+                        }
+                    });
+                    break;
                 case "change_expires":
                     // 创建弹窗
                     createDialogPage("<form id='expiresForm' class='dialog-form' role='form' enctype='multipart/form-data'>\

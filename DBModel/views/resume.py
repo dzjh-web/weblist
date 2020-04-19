@@ -25,14 +25,14 @@ def req(request):
                 delta = targetTime - timezone.now();
                 leftDays = delta.days + delta.seconds / 86400;
                 if leftDays > 0:
-                    resumeInfo = getResumeInfo(rt.remarks);
+                    resumeInfo = getResumeInfo(rt.name);
                     if resumeInfo:
                         resumeInfo["HOME_URL"] = HOME_URL;
                         resumeInfo["RESOURCE_URL"] = RESOURCE_URL;
                         resumeInfo["HOME_TITLE"] = "JDreamHeart";
                         return render(request, "resume/index.html", resumeInfo);
                     else:
-                        reqFailedTips = "对应Token的remarks（备注）无效！获取简历信息失败！";
+                        reqFailedTips = "对应Token的名称无效！获取简历信息失败！";
                 else:
                     reqFailedTips = "输入的Token已过期！";
             else:
@@ -49,8 +49,11 @@ def req(request):
     });
 
 # 获取简历信息
-def getResumeInfo(remarks = "resume"):
-    filePath = os.path.join(_GG("ProjectPath"), "assets", "static", "json", "resume", remarks+".json");
+def getResumeInfo(name = "resume"):
+    if not name:
+        _GG("Log").w(f"Invalid resume name [{name}]!");
+        return {};
+    filePath = os.path.join(_GG("ProjectPath"), "assets", "static", "json", "resume", name+".json");
     if os.path.exists(filePath):
         try:
             with open(filePath, "rb") as f:
@@ -64,5 +67,5 @@ def getResumeInfo(remarks = "resume"):
                     pass;
                 return info;
         except Exception as e:
-            _GG("Log").e(f"Invalid resume remarks! Err[{e}]!");
+            _GG("Log").e(f"Invalid resume name! Err[{e}]!");
     return {};

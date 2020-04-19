@@ -78,6 +78,7 @@ def game_log_delete(sender, instance, **kwargs):
 
 class ResumeToken(models.Model):
     token = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True, null=True, verbose_name="名称（简历索引）")
     remarks = models.CharField(max_length=255, blank=True, null=True, verbose_name="备注")
     expires = models.IntegerField(verbose_name="有效期（天）")
     create_at = models.DateTimeField()
