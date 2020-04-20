@@ -508,7 +508,7 @@ label.error {
 	opacity: 1;
 }
 .card-hover-item .card-hover-content img {
-	height: 360px;
+	max-height: 320px;
 	border-radius: 2px;
 }
 .card-hover-item .card-hover-content h3 {
