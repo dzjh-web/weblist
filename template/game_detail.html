@@ -124,13 +124,11 @@
 				border-radius: 4px 4px 0px 0px;
 			}
 			.game-info-header-content {
-				padding: 20px;
+				padding: 10px;
 			}
-			.game-info-header-content > a {
-				margin-left: 60px;
-			}
-			.game-info-header-content > a:first-child {
-				margin-left: 0px;
+			.game-info-header-content > div {
+				margin: 0;
+				padding: 10px;
 			}
 			.game-log-list {
 				margin-top: 40px;
@@ -231,10 +229,14 @@
 						<h3 class="text-center">游戏内容</h3>
 						<div class="text-center game-info-header-content">
 							{% if detailInfo.demoVideo %}
-							<a class="btn btn-primary" href="{{ detailInfo.demoVideo }}" target="_blank" title="演示视频"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;演示视频</a>
+							<div>
+								<a class="btn btn-primary" href="{{ detailInfo.demoVideo }}" target="_blank" title="演示视频"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;演示视频</a>
+							</div>
 							{% endif %}
 							{% if detailInfo.filePath %}
-							<a id="gamePackage" class="btn btn-success" href="{{ detailInfo.filePath }}" target="_blank" title="游戏包下载"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;<span class="game-package-tips">游戏包下载</span></a>
+							<div>
+								<a id="gamePackage" class="btn btn-success" href="{{ detailInfo.filePath }}" target="_blank" title="游戏包下载"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;<span class="game-package-tips">游戏包下载</span></a>
+							</div>
 							{% endif %}
 						</div>
 					</div>
