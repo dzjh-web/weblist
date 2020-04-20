@@ -234,7 +234,7 @@
 							<a class="btn btn-primary" href="{{ detailInfo.demoVideo }}" target="_blank" title="演示视频"><span class="glyphicon glyphicon-eye-open"></span>&nbsp;演示视频</a>
 							{% endif %}
 							{% if detailInfo.filePath %}
-							<a class="btn btn-success" href="{{ detailInfo.filePath }}" target="_blank" title="游戏包下载"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;游戏包下载</a>
+							<a id="gamePackage" class="btn btn-success" href="{{ detailInfo.filePath }}" target="_blank" title="游戏包下载"><span class="glyphicon glyphicon-download-alt"></span>&nbsp;<span class="game-package-tips">游戏包下载</span></a>
 							{% endif %}
 						</div>
 					</div>
@@ -324,6 +324,27 @@
 						});
 					}
 				});
+				// 更新游戏下载包提示
+				var $gamePackage = $("#gamePackage");
+				if ($gamePackage.length > 0) {
+					var href = $gamePackage.attr("href");
+					var idx = href.lastIndexOf(".");
+					if (idx >= 0) {
+						var typeStr = "";
+						switch (href.substring(idx+1)) {
+							case "apk":
+								typeStr = "Android";
+								break;
+							case "exe":
+								typeStr = "Windows";
+								break;
+						}
+						if (typeStr != "") {
+							var $tips = $gamePackage.find(".game-package-tips");
+							$tips.text($tips.text() + "(" + typeStr + ")");
+						}
+					}
+				}
 			})
 		</script>
 	</body>
