@@ -46,7 +46,7 @@ class GameItem(models.Model):
     update_time = models.DateTimeField()
     sort_id = models.IntegerField()
     demo_video = models.CharField(max_length=255, blank=True, null=True, verbose_name="演示视频")
-    state = models.IntegerField(blank=True, null=True)
+    state = models.IntegerField()
     token = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
