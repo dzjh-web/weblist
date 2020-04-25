@@ -3,9 +3,11 @@ import django.utils.timezone as timezone;
 from django.forms import ModelForm;
 from ckeditor_uploader.fields import RichTextUploadingFormField;
 
+from weblist.settings import HOME_URL;
+
 from DBModel import models;
-from utils import base_util;
-from release.base import Schedule, ScheduleMap;
+from utils import base_util, random_util;
+from release.base import Schedule, ScheduleMap, Status;
 
 import json;
 
@@ -16,7 +18,7 @@ from _Global import _GG;
 class GameItemForm(ModelForm):
     class Meta:
         model = models.GameItem
-        fields = ["name", "category", "thumbnail", "description", "file_path", "demo_video"]
+        fields = ["name", "category", "thumbnail", "description", "version", "file_path", "demo_video"]
 
     def __init__(self, *args, **kwargs):
         super(GameItemForm, self).__init__(*args, **kwargs);
@@ -46,6 +48,8 @@ def upload(request, result, isSwitchTab):
                     "time" : timezone.now(),
                     "update_time" : timezone.now(),
                     "sort_id" : 0,
+                    "state" : Status.Close.value,
+                    "token" : random_util.randomToken(),
                 });
                 gi.save();
                 result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】上传成功。";
@@ -80,6 +84,8 @@ def update(request, result, isSwitchTab):
                         gi.category = wf.cleaned_data["category"];
                         if wf.cleaned_data["thumbnail"]:
                             gi.thumbnail = wf.cleaned_data["thumbnail"];
+                        if wf.cleaned_data["version"]:
+                            gi.version = wf.cleaned_data["version"];
                         if wf.cleaned_data["file_path"]:
                             gi.file_path = wf.cleaned_data["file_path"];
                         if wf.cleaned_data["demo_video"]:
@@ -114,6 +120,21 @@ def update(request, result, isSwitchTab):
                             gi.update_time = timezone.now();
                             gi.save();
                             result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】排序值（{gi.sort_id}）更新成功。";
+                        # 更新状态
+                        if "state" in request.POST:
+                            if request.POST["state"] == "open":
+                                gi.state = Status.Open.value;
+                            else:
+                                gi.state = Status.Close.value;
+                            gi.update_time = timezone.now();
+                            gi.save();
+                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】状态更新成功。";
+                        # 更新Token
+                        if "token" in request.POST:
+                            gi.token = random_util.randomToken();
+                            gi.update_time = timezone.now();
+                            gi.save();
+                            result["requestTips"] = f"游戏网页【{gi.name}，{gi.category}】Token值（{gi.token}）更新成功。";
                         # 跳转编辑页面
                         isEdit = True;
                     elif opType == "delete":
@@ -138,6 +159,13 @@ def update(request, result, isSwitchTab):
                     result["scheduleInfoList"] = [{"key" : v, "val" : k} for k,v in ScheduleMap.items()];
                     # 排序值
                     result["sortId"] = gi.sort_id;
+                    # 状态信息
+                    result["stateInfo"] = {"state" : "close", "label" : "关闭", "style" : "danger"};
+                    if gi.state == Status.Close.value:
+                        result["stateInfo"] = {"state" : "open", "label" : "启用", "style" : "primary"};
+                    # Token值
+                    result["token"] = gi.token;
+                    result["token_url"] = f"{HOME_URL}/game?k=detail&gid={gi.id}&token={gi.token}";
                     return;
             except Exception as e:
                 _GG("Log").w(e);
@@ -157,11 +185,13 @@ def update(request, result, isSwitchTab):
         "thumbnail" : gameInfo.thumbnail.url,
         "description" : gameInfo.description,
         "schedule" : ScheduleMap.get(gameInfo.schedule, "未知"),
+        "version" : gameInfo.version or "0.0",
         "filePath" : gameInfo.file_path and gameInfo.file_path.url or "",
         "demoVideo" : gameInfo.demo_video,
         "time" : gameInfo.time,
         "updateTime" : gameInfo.update_time,
         "sortId" : gameInfo.sort_id,
+        "state" : gameInfo.state == Status.Open.value and "启用" or "关闭",
         "type" : "游戏网页",
     } for gameInfo in infoList];
     pass;

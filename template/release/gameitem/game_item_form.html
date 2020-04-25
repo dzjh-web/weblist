@@ -6,6 +6,11 @@
     <div id="releaseContent">
         {% if isEdit %}
         <div>
+            <p>Token&nbsp;Url:&nbsp;<a href="{{token_url}}" target="_blank">{{token}}</a></p>
+            <div class="clearfix" style="margin-bottom: 20px;">
+                <a id="tokenBtn" class="btn btn-success" style="color: #FFFFFF;" data-target="{{token}}">更新Token</a>
+                <a id="enableBtn" class="btn btn-{{stateInfo.style}} pull-right" style="color: #FFFFFF;" data-target="{{stateInfo.state}}">{{stateInfo.label}}该网页</a>
+            </div>
             <div class="input-group">
                 <label class="input-group-addon" for="schedule">进度</label>
                 <select id="scheduleSelect" name="schedule" class="form-control" value="{{schedule}}">
@@ -123,7 +128,15 @@
             delete validateParams.rules.thumbnail;
         }
         $("#releaseForm").validate(validateParams);
+        // 更新Token按钮
+        $("#tokenBtn").on("click", function() {
+            requestRelease({"mk" : "{{mkey}}", "gid" : "{{ gid }}", "opType" : "update", "token" : $(this).attr("data-target")});
+        });
         // 启用/禁用按钮
+        $("#enableBtn").on("click", function() {
+            requestRelease({"mk" : "{{mkey}}", "gid" : "{{ gid }}", "opType" : "update", "state" : $(this).attr("data-target")});
+        });
+        // 更新进度
         $("#scheduleSelect").change(function() {
             var $selectedOpt = $(this).find("option:selected");
             if ($selectedOpt.val() != "{{schedule}}") {

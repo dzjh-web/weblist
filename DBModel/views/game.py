@@ -66,42 +66,49 @@ def detail(request):
         # 获取相应游戏信息
         gid = int(request.GET.get("gid", "0"));
         info = models.GameItem.objects.get(id = gid);
-        result["gid"] = gid;
-        result["hasInfo"] = True;
-        result["HEAD_TITLE"] = info.name;
-        result["detailInfo"] = {
-            "name" : info.name,
-            "category" : info.category,
-            "thumbnail" : info.thumbnail.url,
-            "description" : info.description,
-            "filePath" : info.file_path and info.file_path.url,
-            "demoVideo" : info.demo_video,
-            "time" : info.time,
-            "updateTime" : info.update_time,
-            "content" : info.cid.content,
-            "schedule" : {
-                "key" : ScheduleMap.get(info.schedule, "未知"),
-                "val" : info.schedule,
-                "items" : [{"key" : v, "val" : k, "hasLine" : True} for k,v in ScheduleMap.items() if k != Schedule.Pending.value and k != Schedule.Off.value],
-            },
-        };
-        result["detailInfo"]["schedule"]["items"].insert(0, {"key" : ScheduleMap[Schedule.Pending.value], "val" : Schedule.Pending.value});
-        result["detailInfo"]["schedule"]["items"].append({"key" : ScheduleMap[Schedule.Off.value], "val" : Schedule.Off.value});
-        result["detailInfo"]["schedule"]["itemWidth"] = str(int(100 / len(result["detailInfo"]["schedule"]["items"]))) + "%";
-        if info.file_path or info.demo_video:
-            result["detailInfo"]["hasGameContent"] = True;
-        # 获取游戏日志信息
-        infoList = models.GameLog.objects.filter(gid = info).order_by("-update_time");
-        result["logInfoList"] = [{
-            "title" : logInfo.title,
-            "subTitle" : logInfo.sub_title,
-            "sketch" : logInfo.sketch,
-            "url" : f"{HOME_URL}/game?k=log&gid={logInfo.id}",
-            "time" : logInfo.time,
-            "updateTime" : logInfo.update_time,
-            "exinfoList" : [],
-        } for logInfo in infoList];
-        result["hasLogInfo"] = len(result["logInfoList"]) > 0;
+        # 返回游戏信息
+        if "gameinfo" in request.GET:
+            return JsonResponse(getGameInfoByItem(info, request.GET["gameinfo"]));
+        # 校验游戏
+        if info.state == Status.Open.value or info.token == request.GET.get("token", "game_token"):
+            # 返回游戏详情页
+            result["gid"] = gid;
+            result["hasInfo"] = True;
+            result["HEAD_TITLE"] = info.name;
+            result["detailInfo"] = {
+                "name" : info.name,
+                "category" : info.category,
+                "thumbnail" : info.thumbnail.url,
+                "description" : info.description,
+                "filePath" : info.file_path and info.file_path.url or "",
+                "demoVideo" : info.demo_video,
+                "time" : info.time,
+                "updateTime" : info.update_time,
+                "content" : info.cid.content,
+                "schedule" : {
+                    "key" : ScheduleMap.get(info.schedule, "未知"),
+                    "val" : info.schedule,
+                    "items" : [{"key" : v, "val" : k, "hasLine" : True} for k,v in ScheduleMap.items() if k != Schedule.Pending.value and k != Schedule.Off.value],
+                },
+            };
+            result["detailInfo"]["schedule"]["items"].insert(0, {"key" : ScheduleMap[Schedule.Pending.value], "val" : Schedule.Pending.value});
+            result["detailInfo"]["schedule"]["items"].append({"key" : ScheduleMap[Schedule.Off.value], "val" : Schedule.Off.value});
+            result["detailInfo"]["schedule"]["itemWidth"] = str(int(100 / len(result["detailInfo"]["schedule"]["items"]))) + "%";
+            if info.file_path or info.demo_video:
+                result["detailInfo"]["hasGameContent"] = True;
+            # 获取游戏日志信息
+            logurl = f"{HOME_URL}/game?k=log&gid=";
+            infoList = models.GameLog.objects.filter(gid = info).order_by("-update_time");
+            result["logInfoList"] = [{
+                "title" : logInfo.title,
+                "subTitle" : logInfo.sub_title,
+                "sketch" : logInfo.sketch,
+                "url" : info.state == Status.Open.value and f"{logurl}{logInfo.id}" or f"{logurl}{logInfo.id}&token={info.token}",
+                "time" : logInfo.time,
+                "updateTime" : logInfo.update_time,
+                "exinfoList" : [],
+            } for logInfo in infoList];
+            result["hasLogInfo"] = len(result["logInfoList"]) > 0;
     except Exception as e:
         _GG("Log").w(e);
     return render(request, "game_detail.html", result);
@@ -118,21 +125,24 @@ def searchLog(request):
         # 获取相应游戏信息
         gid = int(request.POST.get("gid", "0"));
         gi = models.GameItem.objects.get(id = gid);
-        # 获取游戏日志信息
-        infoList = models.GameLog.objects.filter(Q(title__icontains = searchText) | Q(sub_title__icontains = searchText), gid = gi).order_by("-update_time");
-        result["htmlData"] = bytes.decode(render(request, "gamelog_list.html", {
-            "searchText" : searchText,
-            "logInfoList" : [{
-                "title" : logInfo.title,
-                "subTitle" : logInfo.sub_title,
-                "sketch" : logInfo.sketch,
-                "url" : f"{HOME_URL}/game?k=log&gid={logInfo.id}",
-                "time" : logInfo.time,
-                "updateTime" : logInfo.update_time,
-                "exinfoList" : [],
-            } for logInfo in infoList],
-            "hasLogInfo" : len(infoList) > 0,
-        }).content);
+        # 校验游戏
+        if gi.state == Status.Open.value or gi.token == request.GET.get("token", "game_token"):
+            # 获取游戏日志信息
+            logurl = f"{HOME_URL}/game?k=log&gid=";
+            infoList = models.GameLog.objects.filter(Q(title__icontains = searchText) | Q(sub_title__icontains = searchText), gid = gi).order_by("-update_time");
+            result["htmlData"] = bytes.decode(render(request, "gamelog_list.html", {
+                "searchText" : searchText,
+                "logInfoList" : [{
+                    "title" : logInfo.title,
+                    "subTitle" : logInfo.sub_title,
+                    "sketch" : logInfo.sketch,
+                    "url" : gi.state == Status.Open.value and f"{logurl}{logInfo.id}" or f"{logurl}{logInfo.id}&token={gi.token}",
+                    "time" : logInfo.time,
+                    "updateTime" : logInfo.update_time,
+                    "exinfoList" : [],
+                } for logInfo in infoList],
+                "hasLogInfo" : len(infoList) > 0,
+            }).content);
     except Exception as e:
         _GG("Log").w(e);
     return JsonResponse(result);
@@ -155,28 +165,30 @@ def gameLog(request):
         # 获取相应游戏信息
         gid = int(request.GET.get("gid", "0"));
         info = models.GameLog.objects.get(id = gid);
-        result["gid"] = gid;
-        result["hasInfo"] = True;
-        result["HEAD_TITLE"] = info.title;
-        result["gameInfo"] = {
-            "url" : f"{HOME_URL}/game?k=detail&gid=" + str(info.gid.id),
-            "name" : info.gid.name,
-            "category" : info.gid.category,
-        };
-        result["detailInfo"] = {
-            "title" : info.title,
-            "subTitle" : info.sub_title,
-            "time" : info.time,
-            "updateTime" : info.update_time,
-            "content" : info.cid.content,
-        };
+        # 校验游戏
+        if info.gid.state == Status.Open.value or info.gid.token == request.GET.get("token", "game_token"):
+            result["gid"] = gid;
+            result["hasInfo"] = True;
+            result["HEAD_TITLE"] = info.title;
+            result["gameInfo"] = {
+                "url" : f"{HOME_URL}/game?k=detail&gid=" + str(info.gid.id),
+                "name" : info.gid.name,
+                "category" : info.gid.category,
+            };
+            result["detailInfo"] = {
+                "title" : info.title,
+                "subTitle" : info.sub_title,
+                "time" : info.time,
+                "updateTime" : info.update_time,
+                "content" : info.cid.content,
+            };
     except Exception as e:
         _GG("Log").w(e);
     return render(request, "gamelog_detail.html", result);
 
 # 获取游戏信息列表
 def getGameInfoList(nameText = ""):
-    infoList = models.GameItem.objects.filter(name__icontains = nameText).order_by("-sort_id", "-update_time");
+    infoList = models.GameItem.objects.filter(name__icontains = nameText, state = Status.Open.value).order_by("-sort_id", "-update_time");
     return len(infoList) > 0, [{
         "title" : info.name,
         "subTitle" : info.category,
@@ -209,3 +221,12 @@ def search(request):
             "placeholder" : "搜索游戏名称",
         },
     });
+
+# 获取游戏信息
+def getGameInfoByItem(gameItem, infoType):
+    if infoType == "version":
+        return {
+            "version" : gameItem.version or "0.0",
+            "url" : gameItem.file_path and gameItem.file_path.url or "",
+        };
+    return {};

@@ -40,11 +40,14 @@ class GameItem(models.Model):
     description = models.CharField(max_length=255, verbose_name="简述")
     cid = models.ForeignKey('WebContent', models.DO_NOTHING, db_column='cid')
     schedule = models.IntegerField(verbose_name="进度")
+    version = models.CharField(max_length=255, blank=True, null=True, verbose_name="版本号")
     file_path = models.FileField(upload_to = game_file_path, blank=True, null=True, verbose_name="游戏文件")
     time = models.DateTimeField()
     update_time = models.DateTimeField()
     sort_id = models.IntegerField()
     demo_video = models.CharField(max_length=255, blank=True, null=True, verbose_name="演示视频")
+    state = models.IntegerField(blank=True, null=True)
+    token = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

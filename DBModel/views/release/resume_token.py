@@ -5,7 +5,6 @@ from DBModel import models;
 from utils import base_util, random_util;
 from release.base import Schedule;
 
-import hashlib;
 import datetime;
 
 from _Global import _GG;
@@ -68,8 +67,7 @@ def upload(request, result, isSwitchTab):
 
 # 创建Token
 def createToken():
-    randCode = random_util.randomMulti(32); # 32位随机码
-    return hashlib.md5("|".join([timezone.localtime(timezone.now()).strftime('%Y-%m-%d-%H-%M-%S'), randCode]).encode("utf-8")).hexdigest();
+    return random_util.randomToken(); # 随机Token
 
 # 获取已创建的Token
 def getOlTokenList():
