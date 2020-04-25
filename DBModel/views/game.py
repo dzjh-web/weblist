@@ -225,8 +225,9 @@ def search(request):
 # 获取游戏信息
 def getGameInfoByItem(gameItem, infoType):
     if infoType == "version":
-        return {
-            "version" : gameItem.version or "0.0",
-            "url" : gameItem.file_path and gameItem.file_path.url or "",
-        };
+        if gameItem.file_path:
+            return {
+                "version" : gameItem.version or "0.0",
+                "url" : f"{HOME_URL}/" + gameItem.file_path.url,
+            };
     return {};
