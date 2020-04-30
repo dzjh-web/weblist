@@ -229,5 +229,6 @@ def getGameInfoByItem(gameItem, infoType):
             return {
                 "version" : gameItem.version or "0.0",
                 "url" : HOME_URL + gameItem.file_path.url,
+                "size" : gameItem.file_path.size,
             };
     return {};
